@@ -2,7 +2,8 @@
     "name": "DInject.Editor",
     "rootNamespace": "DInject",
     "references": [
-        "DInject"
+        "DInject",
+        "Unity.Addressables.Editor"
     ],
     "includePlatforms": [
         "Editor"

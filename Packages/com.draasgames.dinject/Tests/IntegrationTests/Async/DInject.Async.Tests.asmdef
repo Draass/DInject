@@ -1,0 +1,27 @@
+{
+    "name": "DInject.Async.Tests",
+    "references": [
+        "DInject.TestFramework",
+        "DInject",
+        "UnityEngine.TestRunner"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.cysharp.unitask",
+            "expression": "0.0.0",
+            "define": "UNITASK_PLUGIN"
+        }
+    ],
+    "noEngineReferences": false
+}
