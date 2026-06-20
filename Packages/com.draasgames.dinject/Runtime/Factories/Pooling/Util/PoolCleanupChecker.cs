@@ -8,7 +8,7 @@ namespace DInject
     // If you want to ensure that all items are always returned to the pool, include the following
     // in an installer
     // Container.BindInterfacesTo<PoolCleanupChecker>().AsSingle()
-    public class PoolCleanupChecker : ILateDisposable
+    public partial class PoolCleanupChecker : ILateDisposable
     {
         readonly List<IMemoryPool> _poolFactories;
         readonly List<Type> _ignoredPools;

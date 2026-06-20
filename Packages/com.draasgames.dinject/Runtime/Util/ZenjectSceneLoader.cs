@@ -20,7 +20,7 @@ namespace DInject
         Sibling
     }
 
-    public class ZenjectSceneLoader
+    public partial class ZenjectSceneLoader
     {
         readonly ProjectKernel _projectKernel;
         readonly DiContainer _sceneContainer;

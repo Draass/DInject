@@ -2,7 +2,7 @@ using System;
 
 namespace DInject
 {
-    public class SceneContextRegistryAdderAndRemover : IInitializable, IDisposable
+    public partial class SceneContextRegistryAdderAndRemover : IInitializable, IDisposable
     {
         readonly SceneContextRegistry _registry;
         readonly SceneContext _sceneContext;

@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class AnimatorInstaller : Installer<Animator, AnimatorInstaller>
+    public partial class AnimatorInstaller : Installer<Animator, AnimatorInstaller>
     {
         readonly Animator _animator;
 

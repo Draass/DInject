@@ -7,7 +7,7 @@ using DInject.Internal.Util;
 namespace DInject
 {
     // See comment in IGuiRenderable.cs for usage
-    public class GuiRenderableManager
+    public partial class GuiRenderableManager
     {
         List<RenderableInfo> _renderables;
 

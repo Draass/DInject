@@ -9,7 +9,7 @@ namespace DInject
     // you are working in
     //
     // You might also want to use this installer in a ZenjectUnitTestFixture
-    public class ZenjectManagersInstaller : Installer<ZenjectManagersInstaller>
+    public partial class ZenjectManagersInstaller : Installer<ZenjectManagersInstaller>
     {
         [Inject]
         public ZenjectManagersInstaller()

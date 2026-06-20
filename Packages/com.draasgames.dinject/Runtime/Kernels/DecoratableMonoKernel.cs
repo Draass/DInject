@@ -11,7 +11,7 @@
         void LateDispose();
     }
 
-    public class DecoratableMonoKernel : IDecoratableMonoKernel
+    public partial class DecoratableMonoKernel : IDecoratableMonoKernel
     {
         [InjectLocal] 
         public TickableManager TickableManager { get; protected set; } = null;
@@ -56,7 +56,7 @@
         }
     }
 
-    public abstract class BaseMonoKernelDecorator : IDecoratableMonoKernel
+    public abstract partial class BaseMonoKernelDecorator : IDecoratableMonoKernel
     {
         [Inject] 
         protected IDecoratableMonoKernel DecoratedMonoKernel;

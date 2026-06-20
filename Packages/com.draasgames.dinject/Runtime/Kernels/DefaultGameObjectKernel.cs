@@ -2,7 +2,7 @@
 
 namespace DInject
 {
-    public class DefaultGameObjectKernel : MonoKernel
+    public partial class DefaultGameObjectKernel : MonoKernel
     {
     }
 }

@@ -4,7 +4,7 @@ using DInject.Internal;
 
 namespace DInject
 {
-    public class CompositeMonoInstaller : MonoInstaller<CompositeMonoInstaller>, ICompositeInstaller<MonoInstallerBase>
+    public partial class CompositeMonoInstaller : MonoInstaller<CompositeMonoInstaller>, ICompositeInstaller<MonoInstallerBase>
     {
         [SerializeField]
         List<MonoInstallerBase> _leafInstallers = new List<MonoInstallerBase>();

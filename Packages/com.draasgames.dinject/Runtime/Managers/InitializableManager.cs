@@ -8,7 +8,7 @@ namespace DInject
 {
     // Responsibilities:
     // - Run Initialize() on all Iinitializable's, in the order specified by InitPriority
-    public class InitializableManager
+    public partial class InitializableManager
     {
         List<InitializableInfo> _initializables;
 

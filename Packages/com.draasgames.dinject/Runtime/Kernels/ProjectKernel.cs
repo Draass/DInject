@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace DInject
 {
-    public class ProjectKernel : MonoKernel
+    public partial class ProjectKernel : MonoKernel
     {
         [Inject]
         ZenjectSettings _settings = null;

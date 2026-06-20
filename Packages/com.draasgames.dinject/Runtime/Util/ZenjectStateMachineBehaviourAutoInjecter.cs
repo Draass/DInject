@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class ZenjectStateMachineBehaviourAutoInjecter : MonoBehaviour
+    public partial class ZenjectStateMachineBehaviourAutoInjecter : MonoBehaviour
     {
         DiContainer _container;
         Animator _animator;

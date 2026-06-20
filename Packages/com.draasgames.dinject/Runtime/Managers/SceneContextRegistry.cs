@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 
 namespace DInject
 {
-    public class SceneContextRegistry
+    public partial class SceneContextRegistry
     {
         readonly Dictionary<Scene, SceneContext> _map = new Dictionary<Scene, SceneContext>();
 

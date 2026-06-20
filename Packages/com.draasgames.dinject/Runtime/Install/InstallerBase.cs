@@ -1,6 +1,6 @@
 namespace DInject
 {
-    public abstract class InstallerBase : IInstaller
+    public abstract partial class InstallerBase : IInstaller
     {
         [Inject]
         DiContainer _container = null;

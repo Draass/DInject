@@ -37,6 +37,47 @@ namespace DInject.Tests.CodeGen
         [TestCase(typeof(CorpusLocalAndParent))]
         [TestCase(typeof(CorpusBaseInject))]
         [TestCase(typeof(CorpusDerivedInject))]
+        // Real framework MonoBehaviours (made partial): probe that the analyzer reaches the
+        // DInject runtime assembly and that generated metadata == reflection for them too.
+        [TestCase(typeof(AnimatorIkHandlerManager))]
+        [TestCase(typeof(AnimatorMoveHandlerManager))]
+        [TestCase(typeof(MonoKernel))]
+        [TestCase(typeof(GuiRenderer))]
+        [TestCase(typeof(MonoInstallerBase))]
+        [TestCase(typeof(ZenAutoInjecter))]
+        [TestCase(typeof(ZenjectStateMachineBehaviourAutoInjecter))]
+        // Plain (non-MB) framework types with FACTORY emission — validates the ctor-factory path.
+        [TestCase(typeof(InitializableManager))]
+        [TestCase(typeof(DisposableManager))]
+        [TestCase(typeof(SceneContextRegistry))]
+        [TestCase(typeof(DecoratableMonoKernel))]
+        // Full framework injectable-type rollout (audit: codegen-full). Plain managers/services:
+        [TestCase(typeof(PoolableManager))]
+        [TestCase(typeof(GuiRenderableManager))]
+        [TestCase(typeof(SceneContextRegistryAdderAndRemover))]
+        [TestCase(typeof(Kernel))]
+        [TestCase(typeof(PoolCleanupChecker))]
+        [TestCase(typeof(ZenjectSceneLoader))]
+        // Installers (plain + abstract base + ScriptableObject):
+        [TestCase(typeof(ZenjectManagersInstaller))]
+        [TestCase(typeof(ActionInstaller))]
+        [TestCase(typeof(DefaultGameObjectParentInstaller))]
+        [TestCase(typeof(ExecutionOrderInstaller))]
+        [TestCase(typeof(AnimatorInstaller))]
+        [TestCase(typeof(InstallerBase))]
+        [TestCase(typeof(BaseMonoKernelDecorator))]
+        [TestCase(typeof(ScriptableObjectInstallerBase))]
+        [TestCase(typeof(ScriptableObjectInstaller))]
+        [TestCase(typeof(CompositeScriptableObjectInstaller))]
+        // MonoBehaviours (null factory): contexts, installers, kernels:
+        [TestCase(typeof(GameObjectContext))]
+        [TestCase(typeof(MonoInstaller))]
+        [TestCase(typeof(CompositeMonoInstaller))]
+        [TestCase(typeof(ProjectKernel))]
+        [TestCase(typeof(SceneKernel))]
+        [TestCase(typeof(DefaultGameObjectKernel))]
+        // Readonly-fix probe: TickableManager's 6 [Inject] fields were made non-readonly so the generator covers them.
+        [TestCase(typeof(TickableManager))]
         public void GeneratedMatchesReflection(Type type)
         {
             var generated = GetGenerated(type);

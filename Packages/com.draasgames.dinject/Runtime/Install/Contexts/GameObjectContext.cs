@@ -11,7 +11,7 @@ using DInject.Internal;
 
 namespace DInject
 {
-    public class GameObjectContext : RunnableContext
+    public partial class GameObjectContext : RunnableContext
     {
         public event Action PreInstall;
         public event Action PostInstall;

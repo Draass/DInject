@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class DefaultGameObjectParentInstaller : Installer<string, DefaultGameObjectParentInstaller>
+    public partial class DefaultGameObjectParentInstaller : Installer<string, DefaultGameObjectParentInstaller>
     {
         readonly string _name;
 

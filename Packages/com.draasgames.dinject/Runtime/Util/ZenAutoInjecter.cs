@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class ZenAutoInjecter : MonoBehaviour
+    public partial class ZenAutoInjecter : MonoBehaviour
     {
         [SerializeField]
         ContainerSources _containerSource = ContainerSources.SearchHierarchy;

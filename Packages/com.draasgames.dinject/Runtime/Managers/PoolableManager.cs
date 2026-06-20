@@ -6,7 +6,7 @@ using DInject.Internal.Util;
 
 namespace DInject
 {
-    public class PoolableManager
+    public partial class PoolableManager
     {
         readonly List<IPoolable> _poolables;
 

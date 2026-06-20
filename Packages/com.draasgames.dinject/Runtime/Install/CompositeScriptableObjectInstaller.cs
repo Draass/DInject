@@ -5,7 +5,7 @@ using DInject.Internal;
 namespace DInject
 {
     // Use `Create -> DInject -> Composite Scriptable Object Installer`
-    public class CompositeScriptableObjectInstaller : ScriptableObjectInstaller<CompositeScriptableObjectInstaller>, ICompositeInstaller<ScriptableObjectInstallerBase>
+    public partial class CompositeScriptableObjectInstaller : ScriptableObjectInstaller<CompositeScriptableObjectInstaller>, ICompositeInstaller<ScriptableObjectInstallerBase>
     {
         [SerializeField]
         List<ScriptableObjectInstallerBase> _leafInstallers = new List<ScriptableObjectInstallerBase>();

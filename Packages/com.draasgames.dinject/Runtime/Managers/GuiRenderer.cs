@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class GuiRenderer : MonoBehaviour
+    public partial class GuiRenderer : MonoBehaviour
     {
         GuiRenderableManager _renderableManager;
 

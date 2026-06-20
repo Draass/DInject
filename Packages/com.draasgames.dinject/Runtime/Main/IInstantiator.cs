@@ -41,6 +41,13 @@ namespace DInject
 
         // Add new component to existing game object and fill in its dependencies
         // NOTE: Gameobject here is not a prefab prototype, it is an instance
+        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="gameObject"></param>
+        /// <typeparam name="TContract"></typeparam>
+        /// <returns></returns>
         TContract InstantiateComponent<TContract>(GameObject gameObject)
             where TContract : Component;
         TContract InstantiateComponent<TContract>(
@@ -51,6 +58,11 @@ namespace DInject
         Component InstantiateComponent(
             Type componentType, GameObject gameObject, IEnumerable<object> extraArgs);
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
         T InstantiateComponentOnNewGameObject<T>()
             where T : Component;
         T InstantiateComponentOnNewGameObject<T>(string gameObjectName)

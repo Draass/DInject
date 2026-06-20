@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public class AnimatorMoveHandlerManager : MonoBehaviour
+    public partial class AnimatorMoveHandlerManager : MonoBehaviour
     {
         List<IAnimatorMoveHandler> _handlers;
 

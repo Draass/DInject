@@ -4,7 +4,7 @@ using DInject.Internal;
 
 namespace DInject
 {
-    public class SceneKernel : MonoKernel
+    public partial class SceneKernel : MonoKernel
     {
         // Only needed to set "script execution order" in unity project settings
 

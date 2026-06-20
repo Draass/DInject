@@ -6,7 +6,7 @@ using DInject.Internal.Util;
 
 namespace DInject
 {
-    public class DisposableManager : IDisposable
+    public partial class DisposableManager : IDisposable
     {
         readonly List<DisposableInfo> _disposables = new List<DisposableInfo>();
         readonly List<LateDisposableInfo> _lateDisposables = new List<LateDisposableInfo>();

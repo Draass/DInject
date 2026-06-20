@@ -9,25 +9,25 @@ using UniRx;
 
 namespace DInject
 {
-    public class TickableManager
+    public partial class TickableManager
     {
         [Inject(Optional = true, Source = InjectSources.Local)]
-        readonly List<ITickable> _tickables = null;
+        List<ITickable> _tickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        readonly List<IFixedTickable> _fixedTickables = null;
+        List<IFixedTickable> _fixedTickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        readonly List<ILateTickable> _lateTickables = null;
+        List<ILateTickable> _lateTickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        readonly List<ValuePair<Type, int>> _priorities = null;
+        List<ValuePair<Type, int>> _priorities = null;
 
         [Inject(Optional = true, Id = "Fixed", Source = InjectSources.Local)]
-        readonly List<ValuePair<Type, int>> _fixedPriorities = null;
+        List<ValuePair<Type, int>> _fixedPriorities = null;
 
         [Inject(Optional = true, Id = "Late", Source = InjectSources.Local)]
-        readonly List<ValuePair<Type, int>> _latePriorities = null;
+        List<ValuePair<Type, int>> _latePriorities = null;
 
 #if ZEN_SIGNALS_ADD_UNIRX
         readonly Subject<Unit> _tickStream = new Subject<Unit>();

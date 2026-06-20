@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace DInject
 {
-    public class ExecutionOrderInstaller : Installer<List<Type>, ExecutionOrderInstaller>
+    public partial class ExecutionOrderInstaller : Installer<List<Type>, ExecutionOrderInstaller>
     {
         List<Type> _typeOrder;
 

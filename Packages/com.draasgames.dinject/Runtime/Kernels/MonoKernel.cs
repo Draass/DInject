@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace DInject
 {
-    public abstract class MonoKernel : MonoBehaviour
+    public abstract partial class MonoKernel : MonoBehaviour
     {
         [InjectLocal]
         TickableManager _tickableManager = null;
