@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DInject
 {
-    public class MemoryPoolAsync< TValue>
+    public partial class MemoryPoolAsync< TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool< TValue>, 
           IFactory< TValue>
@@ -68,7 +68,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TValue>
+    public partial class MemoryPoolAsync<TParam1, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TValue>, 
           IFactory<TParam1, TValue>
@@ -125,7 +125,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TValue>, 
           IFactory<TParam1, TParam2, TValue>
@@ -182,7 +182,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TValue>
@@ -239,7 +239,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TValue>
@@ -296,7 +296,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
@@ -353,7 +353,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
@@ -410,7 +410,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
@@ -467,7 +467,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
@@ -524,7 +524,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>
@@ -581,7 +581,7 @@ namespace DInject
         }
     }
 
-    public class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>
+    public partial class MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>
         : MemoryPoolBaseAsync<TValue>, 
           IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>, 
           IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>

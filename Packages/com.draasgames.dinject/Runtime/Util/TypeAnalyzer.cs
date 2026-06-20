@@ -185,11 +185,27 @@ namespace DInject
                 Assert.IsEqual(info.Type, type);
                 Assert.IsNull(info.BaseTypeInfo);
 
+                // Walk up the base chain to stitch the nearest base that has inject metadata.
+                // Under codegen-only an intermediate base can be uncovered (TryGetInfo == null) -
+                // e.g. a closed instantiation of an open-generic base like Installer<TDerived> that
+                // the generator cannot emit a getter for. Such intermediates carry no inject members,
+                // so we skip them and continue up, ensuring deeper covered bases (e.g. InstallerBase
+                // with its [Inject] DiContainer) are still stitched and injected. In the editor the
+                // reflection path returns non-null for every base, so the first iteration links
+                // immediately and behaviour is unchanged.
                 var baseType = type.BaseType();
 
-                if (baseType != null && !ShouldSkipTypeAnalysis(baseType))
+                while (baseType != null && !ShouldSkipTypeAnalysis(baseType))
                 {
-                    info.BaseTypeInfo = TryGetInfo(baseType);
+                    var baseInfo = TryGetInfo(baseType);
+
+                    if (baseInfo != null)
+                    {
+                        info.BaseTypeInfo = baseInfo;
+                        break;
+                    }
+
+                    baseType = baseType.BaseType();
                 }
             }
 
@@ -258,19 +274,19 @@ namespace DInject
                 return null;
             }
 
-#if !(UNITY_WSA && ENABLE_DOTNET) || UNITY_EDITOR
+#if UNITY_EDITOR
             if (ReflectionBakingCoverageMode == ReflectionBakingCoverageModes.FallbackToDirectReflectionWithWarning)
             {
                 Log.Warn("No reflection baking information found for type '{0}' - using more costly direct reflection instead", type);
             }
-#endif
 
-#if ZEN_INTERNAL_PROFILING
-            using (ProfileTimers.CreateTimedBlock("Type Analysis - Direct Reflection"))
+            return CreateTypeInfoFromReflection(type);
+#else
+            // Player builds are codegen-only: the member-reflection path (CreateTypeInfoFromReflection +
+            // ReflectionTypeAnalyzer / ReflectionInfoTypeInfoConverter) is compiled out via #if UNITY_EDITOR.
+            // An uncovered type yields null here, so ensure full generator coverage before shipping a build.
+            return null;
 #endif
-            {
-                return CreateTypeInfoFromReflection(type);
-            }
         }
 
         public static bool ShouldSkipTypeAnalysis(Type type)
@@ -290,6 +306,7 @@ namespace DInject
             return type.IsAbstract() && type.IsSealed();
         }
 
+#if UNITY_EDITOR
         static InjectTypeInfo CreateTypeInfoFromReflection(Type type)
         {
             var reflectionInfo = ReflectionTypeAnalyzer.GetReflectionInfo(type);
@@ -308,5 +325,6 @@ namespace DInject
             return new InjectTypeInfo(
                 type, injectConstructor, injectMethods, memberInfos);
         }
+#endif
     }
 }

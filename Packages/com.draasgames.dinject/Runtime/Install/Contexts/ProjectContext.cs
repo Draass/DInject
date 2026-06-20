@@ -234,9 +234,13 @@ namespace DInject
         {
             Assert.IsNull(_container);
             
-            // Do this as early as possible before any type analysis occurs
+            // Do this as early as possible before any type analysis occurs.
+            // Editor-only: the reflection ctor-selection path is compiled out of player builds
+            // (codegen bakes the chosen constructor at compile time).
+#if UNITY_EDITOR
             ReflectionTypeAnalyzer.ConstructorChoiceStrategy = _settings.ConstructorChoiceStrategy;
-            
+#endif
+
             if (Application.isEditor)
             {
                 TypeAnalyzer.ReflectionBakingCoverageMode = _editorReflectionBakingCoverageMode;

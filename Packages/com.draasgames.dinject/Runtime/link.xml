@@ -1,0 +1,24 @@
+<linker>
+  <!--
+    DInject codegen: preserve the runtime assembly under IL2CPP managed (byte-code) stripping so that
+      - generated [Preserve] injector getters (__zenCreateInjectTypeInfo and member/factory helpers),
+      - the per-assembly __DInjectRegistry_* [RuntimeInitializeOnLoadMethod(SubsystemRegistration)]
+        entry points that call TypeAnalyzer.RegisterGeneratedGetter,
+      - the contract types (InjectTypeInfo / InjectableInfo / InjectSources / attributes) and
+        marker interfaces,
+    survive stripping. Required once the player build runs codegen-only (NoCheckAssumeFullCoverage,
+    reflection compiled out via #if UNITY_EDITOR).
+
+    NOTE: each USER assembly that contains [Inject] partial types also gets its own generated
+    registry; those getters carry [Preserve], but if aggressive stripping removes them, add a
+    matching <assembly> entry (or [Preserve]/link.xml) for that user assembly too.
+  -->
+  <assembly fullname="DInject" preserve="all"/>
+  <!--
+    Reflection-free readonly-field writer used by generated setters (DInject.Internal.UnsafeRef.As,
+    body: ldarg.0; ret). It is statically called from generated code so it is normally reachable, but
+    preserve it explicitly so managed stripping can never drop it (a missing writer would silently
+    leave readonly [Inject] fields null in the player).
+  -->
+  <assembly fullname="DInject.Unsafe" preserve="all"/>
+</linker>

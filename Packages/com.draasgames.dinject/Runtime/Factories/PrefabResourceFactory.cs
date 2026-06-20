@@ -9,7 +9,7 @@ namespace DInject
     // rather than from within the installers
 
     //No parameters
-    public class PrefabResourceFactory<T> : IFactory<string, T>
+    public partial class PrefabResourceFactory<T> : IFactory<string, T>
         //where T : Component
     {
         [Inject]
@@ -35,7 +35,7 @@ namespace DInject
     }
 
     // One parameter
-    public class PrefabResourceFactory<P1, T> : IFactory<string, P1, T>
+    public partial class PrefabResourceFactory<P1, T> : IFactory<string, P1, T>
         //where T : Component
     {
         [Inject]
@@ -58,7 +58,7 @@ namespace DInject
     }
 
     // Two parameters
-    public class PrefabResourceFactory<P1, P2, T> : IFactory<string, P1, P2, T>
+    public partial class PrefabResourceFactory<P1, P2, T> : IFactory<string, P1, P2, T>
         //where T : Component
     {
         [Inject]
@@ -82,7 +82,7 @@ namespace DInject
     }
 
     // Three parameters
-    public class PrefabResourceFactory<P1, P2, P3, T> : IFactory<string, P1, P2, P3, T>
+    public partial class PrefabResourceFactory<P1, P2, P3, T> : IFactory<string, P1, P2, P3, T>
         //where T : Component
     {
         [Inject]
@@ -106,7 +106,7 @@ namespace DInject
     }
 
     // Four parameters
-    public class PrefabResourceFactory<P1, P2, P3, P4, T> : IFactory<string, P1, P2, P3, P4, T>
+    public partial class PrefabResourceFactory<P1, P2, P3, P4, T> : IFactory<string, P1, P2, P3, P4, T>
         //where T : Component
     {
         [Inject]

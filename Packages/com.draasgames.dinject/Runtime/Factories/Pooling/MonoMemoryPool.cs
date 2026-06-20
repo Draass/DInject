@@ -5,7 +5,7 @@ namespace DInject
     // Zero parameters
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TValue> : MemoryPool<TValue>
+    public partial class MonoMemoryPool<TValue> : MemoryPool<TValue>
         where TValue : Component
     {
         Transform _originalParent;
@@ -46,7 +46,7 @@ namespace DInject
     // One parameter
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TParam1, TValue> : MemoryPool<TParam1, TValue>
+    public partial class MonoMemoryPool<TParam1, TValue> : MemoryPool<TParam1, TValue>
         where TValue : Component
     {
         Transform _originalParent;
@@ -87,7 +87,7 @@ namespace DInject
     // Two parameters
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TParam1, TParam2, TValue>
+    public partial class MonoMemoryPool<TParam1, TParam2, TValue>
         : MemoryPool<TParam1, TParam2, TValue>
         where TValue : Component
     {
@@ -129,7 +129,7 @@ namespace DInject
     // Three parameters
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TParam1, TParam2, TParam3, TValue>
+    public partial class MonoMemoryPool<TParam1, TParam2, TParam3, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TValue>
         where TValue : Component
     {
@@ -171,7 +171,7 @@ namespace DInject
     // Four parameters
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
+    public partial class MonoMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
         where TValue : Component
     {
@@ -213,7 +213,7 @@ namespace DInject
     // Five parameters
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
+    public partial class MonoMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         where TValue : Component
     {

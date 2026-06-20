@@ -86,7 +86,7 @@ namespace DInject
     /// A modified version of PoolableManager that adds a generic argument, allowing
     /// the passing of a parameter to all IPoolable<T> objects in the container.
     /// </summary>
-    public class PoolableManager<T>
+    public partial class PoolableManager<T>
     {
         readonly List<IPoolable<T>> _poolables;
 
@@ -166,7 +166,7 @@ namespace DInject
     /// A modified version of PoolableManager that adds a generic argument, allowing
     /// the passing of a parameter to all IPoolable<T1, T2> objects in the container.
     /// </summary>
-    public class PoolableManager<T1, T2>
+    public partial class PoolableManager<T1, T2>
     {
         readonly List<IPoolable<T1, T2>> _poolables;
 
@@ -246,7 +246,7 @@ namespace DInject
     /// A modified version of PoolableManager that adds a generic argument, allowing
     /// the passing of a parameter to all IPoolable<T1, T2> objects in the container.
     /// </summary>
-    public class PoolableManager<T1, T2, T3>
+    public partial class PoolableManager<T1, T2, T3>
     {
         readonly List<IPoolable<T1, T2, T3>> _poolables;
 
@@ -326,7 +326,7 @@ namespace DInject
     /// A modified version of PoolableManager that adds a generic argument, allowing
     /// the passing of a parameter to all IPoolable<T1, T2> objects in the container.
     /// </summary>
-    public class PoolableManager<T1, T2, T3, T4>
+    public partial class PoolableManager<T1, T2, T3, T4>
     {
         readonly List<IPoolable<T1, T2, T3, T4>> _poolables;
 
@@ -407,7 +407,7 @@ namespace DInject
     /// A modified version of PoolableManager that adds a generic argument, allowing
     /// the passing of a parameter to all IPoolable<T1, T2> objects in the container.
     /// </summary>
-    public class PoolableManager<T1, T2, T3, T4, T5>
+    public partial class PoolableManager<T1, T2, T3, T4, T5>
     {
         readonly List<IPoolable<T1, T2, T3, T4, T5>> _poolables;
 

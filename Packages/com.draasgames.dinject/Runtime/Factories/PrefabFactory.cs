@@ -9,7 +9,7 @@ namespace DInject
     // rather than from within the installers
 
     //No parameters
-    public class PrefabFactory<T> : IFactory<UnityEngine.Object, T>
+    public partial class PrefabFactory<T> : IFactory<UnityEngine.Object, T>
         //where T : Component
     {
         [Inject]
@@ -34,7 +34,7 @@ namespace DInject
     }
 
     // One parameter
-    public class PrefabFactory<P1, T> : IFactory<UnityEngine.Object, P1, T>
+    public partial class PrefabFactory<P1, T> : IFactory<UnityEngine.Object, P1, T>
         //where T : Component
     {
         [Inject]
@@ -56,7 +56,7 @@ namespace DInject
     }
 
     // Two parameters
-    public class PrefabFactory<P1, P2, T> : IFactory<UnityEngine.Object, P1, P2, T>
+    public partial class PrefabFactory<P1, P2, T> : IFactory<UnityEngine.Object, P1, P2, T>
         //where T : Component
     {
         [Inject]
@@ -78,7 +78,7 @@ namespace DInject
     }
 
     // Three parameters
-    public class PrefabFactory<P1, P2, P3, T> : IFactory<UnityEngine.Object, P1, P2, P3, T>
+    public partial class PrefabFactory<P1, P2, P3, T> : IFactory<UnityEngine.Object, P1, P2, P3, T>
         //where T : Component
     {
         [Inject]
@@ -100,7 +100,7 @@ namespace DInject
     }
 
     // Four parameters
-    public class PrefabFactory<P1, P2, P3, P4, T> : IFactory<UnityEngine.Object, P1, P2, P3, P4, T>
+    public partial class PrefabFactory<P1, P2, P3, P4, T> : IFactory<UnityEngine.Object, P1, P2, P3, P4, T>
         //where T : Component
     {
         [Inject]

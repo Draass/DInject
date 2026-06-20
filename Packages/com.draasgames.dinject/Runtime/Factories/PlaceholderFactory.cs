@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace DInject
 {
-    public class PlaceholderFactory< TValue> : PlaceholderFactoryBase<TValue>, IFactory< TValue>
+    public partial class PlaceholderFactory< TValue> : PlaceholderFactoryBase<TValue>, IFactory< TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -64,7 +64,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TValue>
+    public partial class PlaceholderFactory<TParam1, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -119,7 +119,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -177,7 +177,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -238,7 +238,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -302,7 +302,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -369,7 +369,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -439,7 +439,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -512,7 +512,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -588,7 +588,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic
@@ -667,7 +667,7 @@ namespace DInject
         }
     }
 
-    public class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>
+    public partial class PlaceholderFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue> : PlaceholderFactoryBase<TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10, TValue>
     {
         // Note: Most of the time you should not override this method and should instead
         // use BindFactory<>.FromIFactory if you want to do some custom logic

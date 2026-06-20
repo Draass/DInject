@@ -76,12 +76,19 @@ namespace DInject.CodeGen
             var component = comp.GetTypeByMetadataName("UnityEngine.Component");
             var ctxAttrs = new AttrCtx(injectBase, injectOptional, injectLocal);
 
+            var typeParams = symbol.TypeParameters.Length == 0
+                ? ""
+                : "<" + string.Join(", ", symbol.TypeParameters.Select(tp => tp.Name)) + ">";
+
             var model = new TypeModel
             {
                 Fq = symbol.ToDisplayString(Fq),
                 Namespace = symbol.ContainingNamespace.IsGlobalNamespace ? null : symbol.ContainingNamespace.ToDisplayString(),
                 TypeName = symbol.Name,
-                HintName = symbol.ToDisplayString(Fq).Replace("global::", "").Replace('.', '_') + "_ZenInject.g.cs",
+                TypeParams = typeParams,
+                IsGeneric = symbol.IsGenericType,
+                HintName = symbol.ToDisplayString(Fq).Replace("global::", "").Replace('.', '_')
+                    .Replace("<", "_").Replace(">", "_").Replace(", ", "_").Replace(",", "_").Replace(" ", "") + "_ZenInject.g.cs",
             };
 
             // ---- Constructor / factory ----
@@ -139,16 +146,30 @@ namespace DInject.CodeGen
             foreach (var field in symbol.GetMembers().OfType<IFieldSymbol>()
                 .Where(f => !f.IsStatic && !f.IsConst && !f.IsImplicitlyDeclared && f.AssociatedSymbol == null))
             {
-                if (!HasInjectAttr(field, ctxAttrs) || field.IsReadOnly)
+                if (!HasInjectAttr(field, ctxAttrs))
                 {
-                    continue; // readonly inject fields deferred (reflection has a special path); v1 skips.
+                    continue;
                 }
 
                 string helperName = "__zenFieldSetter" + fieldIndex;
+                string fieldTypeFq = field.Type.ToDisplayString(Fq);
+                // A C# readonly field can't take a plain assignment outside a ctor. Write it
+                // reflection-free via a mutable ref obtained from DInject.Internal.UnsafeRef.As(in field)
+                // (DInject.Unsafe.dll, body: ldarg.0; ret). The ref-store (stind.ref) emits the GC write
+                // barrier, so this is GC-safe on Mono and IL2CPP. The setter is a member of the partial
+                // declaring type, so private fields are directly accessible; As() only defeats the
+                // readonly compile-time restriction. We use our own helper (not
+                // System.Runtime.CompilerServices.Unsafe) so the package bundles it with no risk of a
+                // duplicate-Unsafe conflict in consumer projects. Matches the reflection path
+                // (FieldInfo.SetValue, which also writes initonly fields). Non-readonly fields keep the
+                // plain assignment.
+                string fieldLhs = field.IsReadOnly
+                    ? "global::DInject.Internal.UnsafeRef.As(in ((" + model.Fq + ")P_0)." + field.Name + ")"
+                    : "((" + model.Fq + ")P_0)." + field.Name;
                 model.Helpers.Add(
                     "    private static void " + helperName + "(object P_0, object P_1)\n" +
                     "    {\n" +
-                    "        ((" + model.Fq + ")P_0)." + field.Name + " = (" + field.Type.ToDisplayString(Fq) + ")P_1;\n" +
+                    "        " + fieldLhs + " = (" + fieldTypeFq + ")P_1;\n" +
                     "    }");
                 model.MemberInfos.Add(
                     "new global::DInject.InjectTypeInfo.InjectMemberInfo(new global::DInject.ZenMemberSetterMethod(" + helperName + "), " +
@@ -186,7 +207,8 @@ namespace DInject.CodeGen
         {
             if (t.TypeKind != TypeKind.Class) return true;
             if (t.IsStatic) return true;
-            if (t.IsGenericType) return true;                 // open generic; v1 limitation.
+            // Open generics ARE supported: the getter is emitted on the open generic partial type and
+            // found per closed instantiation via the GetMethod probe (the registry can't hold open generics).
             if (t.ContainingType != null) return true;        // nested; v1 limitation.
             if (t.IsImplicitlyDeclared) return true;
             var ns = t.ContainingNamespace?.ToDisplayString();
@@ -344,7 +366,7 @@ namespace DInject.CodeGen
                 sb.Append("namespace ").Append(m.Namespace).Append("\n{\n");
             }
 
-            sb.Append(indent).Append("partial class ").Append(m.TypeName).Append("\n").Append(indent).Append("{\n");
+            sb.Append(indent).Append("partial class ").Append(m.TypeName).Append(m.TypeParams).Append("\n").Append(indent).Append("{\n");
 
             if (m.FactoryBody != null)
             {
@@ -397,7 +419,9 @@ namespace DInject.CodeGen
 
         static string EmitRegistry(ImmutableArray<TypeModel> models, string assemblyName)
         {
-            var valid = models.Where(m => m != null).ToList();
+            // Open generics cannot be registered (typeof(Foo<T>) is invalid outside a generic context);
+            // they are resolved per closed instantiation via the GetMethod probe instead.
+            var valid = models.Where(m => m != null && !m.IsGeneric).ToList();
             if (valid.Count == 0)
             {
                 return null;
@@ -440,6 +464,8 @@ namespace DInject.CodeGen
             public string Fq;
             public string Namespace;
             public string TypeName;
+            public string TypeParams = "";
+            public bool IsGeneric;
             public string HintName;
             public string FactoryBody;
             public string FactoryRef = "null";

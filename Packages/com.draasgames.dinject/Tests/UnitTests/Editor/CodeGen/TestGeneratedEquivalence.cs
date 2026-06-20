@@ -76,8 +76,24 @@ namespace DInject.Tests.CodeGen
         [TestCase(typeof(ProjectKernel))]
         [TestCase(typeof(SceneKernel))]
         [TestCase(typeof(DefaultGameObjectKernel))]
-        // Readonly-fix probe: TickableManager's 6 [Inject] fields were made non-readonly so the generator covers them.
+        // Readonly [Inject] field: generator writes it via Unsafe.AsRef; TickableManager has 6 such fields
+        // (readonly [Inject], kept readonly). Both must produce metadata identical to the reflection oracle.
+        [TestCase(typeof(CorpusReadonlyFieldInject))]
         [TestCase(typeof(TickableManager))]
+        // Closed instantiations of the framework's open-generic types (made partial in the generic rollout).
+        // The getter is emitted on the OPEN generic in the DInject runtime assembly; for a closed type it is
+        // resolved per-instantiation via GetMethod (the same probe TypeAnalyzer uses at runtime), NOT the
+        // registry. This validates the cross-assembly closed-generic path differs nowhere from reflection:
+        //   - MemoryPool<T>: generic factory, no own inject members (Construct lives on MemoryPoolBase<T>).
+        //   - MemoryPoolBase<T>: generic factory + [Inject] Construct whose param IFactory<TContract> is
+        //     generic-typed (closed to IFactory<CorpusGreeter>) plus an [InjectOptional] param.
+        //   - PlaceholderFactory<T>: derives from an abstract open-generic base; factory + no own members.
+        //   - PoolableManager<T>: generic ctor-factory with an [InjectLocal] List<IPoolable<T>> and an
+        //     [Inject(Optional, Local)] param - exercises generic-collection + InjectLocal + optional on a closed generic.
+        [TestCase(typeof(MemoryPool<CorpusGreeter>))]
+        [TestCase(typeof(MemoryPoolBase<CorpusGreeter>))]
+        [TestCase(typeof(PlaceholderFactory<CorpusGreeter>))]
+        [TestCase(typeof(PoolableManager<CorpusGreeter>))]
         public void GeneratedMatchesReflection(Type type)
         {
             var generated = GetGenerated(type);

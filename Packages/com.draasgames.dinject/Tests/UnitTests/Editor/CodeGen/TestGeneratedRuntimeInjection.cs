@@ -55,6 +55,43 @@ namespace DInject.Tests.CodeGen
             }
         }
 
+        // Proves the generated setter actually WRITES a readonly [Inject] field with reflection off.
+        // Metadata equivalence (M3) only checks the InjectableInfo; this confirms the Unsafe.AsRef(in ...)
+        // setter stores the value into the readonly field's storage (the categorically-required feature).
+        [Test]
+        public void InjectsReadonlyFieldWithReflectionOff()
+        {
+            if (!GeneratorActive())
+            {
+                Assert.Ignore("DInject generator not active - import DInject.CodeGen.dll with the RoslynAnalyzer label.");
+            }
+
+            var previousMode = TypeAnalyzer.ReflectionBakingCoverageMode;
+            try
+            {
+                TypeAnalyzer.ClearTypeInfoCache();
+                TypeAnalyzer.ReflectionBakingCoverageMode =
+                    ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
+
+                var leaf = new CorpusSimpleService();
+                Container.Bind<CorpusSimpleService>().FromInstance(leaf);
+
+                var target = new CorpusReadonlyFieldInject();
+                Assert.IsNull(target.RoDep, "readonly field starts unset");
+
+                // Injected via the GENERATED Unsafe.AsRef setter (reflection off).
+                Container.Inject(target);
+
+                Assert.IsNotNull(target.RoDep, "readonly [Inject] field was written by the generated setter");
+                Assert.AreSame(leaf, target.RoDep, "readonly field holds the exact resolved instance");
+            }
+            finally
+            {
+                TypeAnalyzer.ReflectionBakingCoverageMode = previousMode;
+                TypeAnalyzer.ClearTypeInfoCache();
+            }
+        }
+
         // Proves base + derived members are both injected with reflection off: each type's generated
         // getter is declared-only, and TypeAnalyzer stitches BaseTypeInfo from the base's generated getter.
         [Test]

@@ -14,7 +14,7 @@ using Task = System.Threading.Tasks.Task;
 namespace DInject
 {
     [ZenjectAllowDuringValidation]
-    public class MemoryPoolBaseAsync<TContract> : IValidatable, IMemoryPool, IDisposable
+    public partial class MemoryPoolBaseAsync<TContract> : IValidatable, IMemoryPool, IDisposable
     {
         Stack<TContract> _inactiveItems;
         IFactory<TContract> _factory;

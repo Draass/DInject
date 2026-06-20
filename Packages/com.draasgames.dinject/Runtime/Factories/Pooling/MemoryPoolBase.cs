@@ -39,7 +39,7 @@ namespace DInject
     }
 
     [ZenjectAllowDuringValidation]
-    public class MemoryPoolBase<TContract> : IValidatable, IMemoryPool, IDisposable
+    public partial class MemoryPoolBase<TContract> : IValidatable, IMemoryPool, IDisposable
     {
         Stack<TContract> _inactiveItems;
         IFactory<TContract> _factory;

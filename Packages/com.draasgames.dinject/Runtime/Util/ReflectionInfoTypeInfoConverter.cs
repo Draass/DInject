@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 //#define ZEN_DO_NOT_USE_COMPILED_EXPRESSIONS
 
 using System;
@@ -275,3 +276,4 @@ namespace DInject.Internal
         }
     }
 }
+#endif

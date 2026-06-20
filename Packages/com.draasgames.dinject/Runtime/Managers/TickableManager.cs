@@ -12,22 +12,22 @@ namespace DInject
     public partial class TickableManager
     {
         [Inject(Optional = true, Source = InjectSources.Local)]
-        List<ITickable> _tickables = null;
+        readonly List<ITickable> _tickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        List<IFixedTickable> _fixedTickables = null;
+        readonly List<IFixedTickable> _fixedTickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        List<ILateTickable> _lateTickables = null;
+        readonly List<ILateTickable> _lateTickables = null;
 
         [Inject(Optional = true, Source = InjectSources.Local)]
-        List<ValuePair<Type, int>> _priorities = null;
+        readonly List<ValuePair<Type, int>> _priorities = null;
 
         [Inject(Optional = true, Id = "Fixed", Source = InjectSources.Local)]
-        List<ValuePair<Type, int>> _fixedPriorities = null;
+        readonly List<ValuePair<Type, int>> _fixedPriorities = null;
 
         [Inject(Optional = true, Id = "Late", Source = InjectSources.Local)]
-        List<ValuePair<Type, int>> _latePriorities = null;
+        readonly List<ValuePair<Type, int>> _latePriorities = null;
 
 #if ZEN_SIGNALS_ADD_UNIRX
         readonly Subject<Unit> _tickStream = new Subject<Unit>();

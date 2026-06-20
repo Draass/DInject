@@ -7,7 +7,7 @@ namespace DInject
 {
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TValue>
+    public partial class MonoMemoryPoolAsync<TValue>
         : MemoryPoolAsync<TValue>
         where TValue : Component
     {
@@ -48,7 +48,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1,TValue>
         : MemoryPoolAsync<TParam1,TValue>
         where TValue : Component
     {
@@ -89,7 +89,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2,TValue>
         : MemoryPoolAsync<TParam1, TParam2,TValue>
         where TValue : Component
     {
@@ -130,7 +130,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3,TValue>
         where TValue : Component
     {
@@ -171,7 +171,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4,TValue>
         where TValue : Component
     {
@@ -212,7 +212,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5,TValue>
         where TValue : Component
     {
@@ -253,7 +253,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6,TValue>
         where TValue : Component
     {
@@ -294,7 +294,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7,TValue>
         where TValue : Component
     {
@@ -335,7 +335,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8,TValue>
         where TValue : Component
     {
@@ -376,7 +376,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9,TValue>
         where TValue : Component
     {
@@ -417,7 +417,7 @@ namespace DInject
 
     // NOTE: For this to work, the given component must be at the root game object of the thing
     // you want to use in a pool
-    public class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10,TValue>
+    public partial class MonoMemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10,TValue>
         : MemoryPoolAsync<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TParam9, TParam10,TValue>
         where TValue : Component
     {

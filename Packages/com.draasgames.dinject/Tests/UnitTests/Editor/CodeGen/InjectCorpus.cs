@@ -82,6 +82,14 @@ namespace DInject.Tests.CodeGen
         [Inject] public CorpusSimpleService Prop { get; private set; }
     }
 
+    // Readonly [Inject] field: the generator writes it reflection-free via Unsafe.AsRef(in ...)
+    // (a plain assignment can't target a readonly field). Matches the reflection path, which sets
+    // initonly fields via FieldInfo.SetValue. The runtime test proves the value is actually written.
+    public partial class CorpusReadonlyFieldInject
+    {
+        [Inject] public readonly CorpusSimpleService RoDep;
+    }
+
     public partial class CorpusMethodInject
     {
         public CorpusSimpleService Got;

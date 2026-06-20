@@ -17,7 +17,7 @@ namespace DInject
     }
 
     // Placeholder factories can be used to choose a creation method in an installer, using FactoryBinder
-    public abstract class PlaceholderFactoryBase<TValue> : IPlaceholderFactory
+    public abstract partial class PlaceholderFactoryBase<TValue> : IPlaceholderFactory
     {
         IProvider _provider;
         InjectContext _injectContext;

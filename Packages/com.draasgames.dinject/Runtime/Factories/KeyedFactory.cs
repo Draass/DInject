@@ -6,7 +6,7 @@ using DInject.Internal.Util;
 
 namespace DInject
 {
-    public abstract class KeyedFactoryBase<TBase, TKey> : IValidatable
+    public abstract partial class KeyedFactoryBase<TBase, TKey> : IValidatable
     {
         [Inject]
         readonly DiContainer _container = null;
@@ -95,7 +95,7 @@ namespace DInject
     }
 
     // Zero parameters
-    public class KeyedFactory<TBase, TKey> : KeyedFactoryBase<TBase, TKey>
+    public partial class KeyedFactory<TBase, TKey> : KeyedFactoryBase<TBase, TKey>
     {
         protected override IEnumerable<Type> ProvidedTypes
         {
@@ -110,7 +110,7 @@ namespace DInject
     }
 
     // One parameter
-    public class KeyedFactory<TBase, TKey, TParam1> : KeyedFactoryBase<TBase, TKey>
+    public partial class KeyedFactory<TBase, TKey, TParam1> : KeyedFactoryBase<TBase, TKey>
     {
         protected override IEnumerable<Type> ProvidedTypes
         {
@@ -129,7 +129,7 @@ namespace DInject
     }
 
     // Two parameters
-    public class KeyedFactory<TBase, TKey, TParam1, TParam2> : KeyedFactoryBase<TBase, TKey>
+    public partial class KeyedFactory<TBase, TKey, TParam1, TParam2> : KeyedFactoryBase<TBase, TKey>
     {
         protected override IEnumerable<Type> ProvidedTypes
         {
@@ -149,7 +149,7 @@ namespace DInject
     }
 
     // Three parameters
-    public class KeyedFactory<TBase, TKey, TParam1, TParam2, TParam3> : KeyedFactoryBase<TBase, TKey>
+    public partial class KeyedFactory<TBase, TKey, TParam1, TParam2, TParam3> : KeyedFactoryBase<TBase, TKey>
     {
         protected override IEnumerable<Type> ProvidedTypes
         {
@@ -170,7 +170,7 @@ namespace DInject
     }
 
     // Four parameters
-    public class KeyedFactory<TBase, TKey, TParam1, TParam2, TParam3, TParam4> : KeyedFactoryBase<TBase, TKey>
+    public partial class KeyedFactory<TBase, TKey, TParam1, TParam2, TParam3, TParam4> : KeyedFactoryBase<TBase, TKey>
     {
         protected override IEnumerable<Type> ProvidedTypes
         {

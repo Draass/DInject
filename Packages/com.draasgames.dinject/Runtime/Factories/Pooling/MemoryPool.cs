@@ -1,7 +1,7 @@
 namespace DInject
 {
     // Zero parameters
-    public class MemoryPool<TValue> : MemoryPoolBase<TValue>, IMemoryPool<TValue>, IFactory<TValue>
+    public partial class MemoryPool<TValue> : MemoryPoolBase<TValue>, IMemoryPool<TValue>, IFactory<TValue>
     {
         public TValue Spawn()
         {
@@ -34,7 +34,7 @@ namespace DInject
     }
 
     // One parameter
-    public class MemoryPool<TParam1, TValue>
+    public partial class MemoryPool<TParam1, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TValue>, IFactory<TParam1, TValue>
     {
         public virtual TValue Spawn(TParam1 param)
@@ -69,7 +69,7 @@ namespace DInject
     }
 
     // Two parameters
-    public class MemoryPool<TParam1, TParam2, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TValue>, IFactory<TParam1, TParam2, TValue>
     {
         public virtual TValue Spawn(TParam1 param1, TParam2 param2)
@@ -104,7 +104,7 @@ namespace DInject
     }
 
     // Three parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TValue>, IFactory<TParam1, TParam2, TParam3, TValue>
     {
         public virtual TValue Spawn(TParam1 param1, TParam2 param2, TParam3 param3)
@@ -138,7 +138,7 @@ namespace DInject
     }
 
     // Four parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TValue>
     {
         public virtual TValue Spawn(TParam1 param1, TParam2 param2, TParam3 param3, TParam4 param4)
@@ -172,7 +172,7 @@ namespace DInject
     }
 
     // Five parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>, IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
     {
         public virtual TValue Spawn(
@@ -206,7 +206,7 @@ namespace DInject
     }
 
     // Six parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>,
         IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
     {
@@ -242,7 +242,7 @@ namespace DInject
     }
 
     // Seven parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>,
         IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
     {
@@ -278,7 +278,7 @@ namespace DInject
     }
 
     // Eight parameters
-    public class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
+    public partial class MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
         : MemoryPoolBase<TValue>, IMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>,
         IFactory<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
     {

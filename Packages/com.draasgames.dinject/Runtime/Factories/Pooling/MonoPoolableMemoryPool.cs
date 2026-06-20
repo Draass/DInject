@@ -3,7 +3,7 @@ using UnityEngine;
 namespace DInject
 {
     // Zero parameters
-    public class MonoPoolableMemoryPool<TValue> : MemoryPool<TValue>
+    public partial class MonoPoolableMemoryPool<TValue> : MemoryPool<TValue>
         where TValue : Component, IPoolable
     {
         Transform _originalParent;
@@ -43,7 +43,7 @@ namespace DInject
     }
 
     // One parameters
-    public class MonoPoolableMemoryPool<TParam1, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TValue>
         : MemoryPool<TParam1, TValue>
         where TValue : Component, IPoolable<TParam1>
     {
@@ -84,7 +84,7 @@ namespace DInject
     }
 
     // Two parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TValue>
         : MemoryPool<TParam1, TParam2, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2>
     {
@@ -125,7 +125,7 @@ namespace DInject
     }
 
     // Three parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3>
     {
@@ -166,7 +166,7 @@ namespace DInject
     }
 
     // Four parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3, TParam4>
     {
@@ -207,7 +207,7 @@ namespace DInject
     }
 
     // Five parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3, TParam4, TParam5>
     {
@@ -248,7 +248,7 @@ namespace DInject
     }
 
     // Six parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6>
     {
@@ -289,7 +289,7 @@ namespace DInject
     }
 
     // Seven parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7>
     {
@@ -330,7 +330,7 @@ namespace DInject
     }
 
     // Eight parameters
-    public class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
+    public partial class MonoPoolableMemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
         : MemoryPool<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8, TValue>
         where TValue : Component, IPoolable<TParam1, TParam2, TParam3, TParam4, TParam5, TParam6, TParam7, TParam8>
     {

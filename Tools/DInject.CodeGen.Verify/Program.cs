@@ -96,6 +96,17 @@ namespace UnityEngine
     public class Behaviour : Component { }
     public class MonoBehaviour : Behaviour { }
 }
+
+namespace DInject.Internal
+{
+    // Stub of the package's shipped DInject.Unsafe.dll helper (DInject.Internal.UnsafeRef.As<T>(in T)
+    // -> ref T, body ldarg.0; ret). The generated readonly-field setter binds to this, so the harness
+    // validates the same call shape Unity uses. The real DLL is built by Tools/DInject.Unsafe(+.Build).
+    public static class UnsafeRef
+    {
+        public static ref T As<T>(in T source) { throw new System.NotImplementedException(); }
+    }
+}
 ";
 
     private const string Corpus = @"
@@ -113,6 +124,15 @@ namespace Game
     {
         [DInject.Inject] public SimpleService Field;
         [DInject.Inject] public SimpleService Prop { get; private set; }
+    }
+
+    // Readonly [Inject] field: the generated setter cannot use a plain assignment (C# forbids it
+    // outside a ctor), so it must write the field reflection-free via Unsafe.AsRef(in ...). Matches
+    // the reflection path (FieldInfo.SetValue writes initonly fields) instead of silently skipping
+    // the field (which would leave it null -> NRE under codegen-only).
+    public partial class ReadonlyFieldInject
+    {
+        [DInject.Inject] public readonly SimpleService RoDep;
     }
 
     public partial class MethodInject
@@ -152,6 +172,15 @@ namespace Game
     public partial class DerivedInject : BaseInject
     {
         [DInject.Inject] public SimpleService DerivedDep;
+    }
+
+    // Open generic: getter emitted on the open type, found per closed instantiation via the GetMethod
+    // probe. Exercises generic factory + a generic-typed ([TValue]) inject-method parameter.
+    public partial class GenericPool<TValue>
+    {
+        public TValue Item;
+        [DInject.Inject] public GenericPool(SimpleService dep) { }
+        [DInject.Inject] public void SetUp(TValue v) { Item = v; }
     }
 }
 ";
@@ -203,8 +232,8 @@ namespace Game
         void Expect(bool cond, string msg) { if (!cond) failures.Add("expectation failed: " + msg); }
 
         int factories = Count(all, "private static object __zenCreate(");
-        Expect(factories == 8, "expected 8 factories (all but the Component MonoLike), got " + factories);
-        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 9, "expected 9 getters");
+        Expect(factories == 10, "expected 10 factories (all but the Component MonoLike), got " + factories);
+        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 11, "expected 11 getters");
         Expect(all.Contains("new global::Game.CtorInject((global::Game.SimpleService)P_0[0])"), "CtorInject factory arg cast");
 
         var monoSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class MonoLike"));
@@ -231,7 +260,34 @@ namespace Game
         Expect(derivedSrc != null && derivedSrc.Contains("\"DerivedDep\"") && !derivedSrc.Contains("BaseDep"),
             "DerivedInject must emit only its declared member, not the inherited BaseDep");
 
-        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 9, "expected 9 registry entries");
+        // Readonly [Inject] field: written reflection-free via Unsafe.AsRef(in ...) (a plain assignment
+        // would not compile for a readonly field); the field still emits a setter + member metadata.
+        var roSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class ReadonlyFieldInject"));
+        Expect(roSrc != null && roSrc.Contains(
+            "global::DInject.Internal.UnsafeRef.As(in ((global::Game.ReadonlyFieldInject)P_0).RoDep) = (global::Game.SimpleService)P_1;"),
+            "readonly [Inject] field must be written via DInject.Internal.UnsafeRef.As(in ...)");
+        Expect(roSrc != null && roSrc.Contains("private static void __zenFieldSetter0("),
+            "readonly [Inject] field must still emit a __zenFieldSetter helper");
+        // Mutable [Inject] field keeps the plain assignment (must NOT route through the ref helper).
+        var fpSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class FieldAndProp"));
+        Expect(fpSrc != null && fpSrc.Contains("((global::Game.FieldAndProp)P_0).Field = (global::Game.SimpleService)P_1;")
+            && !fpSrc.Contains("UnsafeRef.As"),
+            "mutable [Inject] field must keep plain assignment (no ref helper)");
+
+        // Open generic: getter emitted on the open type WITH type params; factory/setters use the open
+        // generic; resolved per closed instantiation via the GetMethod probe, so NOT registered.
+        var genSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class GenericPool"));
+        Expect(genSrc != null && genSrc.Contains("partial class GenericPool<TValue>"),
+            "GenericPool must emit its type parameters in the partial declaration");
+        Expect(genSrc != null && genSrc.Contains("new global::Game.GenericPool<TValue>((global::Game.SimpleService)P_0[0])"),
+            "GenericPool factory must construct the open generic");
+        Expect(genSrc != null && genSrc.Contains("(global::Game.GenericPool<TValue>)P_0).SetUp((TValue)P_1[0])"),
+            "GenericPool inject-method must cast the generic-typed (TValue) parameter");
+        Expect(!all.Contains("RegisterGeneratedGetter(typeof(global::Game.GenericPool"),
+            "open generic GenericPool must NOT be registered (resolved via GetMethod probe)");
+
+        // 10 non-generic corpus types are registered; the open generic GenericPool is excluded.
+        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 10, "expected 10 registry entries");
         Expect(all.Contains("global::DInject.InjectSources.Any"), "Any source present");
 
         if (failures.Count == 0)
