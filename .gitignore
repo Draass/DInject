@@ -1,0 +1,29 @@
+# Unity
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Ll]ogs/
+[Uu]serSettings/
+[Mm]emoryCaptures/
+[Rr]ecordings/
+/[Bb]uild/
+/[Bb]uilds/
+
+# Unity-generated solution/project files (the kept ones live under Tools/)
+/*.sln
+/*.csproj
+*.unityproj
+
+# .NET build output (Tools/)
+[Bb]in/
+
+# IDE
+.vs/
+.idea/
+.vsconfig
+*.user
+*.userprefs
+
+# OS
+.DS_Store
+Thumbs.db

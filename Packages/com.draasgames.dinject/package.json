@@ -1,0 +1,33 @@
+{
+  "name": "com.draasgames.dinject",
+  "displayName": "DInject",
+  "version": "0.1.0",
+  "description": "Code-generation based Dependency Injection framework for Unity. A codegen rewrite of Extenject/Zenject: the same bind DSL, with inject metadata produced by a Roslyn source generator instead of runtime reflection or IL weaving.",
+  "unity": "2021.3",
+  "license": "MIT",
+  "keywords": [
+    "dependency injection",
+    "di",
+    "ioc",
+    "zenject",
+    "extenject",
+    "codegen",
+    "source generator"
+  ],
+  "author": {
+    "name": "draasgames"
+  },
+  "dependencies": {},
+  "samples": [
+    {
+      "displayName": "Sample Game 1 (Beginner)",
+      "description": "",
+      "path": "Samples~/SampleGame1 (Beginner)"
+    },
+    {
+      "displayName": "Sample Game 2 (Advanced)",
+      "description": "",
+      "path": "Samples~/SampleGame2 (Advanced)"
+    }
+  ]
+}
