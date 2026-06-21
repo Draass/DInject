@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Tiny self-contained ref-helper shipped INSIDE the DInject package (Runtime/Plugins/DInject.Unsafe.dll).
+    Roslyn compiles the correct `in T` -> `ref T` signature; the build script then rewrites the method
+    body to `ldarg.0; ret` via Cecil (DInject.Unsafe.Build) - laundering a readonly reference into a
+    writable one, which is not expressible in C#. This lets generated setters write readonly [Inject]
+    fields reflection-free WITHOUT depending on System.Runtime.CompilerServices.Unsafe (whose fixed
+    type name conflicts when multiple copies land in a consumer project). Our type name is unique, so
+    bundling it in the package can never collide. netstandard2.0 so Unity (Mono + IL2CPP) loads it.
+  -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DInject.Unsafe</AssemblyName>
+    <RootNamespace>DInject.Internal</RootNamespace>
+    <Deterministic>true</Deterministic>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+  </PropertyGroup>
+
+</Project>

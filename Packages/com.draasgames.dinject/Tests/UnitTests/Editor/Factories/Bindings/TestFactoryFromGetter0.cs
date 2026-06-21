@@ -1,0 +1,41 @@
+using NUnit.Framework;
+using Assert = DInject.Internal.Assert;
+
+namespace DInject.Tests.Bindings
+{
+    [TestFixture]
+    public partial class TestFactoryFromGetter0 : ZenjectUnitTestFixture
+    {
+        [Test]
+        public void TestSelf()
+        {
+            Container.Bind<Foo>().AsSingle().NonLazy();
+            Container.BindFactory<Bar, Bar.Factory>().FromResolveGetter<Foo>(x => x.Bar).NonLazy();
+
+            Assert.IsNotNull(Container.Resolve<Bar.Factory>().Create());
+            Assert.IsEqual(Container.Resolve<Bar.Factory>().Create(), Container.Resolve<Foo>().Bar);
+        }
+
+        partial class Bar
+        {
+            public partial class Factory : PlaceholderFactory<Bar>
+            {
+            }
+        }
+
+        partial class Foo
+        {
+            public Foo()
+            {
+                Bar = new Bar();
+            }
+
+            public Bar Bar
+            {
+                get;
+                private set;
+            }
+        }
+    }
+}
+

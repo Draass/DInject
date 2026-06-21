@@ -1,0 +1,68 @@
+using NUnit.Framework;
+using Assert = DInject.Internal.Assert;
+
+namespace DInject.Tests.Conditions
+{
+    [TestFixture]
+    public partial class TestConditionsBasic : ZenjectUnitTestFixture
+    {
+        public interface IFoo
+        {
+        }
+
+        partial class Foo1 : IFoo
+        {
+        }
+
+        partial class Foo2 : IFoo
+        {
+        }
+
+        partial class Bar1
+        {
+            public IFoo Foo;
+
+            public Bar1(IFoo foo)
+            {
+                Foo = foo;
+            }
+        }
+
+        partial class Bar2
+        {
+            public IFoo Foo;
+
+            public Bar2(IFoo foo)
+            {
+                Foo = foo;
+            }
+        }
+
+        [Test]
+        public void Test1()
+        {
+            Container.Bind<Bar1>().AsSingle().NonLazy();
+            Container.Bind<Bar2>().AsSingle().NonLazy();
+            Container.Bind<IFoo>().To<Foo1>().AsSingle().NonLazy();
+            Container.Bind<IFoo>().To<Foo2>().AsSingle().WhenInjectedInto<Bar2>().NonLazy();
+
+            Assert.IsNotEqual(
+                Container.Resolve<Bar1>().Foo, Container.Resolve<Bar2>().Foo);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            Container.Bind<Bar1>().AsSingle().NonLazy();
+            Container.Bind<Bar2>().AsSingle().NonLazy();
+            Container.Bind<IFoo>().To<Foo1>().AsSingle().NonLazy();
+            Container.Bind<IFoo>().To<Foo2>().AsSingle().WhenNotInjectedInto<Bar1>().NonLazy();
+
+            Assert.IsNotEqual(
+                Container.Resolve<Bar1>().Foo, Container.Resolve<Bar2>().Foo);
+        }
+    }
+}
+
+
+

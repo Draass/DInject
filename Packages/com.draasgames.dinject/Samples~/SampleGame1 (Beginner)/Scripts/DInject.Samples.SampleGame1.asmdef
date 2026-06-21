@@ -1,0 +1,16 @@
+{
+    "name": "DInject.Samples.SampleGame1",
+    "rootNamespace": "DInject.Asteroids",
+    "references": [
+        "GUID:f084d190c00ec254ca9499dbe8725100"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

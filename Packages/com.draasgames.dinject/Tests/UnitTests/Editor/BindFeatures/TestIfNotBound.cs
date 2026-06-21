@@ -1,0 +1,41 @@
+using NUnit.Framework;
+using Assert = DInject.Internal.Assert;
+
+namespace DInject.Tests.BindFeatures
+{
+    [TestFixture]
+    public partial class TestIfNotBound : ZenjectUnitTestFixture
+    {
+        interface IFoo
+        {
+        }
+
+        public partial class Foo1 : IFoo
+        {
+        }
+
+        public partial class Foo2 : IFoo
+        {
+        }
+
+        [Test]
+        public void Test1()
+        {
+            Container.Bind<IFoo>().To<Foo1>().AsSingle();
+            Container.Bind<IFoo>().To<Foo2>().AsSingle();
+
+            Assert.IsEqual(Container.ResolveAll<IFoo>().Count, 2);
+        }
+
+        [Test]
+        public void Test2()
+        {
+            Container.Bind<IFoo>().To<Foo1>().AsSingle();
+            Container.Bind<IFoo>().To<Foo2>().AsSingle().IfNotBound();
+
+            Assert.IsEqual(Container.ResolveAll<IFoo>().Count, 1);
+            Assert.IsType<Foo1>(Container.Resolve<IFoo>());
+        }
+    }
+}
+

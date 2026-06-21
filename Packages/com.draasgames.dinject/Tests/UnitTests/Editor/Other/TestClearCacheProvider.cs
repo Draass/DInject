@@ -1,0 +1,47 @@
+using System.Linq;
+using NUnit.Framework;
+using Assert = DInject.Internal.Assert;
+
+namespace DInject.Tests.Other
+{
+    [TestFixture]
+    public partial class TestClearCacheProvider : ZenjectUnitTestFixture
+    {
+        public interface IFoo
+        {
+        }
+
+        public partial class Foo1 : IFoo
+        {
+        }
+
+        public partial class Foo2 : IFoo
+        {
+        }
+
+        // For issue https://github.com/modesttree/DInject/issues/441
+        [Test]
+        public void Test1()
+        {
+            Container.Bind<IFoo>().To<Foo1>().AsSingle();
+
+            Assert.That(Container.Resolve<IFoo>() is Foo1);
+
+            var context = new InjectContext(Container, typeof(IFoo));
+
+            var provider = Container.AllProviders.OfType<CachedProvider>()
+                .Where(x => x.GetInstanceType(context) == typeof(Foo1)).Single();
+
+            Assert.IsEqual(provider.NumInstances, 1);
+
+            provider.ClearCache();
+
+            Assert.IsEqual(provider.NumInstances, 0);
+
+            Container.Rebind<IFoo>().To<Foo2>().AsSingle();
+
+            Assert.That(Container.Resolve<IFoo>() is Foo2);
+        }
+    }
+}
+
