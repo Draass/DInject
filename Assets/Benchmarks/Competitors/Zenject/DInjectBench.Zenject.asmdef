@@ -1,0 +1,25 @@
+{
+    "name": "DInjectBench.Zenject",
+    "rootNamespace": "DInjectBench",
+    "references": [
+        "DInjectBench.Shared",
+        "Zenject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "HAS_ZENJECT"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.svermeulen.extenject",
+            "expression": "0.0.0",
+            "define": "HAS_ZENJECT"
+        }
+    ],
+    "noEngineReferences": false
+}

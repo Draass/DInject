@@ -1,0 +1,21 @@
+<!--
+  IL2CPP managed-stripping preservation for the benchmark.
+
+  Adapters are found by reflection (BenchAdapters scans the AppDomain) with no static reference, so
+  the IL2CPP stripper would remove them on a device build -> the runner would discover nothing. We
+  also preserve the reflection/expression-based container runtimes (Zenject, Reflex) so they don't
+  crash under stripping. VContainer (source-gen) and DInject (codegen) are AOT-safe and not listed.
+
+  If you remove a competitor package, delete its line here (an entry for a missing assembly only
+  warns, it does not fail the build).
+-->
+<linker>
+  <assembly fullname="DInjectBench.Shared" preserve="all"/>
+  <assembly fullname="DInjectBench.Runner" preserve="all"/>
+  <assembly fullname="DInjectBench.DInject" preserve="all"/>
+  <assembly fullname="DInjectBench.VContainer" preserve="all"/>
+  <assembly fullname="DInjectBench.Reflex" preserve="all"/>
+  <assembly fullname="DInjectBench.Zenject" preserve="all"/>
+  <assembly fullname="Zenject" preserve="all"/>
+  <assembly fullname="Reflex" preserve="all"/>
+</linker>

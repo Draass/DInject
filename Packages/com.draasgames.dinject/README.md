@@ -141,6 +141,37 @@ constructor and method injection, `PlaceholderFactory`, `FromComponentInNewPrefa
 execution order and a `ScriptableObject` settings installer. Import it via Package Manager → DInject →
 *Samples*. (The optional Signals subsystem the original used is replaced by a plain injected event hub.)
 
+## Performance
+
+> Preliminary — a **single run** on one machine: IL2CPP standalone player (Release), Unity 6000.4,
+> AMD Ryzen 5 5600. Reproduce on your own device with the benchmark harness in the development repo
+> (`Assets/Benchmarks`). Treat as directional until averaged over several runs.
+
+Resolving a small graph (a root with 4 dependencies, two of them one level deep — 7 objects), transient
+lifetime, measured **per resolve**. Time in microseconds; `alloc` = GC allocations per op.
+
+| Phase (per op) | DInject | Extenject | VContainer | Reflex |
+|---|--:|--:|--:|--:|
+| Container build (once / scene) | 41.6 µs | 46.8 µs | 19.8 µs | 15.5 µs |
+| First (cold) resolve | 21.6 µs | 25.4 µs | 3.8 µs | 3.1 µs |
+| Warm resolve, deep + wide | 14.7 µs · 21 alloc | 13.2 µs · 25 | 3.1 µs · 11 | 3.4 µs · 11 |
+| Warm resolve, single object | 1.50 µs · 3 | 1.85 µs · 4 | 0.39 µs · 2 | 0.51 µs · 2 |
+| Cached singleton (lookup only) | 0.51 µs · 0 | 0.53 µs · 0 | 0.088 µs · 0 | 0.087 µs · 0 |
+
+**vs Extenject** (the container DInject rewrites): codegen removes the reflection cold-start cost — DInject is
+faster on container build, first-resolve and single-object construction, with fewer allocations, and needs no
+`link.xml`/`[Preserve]` to resolve under IL2CPP. Warm steady-state of a deep graph is roughly even on IL2CPP,
+because both share the resolution pipeline inherited from Zenject and that pipeline — not construction —
+dominates the warm cost (the cached-singleton lookup is nearly identical: 0.51 vs 0.53 µs). On Mono/editor the
+codegen lead looks larger, but that overstates it — trust on-device numbers. (Extenject's own reflection
+*baking* is not an option here: its weaver is incompatible with Unity 6, so reflection is what Extenject
+actually runs on this version.)
+
+**vs VContainer / Reflex:** they are currently ~4–6× faster on resolve. The cause is **not** construction
+(DInject's generated factories are competitive) but the per-resolve container overhead — `InjectContext`
+allocation and lookups — inherited wholesale from Zenject. Shrinking that is the headline of the planned
+core rewrite below; the codegen foundation is what makes it tractable.
+
 ## What is next?
 
 DInject `0.1.0` is a functional core port, but it still has a lot to do. What is planned:

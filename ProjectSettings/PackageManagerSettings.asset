@@ -36,6 +36,9 @@ MonoBehaviour:
     m_Scopes:
     - com.ivanmurzak
     - extensions.unity
+    - com.svermeulen
+    - jp.hadashikick
+    - com.gustavopsantos
     m_IsDefault: 0
     m_Capabilities: 0
     m_ConfigSource: 4
@@ -48,7 +51,7 @@ MonoBehaviour:
     m_Modified: 0
     m_ErrorMessage: 
     m_UserModificationsEntityId:
-      m_Data: -982
+      m_Data: -922
     m_OriginalEntityId:
-      m_Data: -984
+      m_Data: -926
   m_LoadAssets: 0

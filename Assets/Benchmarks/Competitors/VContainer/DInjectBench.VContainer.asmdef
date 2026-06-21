@@ -1,0 +1,25 @@
+{
+    "name": "DInjectBench.VContainer",
+    "rootNamespace": "DInjectBench",
+    "references": [
+        "DInjectBench.Shared",
+        "VContainer"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "HAS_VCONTAINER"
+    ],
+    "versionDefines": [
+        {
+            "name": "jp.hadashikick.vcontainer",
+            "expression": "0.0.0",
+            "define": "HAS_VCONTAINER"
+        }
+    ],
+    "noEngineReferences": false
+}

@@ -1,0 +1,25 @@
+{
+    "name": "DInjectBench.Reflex",
+    "rootNamespace": "DInjectBench",
+    "references": [
+        "DInjectBench.Shared",
+        "Reflex"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "HAS_REFLEX"
+    ],
+    "versionDefines": [
+        {
+            "name": "com.gustavopsantos.reflex",
+            "expression": "0.0.0",
+            "define": "HAS_REFLEX"
+        }
+    ],
+    "noEngineReferences": false
+}

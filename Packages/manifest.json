@@ -24,7 +24,10 @@
     "com.unity.modules.uielements": "1.0.0",
     "com.unity.modules.unitywebrequest": "1.0.0",
     "com.unity.modules.unitywebrequestassetbundle": "1.0.0",
-    "com.ivanmurzak.unity.mcp": "0.81.0"
+    "com.ivanmurzak.unity.mcp": "0.81.0",
+    "com.svermeulen.extenject": "9.2.0-stcf3",
+    "jp.hadashikick.vcontainer": "1.18.0",
+    "com.gustavopsantos.reflex": "14.3.1"
   },
   "scopedRegistries": [
     {
@@ -32,7 +35,10 @@
       "url": "https://package.openupm.com",
       "scopes": [
         "com.ivanmurzak",
-        "extensions.unity"
+        "extensions.unity",
+        "com.svermeulen",
+        "jp.hadashikick",
+        "com.gustavopsantos"
       ]
     }
   ]

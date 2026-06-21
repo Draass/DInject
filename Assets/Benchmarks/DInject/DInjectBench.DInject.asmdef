@@ -1,0 +1,19 @@
+{
+    "name": "DInjectBench.DInject",
+    "rootNamespace": "DInjectBench",
+    "references": [
+        "DInjectBench.Shared",
+        "DInject"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "DInject.Unsafe.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
