@@ -23,4 +23,12 @@ Then copy the built `DInject.CodeGen.dll` into `Packages/com.draasgames.dinject/
 
 ## Status
 
-`0.1.0` — port in progress (see the staged port plan). DInject runtime is code-generation only; the weaver is removed; only minimal irreducible reflection remains.
+`0.1.0` — core port complete. DInject runtime is **code-generation only**: the Mono.Cecil weaver and the
+legacy reflection inject path are removed, and inject metadata is produced by the Roslyn generator. Only
+minimal irreducible reflection remains (a `GetMethod` probe for runtime-formed closed generics; convention
+binding still scans `Assembly.GetTypes()` — see the package README). Validated by a development standalone
+player build (compiles + runs). See [`Packages/com.draasgames.dinject/README.md`](Packages/com.draasgames.dinject/README.md)
+for usage and [`CHANGELOG`](Packages/com.draasgames.dinject/CHANGELOG.md) for details.
+
+Known red: a subset of the integration test suite is being driven codegen-only to flush out remaining
+coverage gaps.
