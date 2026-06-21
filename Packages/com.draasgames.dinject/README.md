@@ -143,34 +143,39 @@ execution order and a `ScriptableObject` settings installer. Import it via Packa
 
 ## Performance
 
-> Preliminary — a **single run** on one machine: IL2CPP standalone player (Release), Unity 6000.4,
-> AMD Ryzen 5 5600. Reproduce on your own device with the benchmark harness in the development repo
-> (`Assets/Benchmarks`). Treat as directional until averaged over several runs.
+> Preliminary — one run per config, IL2CPP standalone player (Release), Unity 6000.4, AMD Ryzen 5 5600.
+> Reproduce with the benchmark harness in the development repo (`Assets/Benchmarks`). Directional until
+> averaged over several runs.
 
-Resolving a small graph (a root with 4 dependencies, two of them one level deep — 7 objects), transient
-lifetime, measured **per resolve**. Time in microseconds; `alloc` = GC allocations per op.
+Resolving a small graph (a root with 4 dependencies, two of them one level deep — 7 objects), transient,
+measured **per resolve**. Time in µs; `alloc` = GC allocations per op. For DInject and Extenject the cell is
+**`asserts shipped (default) → asserts stripped`** (see note); VContainer/Reflex have no build-time asserts.
 
 | Phase (per op) | DInject | Extenject | VContainer | Reflex |
 |---|--:|--:|--:|--:|
-| Container build (once / scene) | 41.6 µs | 46.8 µs | 19.8 µs | 15.5 µs |
-| First (cold) resolve | 21.6 µs | 25.4 µs | 3.8 µs | 3.1 µs |
-| Warm resolve, deep + wide | 14.7 µs · 21 alloc | 13.2 µs · 25 | 3.1 µs · 11 | 3.4 µs · 11 |
-| Warm resolve, single object | 1.50 µs · 3 | 1.85 µs · 4 | 0.39 µs · 2 | 0.51 µs · 2 |
-| Cached singleton (lookup only) | 0.51 µs · 0 | 0.53 µs · 0 | 0.088 µs · 0 | 0.087 µs · 0 |
+| Container build (once / scene) | 41.6 → 25.7 µs | 46.8 → 25.7 µs | ~17 µs | ~11 µs |
+| First (cold) resolve | 21.6 → 8.9 µs | 25.4 → 10.4 µs | ~2.6 µs | ~3.1 µs |
+| Warm resolve, deep + wide | 14.7 → 8.6 µs · 21 alloc | 13.2 → 11.0 µs · 25 | 3.1 µs · 11 | 3.5 µs · 11 |
+| Warm resolve, single object | 1.50 → 1.11 µs · 3 | 1.85 → 1.43 µs · 4 | 0.39 µs · 2 | 0.53 µs · 2 |
+| Cached singleton (lookup only) | 0.51 → 0.43 µs · 0 | 0.53 → 0.45 µs · 0 | 0.09 µs · 0 | 0.09 µs · 0 |
 
-**vs Extenject** (the container DInject rewrites): codegen removes the reflection cold-start cost — DInject is
-faster on container build, first-resolve and single-object construction, with fewer allocations, and needs no
-`link.xml`/`[Preserve]` to resolve under IL2CPP. Warm steady-state of a deep graph is roughly even on IL2CPP,
-because both share the resolution pipeline inherited from Zenject and that pipeline — not construction —
-dominates the warm cost (the cached-singleton lookup is nearly identical: 0.51 vs 0.53 µs). On Mono/editor the
-codegen lead looks larger, but that overstates it — trust on-device numbers. (Extenject's own reflection
-*baking* is not an option here: its weaver is incompatible with Unity 6, so reflection is what Extenject
-actually runs on this version.)
+> **Asserts stripped from builds.** DInject and Extenject both inherit Zenject debug `Assert`s that ship in
+> player builds unless `ZEN_STRIP_ASSERTS_IN_BUILDS` is defined (one is an O(n) scan on every pool despawn).
+> The right-hand number is that define enabled — for **both** Zenject-family containers, a fair
+> release-vs-release config. It cuts DInject's constructing-path cost ~40–60% (cold −59%, warm −42%);
+> allocations are unchanged (asserts are CPU, not GC). VContainer/Reflex have no such asserts (single value;
+> small cross-run differences are run-to-run noise — single runs). Stripping is not yet DInject's default.
 
-**vs VContainer / Reflex:** they are currently ~4–6× faster on resolve. The cause is **not** construction
-(DInject's generated factories are competitive) but the per-resolve container overhead — `InjectContext`
-allocation and lookups — inherited wholesale from Zenject. Shrinking that is the headline of the planned
-core rewrite below; the codegen foundation is what makes it tractable.
+**vs Extenject** (the container DInject rewrites): DInject is faster in **every** phase in **both** configs —
+codegen removes the reflection cold-start cost (build, first-resolve, construction), with fewer allocations and
+no `link.xml`/`[Preserve]` under IL2CPP. (Extenject's reflection *baking* is not an alternative here — its
+weaver is incompatible with Unity 6, so reflection is what Extenject runs on this version.)
+
+**vs VContainer / Reflex:** even with asserts stripped, DInject is ~2.8× (deep graph) / ~4.6× (singleton
+lookup) behind. The cause is **not** construction (its generated factories are competitive) but the per-resolve
+pipeline — `InjectContext` lifecycle, provider lookup/arbitration, argument marshalling — inherited wholesale
+from Zenject; the residual allocation gap (21 vs 11) is per-node closures/contexts. Shrinking that is the
+headline of the planned core rewrite below; the codegen foundation is what makes it tractable.
 
 ## What is next?
 
