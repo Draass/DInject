@@ -2,18 +2,18 @@ using DInject.Internal;
 
 namespace DInject.Tests.AutoLoadSceneTests
 {
-    public class Qux
+    public partial class Qux
     {
     }
 
-    public class Bar
+    public partial class Bar
     {
         public Bar(Qux qux)
         {
         }
     }
 
-    public class Foo
+    public partial class Foo
     {
         public Foo(Bar bar)
         {
@@ -21,7 +21,7 @@ namespace DInject.Tests.AutoLoadSceneTests
         }
     }
 
-    public class Scene3Installer : MonoInstaller<Scene3Installer>
+    public partial class Scene3Installer : MonoInstaller<Scene3Installer>
     {
         public override void InstallBindings()
         {

@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.BindFeatures
 {
     [TestFixture]
-    public class TestMultipleContractTypes2 : ZenjectUnitTestFixture
+    public partial class TestMultipleContractTypes2 : ZenjectUnitTestFixture
     {
-        public class Bar
+        public partial class Bar
         {
         }
 
@@ -18,7 +18,7 @@ namespace DInject.Tests.BindFeatures
         {
         }
 
-        public class Foo : IQux, IFoo
+        public partial class Foo : IQux, IFoo
         {
         }
 

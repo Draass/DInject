@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestBindCallbacks : ZenjectUnitTestFixture
+    public partial class TestBindCallbacks : ZenjectUnitTestFixture
     {
-        public class Foo
+        public partial class Foo
         {
             [Inject]
             public int Value2
@@ -19,11 +19,11 @@ namespace DInject.Tests.Other
                 get; set;
             }
 
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
 
-            public class Pool : MemoryPool<Foo>
+            public partial class Pool : MemoryPool<Foo>
             {
             }
         }

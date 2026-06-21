@@ -4,7 +4,7 @@ using DInject;
 namespace DInject.Tests.Installers.CompositeScriptableObjectInstallers
 {
     // [CreateAssetMenu(fileName = "FooInstaller", menuName = "Installers/FooInstaller")]
-    public class FooInstaller : ScriptableObjectInstaller<FooInstaller>
+    public partial class FooInstaller : ScriptableObjectInstaller<FooInstaller>
     {
         public override void InstallBindings()
         {

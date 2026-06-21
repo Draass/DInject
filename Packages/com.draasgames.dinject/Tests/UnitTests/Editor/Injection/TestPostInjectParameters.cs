@@ -4,21 +4,21 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestPostInjectParameters : ZenjectUnitTestFixture
+    public partial class TestPostInjectParameters : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1
+        partial class Test1
         {
         }
 
-        class Test2
+        partial class Test2
         {
         }
 
-        class Test3
+        partial class Test3
         {
             public bool HasInitialized;
 

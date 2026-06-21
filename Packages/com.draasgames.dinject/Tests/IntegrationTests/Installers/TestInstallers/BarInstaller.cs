@@ -1,6 +1,6 @@
 namespace DInject.Tests.Installers.Installers
 {
-    public class BarInstaller : Installer<string, BarInstaller>
+    public partial class BarInstaller : Installer<string, BarInstaller>
     {
         string _value;
 

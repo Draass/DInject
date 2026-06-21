@@ -4,13 +4,13 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Conditions
 {
     [TestFixture]
-    public class TestConditionsTargetInstance : ZenjectUnitTestFixture
+    public partial class TestConditionsTargetInstance : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1
+        partial class Test1
         {
             [Inject]
             public Test0 test0 = null;

@@ -5,21 +5,21 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.BindFeatures
 {
     [TestFixture]
-    public class TestMultipleContractTypes : ZenjectUnitTestFixture
+    public partial class TestMultipleContractTypes : ZenjectUnitTestFixture
     {
-        class Test1
+        partial class Test1
         {
         }
 
-        class Test2 : Test1
+        partial class Test2 : Test1
         {
         }
 
-        class Test3 : Test1
+        partial class Test3 : Test1
         {
         }
 
-        class TestImpl1
+        partial class TestImpl1
         {
             public List<Test1> tests;
 
@@ -29,7 +29,7 @@ namespace DInject.Tests.BindFeatures
             }
         }
 
-        class TestImpl2
+        partial class TestImpl2
         {
             [Inject]
             public List<Test1> tests = null;

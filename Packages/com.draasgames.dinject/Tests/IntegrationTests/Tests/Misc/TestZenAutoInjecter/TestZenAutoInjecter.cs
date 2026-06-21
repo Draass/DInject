@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.AutoInjecter
 {
-    public class TestZenAutoInjecter : ZenjectIntegrationTestFixture
+    public partial class TestZenAutoInjecter : ZenjectIntegrationTestFixture
     {
         GameObject GetPrefab(string name)
         {

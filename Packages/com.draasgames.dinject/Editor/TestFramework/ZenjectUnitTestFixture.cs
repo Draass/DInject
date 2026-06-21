@@ -19,6 +19,11 @@ namespace DInject
         [SetUp]
         public virtual void Setup()
         {
+            // NOTE: EditMode unit tests run with the DEFAULT coverage mode (reflection fallback available).
+            // Forcing NoCheckAssumeFullCoverage here hung the editor on a full run (uncovered-type null
+            // storm under the global flag x hundreds of tests). Codegen-only is validated in PlayMode
+            // (ZenjectIntegrationTestFixture) and by the dedicated CodeGen tests which scope the flag
+            // themselves. Covered types still resolve via the generated registry here regardless of mode.
             _container = new DiContainer(StaticContext.Container);
         }
 

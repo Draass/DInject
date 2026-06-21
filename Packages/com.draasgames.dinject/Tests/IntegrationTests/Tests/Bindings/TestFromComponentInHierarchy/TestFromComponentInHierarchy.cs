@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromComponentInHierarchy : ZenjectIntegrationTestFixture
+    public partial class TestFromComponentInHierarchy : ZenjectIntegrationTestFixture
     {
         Foo _foo1;
         Foo _foo2;
@@ -187,23 +187,23 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Foo : MonoBehaviour
+        public partial class Foo : MonoBehaviour
         {
         }
 
-        public class Qux
+        public partial class Qux
         {
             [Inject]
             public List<Foo> Foos;
         }
 
-        public class Bar
+        public partial class Bar
         {
             [Inject]
             public Foo Foo;
         }
 
-        public class Qiv
+        public partial class Qiv
         {
             [InjectOptional]
             public Foo Foo;

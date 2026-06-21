@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.Installers.CompositeMonoInstallers
 {
-    public class FooInjecteeInstaller : MonoInstaller<FooInjecteeInstaller>
+    public partial class FooInjecteeInstaller : MonoInstaller<FooInjecteeInstaller>
     {
         public override void InstallBindings()
         {

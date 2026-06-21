@@ -2,11 +2,11 @@ using DInject.Internal;
 
 namespace DInject.Tests.DecoratorTests
 {
-    public class Bar
+    public partial class Bar
     {
     }
 
-    public class Foo
+    public partial class Foo
     {
         public Foo(Bar bar)
         {
@@ -14,7 +14,7 @@ namespace DInject.Tests.DecoratorTests
         }
     }
 
-    public class Scene2Installer : MonoInstaller<Scene2Installer>
+    public partial class Scene2Installer : MonoInstaller<Scene2Installer>
     {
         public override void InstallBindings()
         {

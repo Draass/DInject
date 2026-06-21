@@ -4,7 +4,7 @@ using DInject;
 namespace DInject.Tests.Installers.CompositeScriptableObjectInstallers
 {
     // [CreateAssetMenu(fileName = "QuxInstaller", menuName = "Installers/QuxInstaller")]
-    public class QuxInstaller : ScriptableObjectInstaller<QuxInstaller>
+    public partial class QuxInstaller : ScriptableObjectInstaller<QuxInstaller>
     {
         [SerializeField] string _p1;
         [SerializeField] float _p2;

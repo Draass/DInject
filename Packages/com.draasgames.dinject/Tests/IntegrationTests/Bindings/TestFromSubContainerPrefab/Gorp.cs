@@ -1,6 +1,6 @@
 namespace DInject.Tests.Bindings.FromSubContainerPrefab
 {
-    public class Gorp
+    public partial class Gorp
     {
     }
 }

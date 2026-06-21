@@ -7,7 +7,7 @@ using DInject.Tests.Installers.CompositeScriptableObjectInstallers;
 
 namespace DInject.Tests.Installers
 {
-    public class TestCompositeScriptableObjectInstallers : ZenjectIntegrationTestFixture
+    public partial class TestCompositeScriptableObjectInstallers : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestZeroParameters()

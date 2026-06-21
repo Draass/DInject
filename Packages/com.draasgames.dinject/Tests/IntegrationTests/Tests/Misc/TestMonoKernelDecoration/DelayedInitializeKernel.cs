@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.TestAnimationStateBehaviourInject
 {
-    public class DelayedInitializeKernel : BaseMonoKernelDecorator
+    public partial class DelayedInitializeKernel : BaseMonoKernelDecorator
     {
         public async override void Initialize()
         {

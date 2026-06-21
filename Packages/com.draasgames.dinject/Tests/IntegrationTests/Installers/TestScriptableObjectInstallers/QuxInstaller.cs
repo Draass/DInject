@@ -1,7 +1,7 @@
 namespace DInject.Tests.Installers.ScriptableObjectInstallers
 {
     //[CreateAssetMenu(fileName = "QuxInstaller", menuName = "Installers/QuxInstaller")]
-    public class QuxInstaller : ScriptableObjectInstaller<string, float, int, QuxInstaller>
+    public partial class QuxInstaller : ScriptableObjectInstaller<string, float, int, QuxInstaller>
     {
         string _p1;
 

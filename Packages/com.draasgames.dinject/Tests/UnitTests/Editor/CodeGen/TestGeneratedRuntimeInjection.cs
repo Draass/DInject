@@ -11,7 +11,7 @@ namespace DInject.Tests.CodeGen
     // Uses a plain class (not a MonoBehaviour) because Unity forbids AddComponent of an Editor-assembly
     // MonoBehaviour; real MonoBehaviour injection is validated separately in a PlayMode assembly.
     [TestFixture]
-    public class TestGeneratedRuntimeInjection : ZenjectUnitTestFixture
+    public partial class TestGeneratedRuntimeInjection : ZenjectUnitTestFixture
     {
         static bool GeneratorActive()
         {

@@ -5,13 +5,13 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Conditions
 {
     [TestFixture]
-    public class TestConditionsComplex : ZenjectUnitTestFixture
+    public partial class TestConditionsComplex : ZenjectUnitTestFixture
     {
-        class Foo
+        partial class Foo
         {
         }
 
-        class Bar
+        partial class Bar
         {
             public Foo Foo;
 

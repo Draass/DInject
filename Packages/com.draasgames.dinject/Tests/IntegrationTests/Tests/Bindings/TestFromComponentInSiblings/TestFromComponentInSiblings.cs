@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromComponentSibling : ZenjectIntegrationTestFixture
+    public partial class TestFromComponentSibling : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator RunTestSingleMatch()
@@ -196,7 +196,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Qux : MonoBehaviour
+        public partial class Qux : MonoBehaviour
         {
             [Inject]
             public Qux OtherQux;
@@ -206,23 +206,23 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        public class Bar : MonoBehaviour, IBar
+        public partial class Bar : MonoBehaviour, IBar
         {
         }
 
-        public class FooOptional : MonoBehaviour
+        public partial class FooOptional : MonoBehaviour
         {
             [InjectOptional]
             public Bar Bar;
         }
 
-        public class FooOptional2 : MonoBehaviour
+        public partial class FooOptional2 : MonoBehaviour
         {
             [Inject]
             public Bar Bar;
         }
 
-        public class Foo : MonoBehaviour
+        public partial class Foo : MonoBehaviour
         {
             [Inject]
             public Bar Bar;
@@ -234,7 +234,7 @@ namespace DInject.Tests.Bindings
             public List<Qux> Qux;
         }
 
-        public class Gorp : MonoBehaviour
+        public partial class Gorp : MonoBehaviour
         {
             [Inject]
             public Bar Bar;

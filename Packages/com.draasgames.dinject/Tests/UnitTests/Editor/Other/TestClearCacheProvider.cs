@@ -5,17 +5,17 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestClearCacheProvider : ZenjectUnitTestFixture
+    public partial class TestClearCacheProvider : ZenjectUnitTestFixture
     {
         public interface IFoo
         {
         }
 
-        public class Foo1 : IFoo
+        public partial class Foo1 : IFoo
         {
         }
 
-        public class Foo2 : IFoo
+        public partial class Foo2 : IFoo
         {
         }
 

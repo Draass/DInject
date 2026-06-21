@@ -7,7 +7,7 @@ using DInject.Tests.Bindings.DiContainerMethods;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestDiContainerMethods : ZenjectIntegrationTestFixture
+    public partial class TestDiContainerMethods : ZenjectIntegrationTestFixture
     {
         const string ResourcePrefix = "TestDiContainerMethods/";
 
@@ -291,7 +291,7 @@ namespace DInject.Tests.Bindings
                 && Mathf.Approximately(left.z, right.z);
         }
 
-        public class Qux
+        public partial class Qux
         {
             public static bool WasInjected
             {

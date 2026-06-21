@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject.Tests.TestDestructionOrder
 {
-    public class FooDisposable1 : IDisposable
+    public partial class FooDisposable1 : IDisposable
     {
         public void Dispose()
         {

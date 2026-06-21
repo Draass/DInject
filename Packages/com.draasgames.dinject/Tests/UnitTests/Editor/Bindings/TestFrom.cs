@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFrom : ZenjectUnitTestFixture
+    public partial class TestFrom : ZenjectUnitTestFixture
     {
         [Test]
         public void TestSelfSingle()
@@ -245,15 +245,15 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class Foo : IFoo, IBar
+        partial class Foo : IFoo, IBar
         {
         }
 
-        class Bar : IFoo, IBar
+        partial class Bar : IFoo, IBar
         {
         }
 
-        public class Qux
+        public partial class Qux
         {
         }
     }

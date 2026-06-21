@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Convention.Two
 {
     [TestFixture]
-    public class TestConvention2
+    public partial class TestConvention2
     {
         [Test]
         public void TestBindAllInterfacesSimple()
@@ -39,11 +39,11 @@ namespace DInject.Tests.Convention.Two
         {
         }
 
-        public class Foo : IFoo, IBar
+        public partial class Foo : IFoo, IBar
         {
         }
 
-        public class Bar : IBar, IFoo
+        public partial class Bar : IBar, IFoo
         {
         }
     }

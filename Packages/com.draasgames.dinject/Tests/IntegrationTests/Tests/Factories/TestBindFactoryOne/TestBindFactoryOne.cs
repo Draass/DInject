@@ -7,7 +7,7 @@ using DInject.Tests.Factories.BindFactoryOne;
 
 namespace DInject.Tests.Factories
 {
-    public class TestBindFactoryOne : ZenjectIntegrationTestFixture
+    public partial class TestBindFactoryOne : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {
@@ -275,7 +275,7 @@ namespace DInject.Tests.Factories
             Container.BindExecutionOrder<FooFactoryTester<TValue, TFactory>>(-100);
         }
 
-        public class FooFactoryTester<TValue, TFactory> : IInitializable
+        public partial class FooFactoryTester<TValue, TFactory> : IInitializable
             where TFactory : PlaceholderFactory<string, TValue>
             where TValue : IFoo
         {

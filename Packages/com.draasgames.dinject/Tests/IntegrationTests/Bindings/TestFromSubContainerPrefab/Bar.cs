@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Bindings.FromSubContainerPrefab
 {
-    public class Bar : MonoBehaviour
+    public partial class Bar : MonoBehaviour
     {
     }
 }

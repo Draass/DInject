@@ -1,6 +1,6 @@
 namespace DInject.Tests.Installers.MonoInstallers
 {
-    public class BarInstaller : MonoInstaller<string, BarInstaller>
+    public partial class BarInstaller : MonoInstaller<string, BarInstaller>
     {
         string _value;
 

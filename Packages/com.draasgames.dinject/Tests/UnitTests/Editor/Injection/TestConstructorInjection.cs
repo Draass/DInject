@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestConstructorInjection : ZenjectUnitTestFixture
+    public partial class TestConstructorInjection : ZenjectUnitTestFixture
     {
         [Test]
         public void TestResolve()
@@ -42,11 +42,11 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(gorp.ChosenConstructor, 1);
         }
 
-        class Bar
+        partial class Bar
         {
         }
 
-        class Foo
+        partial class Foo
         {
             public Foo(Bar bar)
             {
@@ -59,7 +59,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Qux
+        partial class Qux
         {
             public Qux()
             {
@@ -71,7 +71,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Gorp
+        partial class Gorp
         {
             public Gorp()
             {

@@ -1,6 +1,6 @@
 namespace DInject.Tests.AutoLoadSceneTests
 {
-    public class Scene1Installer : MonoInstaller<Scene1Installer>
+    public partial class Scene1Installer : MonoInstaller<Scene1Installer>
     {
         public override void InstallBindings()
         {

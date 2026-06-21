@@ -6,7 +6,7 @@ using DInject.Tests.Bindings.FromPrefabResource;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromPrefabResource : ZenjectIntegrationTestFixture
+    public partial class TestFromPrefabResource : ZenjectIntegrationTestFixture
     {
         const string PathPrefix = "TestFromPrefabResource/";
 
@@ -155,7 +155,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class JimAndBobRunner : IInitializable
+        public partial class JimAndBobRunner : IInitializable
         {
             readonly Bob _bob;
             readonly Jim _jim;

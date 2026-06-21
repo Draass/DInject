@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Bindings.FromPrefab
 {
-    public class Qux : MonoBehaviour
+    public partial class Qux : MonoBehaviour
     {
         [Inject]
         int _arg;

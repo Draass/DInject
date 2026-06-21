@@ -8,7 +8,7 @@ using DInject.Tests.Installers.CompositeMonoInstallers;
 
 namespace DInject.Tests.Installers
 {
-    public class TestCompositeMonoInstallers : ZenjectIntegrationTestFixture
+    public partial class TestCompositeMonoInstallers : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestZeroParameters()

@@ -1,6 +1,6 @@
 namespace DInject.Tests.Factories.BindFactoryFive
 {
-    public class FooInstaller : MonoInstaller
+    public partial class FooInstaller : MonoInstaller
     {
         double _param1;
         int _param2;

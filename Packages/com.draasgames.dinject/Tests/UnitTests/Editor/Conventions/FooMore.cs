@@ -2,11 +2,11 @@
 
 namespace DInject.Tests.Convention.NamespaceTest
 {
-    public class Bar
+    public partial class Bar
     {
     }
 
-    public class Foo4 : IFoo
+    public partial class Foo4 : IFoo
     {
     }
 }

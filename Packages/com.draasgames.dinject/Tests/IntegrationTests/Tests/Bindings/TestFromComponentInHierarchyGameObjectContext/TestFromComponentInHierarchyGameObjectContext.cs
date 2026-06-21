@@ -8,7 +8,7 @@ using Assert = DInject.Internal.Assert;
 
 namespace DInject.Tests.Bindings.FromComponentInHierarchyGameObjectContext
 {
-    public class TestFromComponentInHierarchyGameObjectContext : ZenjectIntegrationTestFixture
+    public partial class TestFromComponentInHierarchyGameObjectContext : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {

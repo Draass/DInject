@@ -9,6 +9,8 @@
     <IncludeBuildOutput>true</IncludeBuildOutput>
     <AssemblyName>DInject.CodeGen</AssemblyName>
     <RootNamespace>DInject.CodeGen</RootNamespace>
+    <!-- RS2008: analyzer-release-tracking; RS1032: message-format style. Not relevant to a Unity-shipped generator. -->
+    <NoWarn>$(NoWarn);RS2008;RS1032</NoWarn>
     <!-- Unity 6000.4 supports Microsoft.CodeAnalysis.CSharp up to 4.3.1; the built DLL
          must be imported into Unity with the "RoslynAnalyzer" asset label. -->
   </PropertyGroup>

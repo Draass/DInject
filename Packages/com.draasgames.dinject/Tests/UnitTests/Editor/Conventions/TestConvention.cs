@@ -9,7 +9,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Convention
 {
     [TestFixture]
-    public class TestConvention : ZenjectUnitTestFixture
+    public partial class TestConvention : ZenjectUnitTestFixture
     {
         [Test]
         public void TestDerivingFrom()

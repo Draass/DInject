@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 namespace DInject.Tests.TestDestructionOrder
 {
-    public class SceneChangeHandler : ITickable
+    public partial class SceneChangeHandler : ITickable
     {
         public void Tick()
         {
@@ -14,7 +14,7 @@ namespace DInject.Tests.TestDestructionOrder
         }
     }
 
-    public class Scene2Installer : MonoInstaller<Scene2Installer>
+    public partial class Scene2Installer : MonoInstaller<Scene2Installer>
     {
         public override void InstallBindings()
         {

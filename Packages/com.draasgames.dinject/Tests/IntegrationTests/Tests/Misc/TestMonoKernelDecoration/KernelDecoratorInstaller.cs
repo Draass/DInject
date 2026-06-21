@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.TestAnimationStateBehaviourInject
 {
-    public class KernelDecoratorInstaller : Installer<KernelDecoratorInstaller>
+    public partial class KernelDecoratorInstaller : Installer<KernelDecoratorInstaller>
     {
         public override void InstallBindings()
         {

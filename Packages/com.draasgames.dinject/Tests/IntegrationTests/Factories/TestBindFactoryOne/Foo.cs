@@ -10,11 +10,11 @@ namespace DInject.Tests.Factories.BindFactoryOne
         }
     }
 
-    public class IFooFactory : PlaceholderFactory<string, IFoo>
+    public partial class IFooFactory : PlaceholderFactory<string, IFoo>
     {
     }
 
-    public class Foo : MonoBehaviour, IFoo
+    public partial class Foo : MonoBehaviour, IFoo
     {
         [Inject]
         public void Init(string value)
@@ -28,7 +28,7 @@ namespace DInject.Tests.Factories.BindFactoryOne
             private set;
         }
 
-        public class Factory : PlaceholderFactory<string, Foo>
+        public partial class Factory : PlaceholderFactory<string, Foo>
         {
         }
     }

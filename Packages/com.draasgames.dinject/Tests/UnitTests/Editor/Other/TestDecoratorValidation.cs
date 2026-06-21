@@ -5,21 +5,21 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestDecoratorValidation
+    public partial class TestDecoratorValidation
     {
         public interface ISaveHandler
         {
             void Save();
         }
 
-        public class SaveHandler : ISaveHandler
+        public partial class SaveHandler : ISaveHandler
         {
             public void Save()
             {
             }
         }
 
-        public class SaveDecorator1 : ISaveHandler
+        public partial class SaveDecorator1 : ISaveHandler
         {
             readonly ISaveHandler _handler;
 
@@ -46,7 +46,7 @@ namespace DInject.Tests.Other
             Container.Settings = new ZenjectSettings(ValidationErrorResponses.Throw);
         }
 
-        public class Foo
+        public partial class Foo
         {
             public Foo(ISaveHandler saveHandler)
             {

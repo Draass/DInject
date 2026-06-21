@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject.Tests.TestAnimationStateBehaviourInject
 {
-    public class StateBehaviour1 : StateMachineBehaviour
+    public partial class StateBehaviour1 : StateMachineBehaviour
     {
         public static int OnStateEnterCalls;
 

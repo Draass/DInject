@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings.FromGameObjectInstaller
 {
-    public class TestFromGameObjectInstaller : ZenjectIntegrationTestFixture
+    public partial class TestFromGameObjectInstaller : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestInstaller()
@@ -41,13 +41,13 @@ namespace DInject.Tests.Bindings.FromGameObjectInstaller
             subContainer.Bind<Qux>().AsSingle().WithArguments("asdf");
         }
 
-        public class Qux
+        public partial class Qux
         {
             [Inject]
             public string Data;
         }
 
-        public class FooInstaller : Installer<FooInstaller>
+        public partial class FooInstaller : Installer<FooInstaller>
         {
             public override void InstallBindings()
             {

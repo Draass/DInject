@@ -1,6 +1,6 @@
 namespace DInject.Tests.TestDestructionOrder
 {
-    public class ProjectInstaller : MonoInstaller<ProjectInstaller>
+    public partial class ProjectInstaller : MonoInstaller<ProjectInstaller>
     {
         public override void InstallBindings()
         {

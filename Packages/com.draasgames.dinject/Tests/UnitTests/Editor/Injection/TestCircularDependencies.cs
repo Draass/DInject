@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestCircularDependencies : ZenjectUnitTestFixture
+    public partial class TestCircularDependencies : ZenjectUnitTestFixture
     {
-        class Test1
+        partial class Test1
         {
             public static int CreateCount;
 
@@ -19,7 +19,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test2
+        partial class Test2
         {
             public static int CreateCount;
 
@@ -50,7 +50,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(test2.Other, test1);
         }
 
-        class Test3
+        partial class Test3
         {
             public static int CreateCount;
 
@@ -68,7 +68,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test4
+        partial class Test4
         {
             public static int CreateCount;
 
@@ -104,7 +104,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(test2.Other, test1);
         }
 
-        class Test5
+        partial class Test5
         {
             public Test5(Test6 Other)
             {
@@ -112,7 +112,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test6
+        partial class Test6
         {
             public Test6(Test5 other)
             {
@@ -133,7 +133,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test7
+        partial class Test7
         {
             public Test7(Test7 other)
             {

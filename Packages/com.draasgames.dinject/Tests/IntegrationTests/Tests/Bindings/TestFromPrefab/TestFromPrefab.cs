@@ -7,7 +7,7 @@ using DInject.Tests.Bindings.FromPrefab;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromPrefab : ZenjectIntegrationTestFixture
+    public partial class TestFromPrefab : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {
@@ -198,7 +198,7 @@ namespace DInject.Tests.Bindings
             return FixtureUtil.GetPrefab("TestFromPrefab/{0}".Fmt(name));
         }
 
-        public class JimAndBobRunner : IInitializable
+        public partial class JimAndBobRunner : IInitializable
         {
             readonly Bob _bob;
             readonly Jim _jim;

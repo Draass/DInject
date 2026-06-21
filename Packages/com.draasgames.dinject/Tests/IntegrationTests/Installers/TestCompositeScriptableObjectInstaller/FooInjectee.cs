@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.Installers.CompositeScriptableObjectInstallers
 {
-    public class FooInjectee
+    public partial class FooInjectee
     {
         public FooInjectee(Foo foo)
         {

@@ -1,6 +1,6 @@
 namespace DInject.Tests.Installers.Installers
 {
-    public class QuxInstaller : Installer<string, float, int, QuxInstaller>
+    public partial class QuxInstaller : Installer<string, float, int, QuxInstaller>
     {
         string _p1;
 

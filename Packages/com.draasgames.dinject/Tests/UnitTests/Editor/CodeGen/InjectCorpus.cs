@@ -7,7 +7,7 @@ namespace DInject.Tests.CodeGen
     // TODO (full corpus per work plan T3): struct, list, deep inheritance, get-only auto-property,
     // open + closed generics, custom inject attribute (must be [NoReflectionBaking]).
 
-    public class CorpusSimpleService
+    public partial class CorpusSimpleService
     {
     }
 

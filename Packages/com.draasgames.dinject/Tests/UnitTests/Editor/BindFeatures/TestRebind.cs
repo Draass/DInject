@@ -4,17 +4,17 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.BindFeatures
 {
     [TestFixture]
-    public class TestRebind : ZenjectUnitTestFixture
+    public partial class TestRebind : ZenjectUnitTestFixture
     {
         interface ITest
         {
         }
 
-        class Test2 : ITest
+        partial class Test2 : ITest
         {
         }
 
-        class Test3 : ITest
+        partial class Test3 : ITest
         {
         }
 

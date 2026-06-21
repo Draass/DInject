@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestValidationSettings
+    public partial class TestValidationSettings
     {
         DiContainer Container
         {
@@ -58,14 +58,14 @@ namespace DInject.Tests
             Assert.Throws(() => Container.ResolveRoots());
         }
 
-        public class Bar
+        public partial class Bar
         {
             public Bar(Foo foo)
             {
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
         }
     }

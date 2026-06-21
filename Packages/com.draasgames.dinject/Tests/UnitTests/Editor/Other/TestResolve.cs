@@ -5,9 +5,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestResolve : ZenjectUnitTestFixture
+    public partial class TestResolve : ZenjectUnitTestFixture
     {
-        class Foo
+        partial class Foo
         {
         }
 
@@ -55,7 +55,7 @@ namespace DInject.Tests.Other
             Assert.IsEqual(Container.Instantiate<Bar>().Foos, l1);
         }
 
-        class Bar
+        partial class Bar
         {
             public List<Foo> Foos;
 

@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestTaskUpdater
+    public partial class TestTaskUpdater
     {
         DiContainer _container;
 
@@ -67,7 +67,7 @@ namespace DInject.Tests.Other
             taskUpdater.UpdateAll();
         }
 
-        class Tickable1 : ITickable
+        partial class Tickable1 : ITickable
         {
             public event Action TickCalled = delegate {};
 
@@ -77,7 +77,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        class Tickable2 : ITickable
+        partial class Tickable2 : ITickable
         {
             public event Action TickCalled = delegate {};
 
@@ -87,7 +87,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        class Tickable3 : ITickable
+        partial class Tickable3 : ITickable
         {
             public event Action TickCalled = delegate {};
 

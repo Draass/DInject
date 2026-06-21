@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestKeyedFactoryExample : ZenjectUnitTestFixture
+    public partial class TestKeyedFactoryExample : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -49,7 +49,7 @@ namespace DInject.Tests.Other
             subContainer.Bind<Foo>().AsCached();
         }
 
-        public class FooFactory
+        public partial class FooFactory
         {
             readonly Dictionary<string, IFactory<Foo>> _subFactories;
 
@@ -65,7 +65,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
             public Foo(int number)
             {
@@ -77,7 +77,7 @@ namespace DInject.Tests.Other
                 get; private set;
             }
 
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

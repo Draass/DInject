@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFactoryFromSubContainerInstaller0 : ZenjectUnitTestFixture
+    public partial class TestFactoryFromSubContainerInstaller0 : ZenjectUnitTestFixture
     {
         [Test]
         public void TestSelf()
@@ -24,7 +24,7 @@ namespace DInject.Tests.Bindings
             Assert.IsEqual(Container.Resolve<IFooFactory>().Create(), FooInstaller.Foo);
         }
 
-        class FooInstaller : Installer<FooInstaller>
+        partial class FooInstaller : Installer<FooInstaller>
         {
             public static Foo Foo = new Foo();
 
@@ -38,13 +38,13 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class IFooFactory : PlaceholderFactory<IFoo>
+        partial class IFooFactory : PlaceholderFactory<IFoo>
         {
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

@@ -9,7 +9,7 @@ using DInject.Tests.Bindings.FromSubContainerPrefab;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromSubContainerPrefab : ZenjectIntegrationTestFixture
+    public partial class TestFromSubContainerPrefab : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {

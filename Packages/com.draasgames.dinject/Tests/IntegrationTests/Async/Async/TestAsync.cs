@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestAsync : ZenjectIntegrationTestFixture
+    public partial class TestAsync : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestSimpleMethod()
@@ -133,12 +133,12 @@ namespace DInject.Tests.Bindings
         
         }
     
-        public class Foo : IFoo
+        public partial class Foo : IFoo
         {
         
         }
         
-        public class PreloadAsyncKernel: BaseMonoKernelDecorator
+        public partial class PreloadAsyncKernel: BaseMonoKernelDecorator
         {
             [Inject]
             public List<IAsyncInject> asyncInjects;

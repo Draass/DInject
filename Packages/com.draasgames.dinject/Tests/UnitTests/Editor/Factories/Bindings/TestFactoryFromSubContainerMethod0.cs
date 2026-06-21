@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFactoryFromSubContainerMethod0 : ZenjectUnitTestFixture
+    public partial class TestFactoryFromSubContainerMethod0 : ZenjectUnitTestFixture
     {
         static Foo ConstFoo = new Foo();
 
@@ -34,13 +34,13 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class IFooFactory : PlaceholderFactory<IFoo>
+        partial class IFooFactory : PlaceholderFactory<IFoo>
         {
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

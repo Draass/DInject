@@ -5,7 +5,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromResolve : ZenjectUnitTestFixture
+    public partial class TestFromResolve : ZenjectUnitTestFixture
     {
         [Test]
         public void TestTransient()
@@ -216,11 +216,11 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class Foo : IFoo, IBar
+        partial class Foo : IFoo, IBar
         {
         }
 
-        class SecondFoo : IFoo
+        partial class SecondFoo : IFoo
         {
         }
     }

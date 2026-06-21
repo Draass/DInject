@@ -5,9 +5,9 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests
 {
-    public class TestIntegrationTest : ZenjectIntegrationTestFixture
+    public partial class TestIntegrationTest : ZenjectIntegrationTestFixture
     {
-        public class Foo : IInitializable, IDisposable
+        public partial class Foo : IInitializable, IDisposable
         {
             public static bool WasDisposed
             {

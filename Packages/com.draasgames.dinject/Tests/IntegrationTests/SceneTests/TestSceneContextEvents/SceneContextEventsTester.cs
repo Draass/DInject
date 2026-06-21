@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject.Tests
 {
-    public class SceneContextEventsTester : MonoBehaviour
+    public partial class SceneContextEventsTester : MonoBehaviour
     {
         [SerializeField]
         SceneContext _sceneContext = null;

@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromComponentInChildren : ZenjectIntegrationTestFixture
+    public partial class TestFromComponentInChildren : ZenjectIntegrationTestFixture
     {
         Root _root;
         Child _child1;
@@ -202,7 +202,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Root : MonoBehaviour
+        public partial class Root : MonoBehaviour
         {
             [Inject]
             public Grandchild Grandchild;
@@ -211,15 +211,15 @@ namespace DInject.Tests.Bindings
             public List<Child> Childs;
         }
 
-        public class Child : MonoBehaviour
+        public partial class Child : MonoBehaviour
         {
         }
 
-        public class Grandchild : MonoBehaviour
+        public partial class Grandchild : MonoBehaviour
         {
         }
 
-        public class RootWithOptional : MonoBehaviour
+        public partial class RootWithOptional : MonoBehaviour
         {
             [InjectOptional]
             public Child Child;

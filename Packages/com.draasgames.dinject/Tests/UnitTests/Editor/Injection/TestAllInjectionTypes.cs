@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestAllInjectionTypes : ZenjectUnitTestFixture
+    public partial class TestAllInjectionTypes : ZenjectUnitTestFixture
     {
         static int InjectCounter;
 
@@ -29,7 +29,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(foo.DerivedTypeMethodInjectCount, 4);
         }
 
-        class Test0
+        partial class Test0
         {
         }
 
@@ -66,7 +66,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        abstract class FooBase : IFoo
+        abstract partial class FooBase : IFoo
         {
             bool _didPostInjectBase;
 
@@ -193,7 +193,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class FooDerived : FooBase
+        partial class FooDerived : FooBase
         {
             public bool _didPostInject;
             public Test0 ConstructorParam;

@@ -10,11 +10,11 @@ namespace DInject.Tests.Factories.BindFactoryFive
         }
     }
 
-    public class IFooFactory : PlaceholderFactory<double, int, float, string, char, IFoo>
+    public partial class IFooFactory : PlaceholderFactory<double, int, float, string, char, IFoo>
     {
     }
 
-    public class Foo : MonoBehaviour, IFoo
+    public partial class Foo : MonoBehaviour, IFoo
     {
         [Inject]
         public void Init(double p1, int p2, float p3, string p4, char p5)
@@ -28,7 +28,7 @@ namespace DInject.Tests.Factories.BindFactoryFive
             private set;
         }
 
-        public class Factory : PlaceholderFactory<double, int, float, string, char, Foo>
+        public partial class Factory : PlaceholderFactory<double, int, float, string, char, Foo>
         {
         }
     }

@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromSubContainerInstaller : ZenjectUnitTestFixture
+    public partial class TestFromSubContainerInstaller : ZenjectUnitTestFixture
     {
         [Test]
         public void TestInstallerSelfSingle()
@@ -76,15 +76,15 @@ namespace DInject.Tests.Bindings
             Assert.IsNotNull(Container.Resolve<Gorp>());
         }
 
-        public class Gorp
+        public partial class Gorp
         {
         }
 
-        public class Qux
+        public partial class Qux
         {
         }
 
-        public class Bar
+        public partial class Bar
         {
         }
 
@@ -92,7 +92,7 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        public class Foo : IFoo
+        public partial class Foo : IFoo
         {
             public Foo(Bar bar)
             {
@@ -106,7 +106,7 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        class FooInstaller : Installer<FooInstaller>
+        partial class FooInstaller : Installer<FooInstaller>
         {
             public override void InstallBindings()
             {

@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromMethodMultipleUntyped : ZenjectUnitTestFixture
+    public partial class TestFromMethodMultipleUntyped : ZenjectUnitTestFixture
     {
         [Test]
         public void TestSingle()
@@ -122,7 +122,7 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
         }
     }

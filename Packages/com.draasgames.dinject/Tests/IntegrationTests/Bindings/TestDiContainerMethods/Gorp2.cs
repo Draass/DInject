@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DInject.Tests.Bindings.DiContainerMethods
 {
     //[CreateAssetMenu(fileName = "Gorp2", menuName = "Test/Gorp2")]
-    public class Gorp2 : ScriptableObject
+    public partial class Gorp2 : ScriptableObject
     {
         [Inject]
         string _arg;

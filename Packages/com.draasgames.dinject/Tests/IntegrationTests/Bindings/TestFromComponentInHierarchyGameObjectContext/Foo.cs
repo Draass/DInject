@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Bindings.FromComponentInHierarchyGameObjectContext
 {
-    public class Foo : MonoBehaviour
+    public partial class Foo : MonoBehaviour
     {
         [NonSerialized]
         [Inject]

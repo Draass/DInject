@@ -4,13 +4,13 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestInjectSources
+    public partial class TestInjectSources
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1
+        partial class Test1
         {
             public Test0 val;
 
@@ -22,7 +22,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test2
+        partial class Test2
         {
             public Test0 val;
 
@@ -34,7 +34,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test3
+        partial class Test3
         {
             public Test0 val;
 
@@ -46,7 +46,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test4
+        partial class Test4
         {
             public Test0 val;
 

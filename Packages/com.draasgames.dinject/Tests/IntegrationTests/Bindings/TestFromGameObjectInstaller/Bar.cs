@@ -2,7 +2,7 @@
 
 namespace DInject.Tests.Bindings.FromGameObjectInstaller
 {
-    public class Bar : MonoBehaviour
+    public partial class Bar : MonoBehaviour
     {
     }
 }

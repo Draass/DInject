@@ -7,7 +7,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Convention.Names
 {
     [TestFixture]
-    public class TestConventionNames : ZenjectUnitTestFixture
+    public partial class TestConventionNames : ZenjectUnitTestFixture
     {
         [Test]
         public void TestWithSuffix()
@@ -40,23 +40,23 @@ namespace DInject.Tests.Convention.Names
         {
         }
 
-        class FooController : IController
+        partial class FooController : IController
         {
         }
 
-        class ControllerBar : IController
+        partial class ControllerBar : IController
         {
         }
 
-        class QuxControllerAsdf : IController
+        partial class QuxControllerAsdf : IController
         {
         }
 
-        class IgnoredFooController
+        partial class IgnoredFooController
         {
         }
 
-        class ControllerBarIgnored
+        partial class ControllerBarIgnored
         {
         }
     }

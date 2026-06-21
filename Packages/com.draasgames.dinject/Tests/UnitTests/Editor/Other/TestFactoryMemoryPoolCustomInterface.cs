@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestFactoryMemoryPoolCustomInterface : ZenjectUnitTestFixture
+    public partial class TestFactoryMemoryPoolCustomInterface : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -26,7 +26,7 @@ namespace DInject.Tests.Other
             Assert.IsEqual(Container.Resolve<Foo.IFooPool>().Spawn(), foo);
         }
 
-        public class Foo
+        public partial class Foo
         {
             public interface IFooFactory : IFactory<Foo>
             {
@@ -36,11 +36,11 @@ namespace DInject.Tests.Other
             {
             }
 
-            public class Factory : PlaceholderFactory<Foo>, IFooFactory
+            public partial class Factory : PlaceholderFactory<Foo>, IFooFactory
             {
             }
 
-            public class Pool : MemoryPool<Foo>, IFooPool
+            public partial class Pool : MemoryPool<Foo>, IFooPool
             {
             }
         }

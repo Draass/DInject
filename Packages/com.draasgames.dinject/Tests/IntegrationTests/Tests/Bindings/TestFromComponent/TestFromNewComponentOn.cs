@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromNewComponentOn : ZenjectIntegrationTestFixture
+    public partial class TestFromNewComponentOn : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestBasic()
@@ -140,11 +140,11 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        public class Foo : MonoBehaviour, IFoo, IBar, IFoo2
+        public partial class Foo : MonoBehaviour, IFoo, IBar, IFoo2
         {
         }
 
-        public class Bar : MonoBehaviour, IFoo, IBar, IFoo2
+        public partial class Bar : MonoBehaviour, IFoo, IBar, IFoo2
         {
         }
     }

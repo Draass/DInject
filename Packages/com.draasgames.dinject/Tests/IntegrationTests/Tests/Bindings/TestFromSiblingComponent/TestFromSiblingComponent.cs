@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromSiblingComponent : ZenjectIntegrationTestFixture
+    public partial class TestFromSiblingComponent : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestBasic()
@@ -70,30 +70,30 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Qux
+        public partial class Qux
         {
             public Qux(Foo foo)
             {
             }
         }
 
-        public class Foo : MonoBehaviour
+        public partial class Foo : MonoBehaviour
         {
         }
 
-        public class Bar : MonoBehaviour
-        {
-            [Inject]
-            public Foo Foo;
-        }
-
-        public class Gorp : MonoBehaviour
+        public partial class Bar : MonoBehaviour
         {
             [Inject]
             public Foo Foo;
         }
 
-        public class Qiv : MonoBehaviour
+        public partial class Gorp : MonoBehaviour
+        {
+            [Inject]
+            public Foo Foo;
+        }
+
+        public partial class Qiv : MonoBehaviour
         {
             [InjectOptional]
             public Foo Foo;

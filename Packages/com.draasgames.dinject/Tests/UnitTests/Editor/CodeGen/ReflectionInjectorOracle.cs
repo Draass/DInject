@@ -9,7 +9,7 @@ namespace DInject.Tests.CodeGen
     // TypeAnalyzer.CreateTypeInfoFromReflection. This is the oracle the generated
     // metadata will be diffed against. It calls the converter directly (not
     // TypeAnalyzer.TryGetInfo) so it never touches the play-mode-gated static cache.
-    public static class ReflectionInjectorOracle
+    public static partial class ReflectionInjectorOracle
     {
         // GetReflectionInfo asserts on enum/array/interface/open-generic/etc, so guard first.
         public static bool CanAnalyze(Type type)

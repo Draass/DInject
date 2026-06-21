@@ -3,7 +3,7 @@
 namespace DInject.Tests.Bindings.DiContainerMethods
 {
     //[CreateAssetMenu(fileName = "Foo2", menuName = "Test/Foo2")]
-    public class Foo2 : ScriptableObject
+    public partial class Foo2 : ScriptableObject
     {
         public bool WasInjected
         {

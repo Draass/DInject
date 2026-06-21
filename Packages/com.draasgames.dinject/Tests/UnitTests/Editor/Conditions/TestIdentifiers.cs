@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Conditions
 {
     [TestFixture]
-    public class TestIdentifiers : ZenjectUnitTestFixture
+    public partial class TestIdentifiers : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 

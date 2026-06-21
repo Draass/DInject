@@ -6,7 +6,7 @@ using DInject.Tests.Installers.MonoInstallers;
 
 namespace DInject.Tests.Installers
 {
-    public class TestMonoInstallers : ZenjectIntegrationTestFixture
+    public partial class TestMonoInstallers : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestBadResourcePath()

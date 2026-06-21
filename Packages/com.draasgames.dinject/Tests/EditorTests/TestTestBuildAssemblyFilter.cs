@@ -7,7 +7,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace DInject.Tests.Internal
 {
-    public class TestTestBuildAssemblyFilter
+    public partial class TestTestBuildAssemblyFilter
     {
         TestBuildAssemblyFilter _target;
 

@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings.Singletons
 {
     [TestFixture]
-    public class TestAsSingle : ZenjectUnitTestFixture
+    public partial class TestAsSingle : ZenjectUnitTestFixture
     {
         [Test]
         public void TestAsSingleThrows()
@@ -129,7 +129,7 @@ namespace DInject.Tests.Bindings.Singletons
                 });
         }
 
-        class Bar
+        partial class Bar
         {
             public Foo GetFoo()
             {
@@ -141,11 +141,11 @@ namespace DInject.Tests.Bindings.Singletons
         {
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
         }
 
-        class FooFactory : IFactory<Foo>
+        partial class FooFactory : IFactory<Foo>
         {
             public Foo Create()
             {

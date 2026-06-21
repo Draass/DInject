@@ -2,7 +2,7 @@
 
 namespace DInject.Tests.Bindings.InstantiateCallback
 {
-    public class Foo : MonoBehaviour
+    public partial class Foo : MonoBehaviour
     {
         public string Value
         {

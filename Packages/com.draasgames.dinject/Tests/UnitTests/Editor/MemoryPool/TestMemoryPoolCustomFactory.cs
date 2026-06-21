@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestMemoryPoolCustomFactory : ZenjectUnitTestFixture
+    public partial class TestMemoryPoolCustomFactory : ZenjectUnitTestFixture
     {
         [Test]
         public void TestFromBinding()
@@ -32,7 +32,7 @@ namespace DInject.Tests.Bindings
             Assert.IsEqual(pool.NumTotal, 1);
         }
 
-        class CustomFactory : IFactory<Qux>
+        partial class CustomFactory : IFactory<Qux>
         {
             public Qux Create()
             {
@@ -40,9 +40,9 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        class Qux
+        partial class Qux
         {
-            public class Pool : MemoryPool<Qux>
+            public partial class Pool : MemoryPool<Qux>
             {
             }
         }

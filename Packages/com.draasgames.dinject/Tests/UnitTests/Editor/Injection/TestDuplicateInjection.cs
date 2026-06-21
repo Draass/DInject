@@ -4,13 +4,13 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestDuplicateInjection : ZenjectUnitTestFixture
+    public partial class TestDuplicateInjection : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1
+        partial class Test1
         {
             public Test1(Test0 test1)
             {

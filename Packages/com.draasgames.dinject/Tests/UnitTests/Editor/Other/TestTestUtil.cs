@@ -5,7 +5,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestTestUtil
+    public partial class TestTestUtil
     {
         [Test]
         public void TestTrue()

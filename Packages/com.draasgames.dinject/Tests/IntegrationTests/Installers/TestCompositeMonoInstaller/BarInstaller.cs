@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.Installers.CompositeMonoInstallers
 {
-    public class BarInstaller : MonoInstaller<BarInstaller>
+    public partial class BarInstaller : MonoInstaller<BarInstaller>
     {
         [SerializeField] string _value;
 

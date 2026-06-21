@@ -5,9 +5,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestDisposeBlock : ZenjectUnitTestFixture
+    public partial class TestDisposeBlock : ZenjectUnitTestFixture
     {
-        class Foo : IDisposable
+        partial class Foo : IDisposable
         {
             public static readonly StaticMemoryPool<string, Foo> Pool =
                 new StaticMemoryPool<string, Foo>(OnSpawned, OnDespawned);
@@ -33,7 +33,7 @@ namespace DInject.Tests
             }
         }
 
-        public class Bar : IDisposable
+        public partial class Bar : IDisposable
         {
             readonly Pool _pool;
 
@@ -47,12 +47,12 @@ namespace DInject.Tests
                 _pool.Despawn(this);
             }
 
-            public class Pool : MemoryPool<Bar>
+            public partial class Pool : MemoryPool<Bar>
             {
             }
         }
 
-        public class Qux : IDisposable
+        public partial class Qux : IDisposable
         {
             public bool WasDisposed
             {

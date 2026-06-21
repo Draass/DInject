@@ -182,6 +182,48 @@ namespace Game
         [DInject.Inject] public GenericPool(SimpleService dep) { }
         [DInject.Inject] public void SetUp(TValue v) { Item = v; }
     }
+
+    // Nested injectable inside a partial outer: covered because the whole containing chain is partial.
+    // The generated getter must re-open 'partial class NestOuter { partial class NestInner { ... } }'
+    // and register typeof(NestOuter.NestInner).
+    public partial class NestOuter
+    {
+        public partial class NestInner
+        {
+            [DInject.Inject] public SimpleService Dep;
+        }
+
+        // Private nested: getter is emitted, but it must NOT be registered (the registry class cannot
+        // typeof an inaccessible type -> would be CS0122). Resolved at runtime via the GetMethod probe.
+        private partial class NestPrivate
+        {
+            [DInject.Inject] public SimpleService Dep;
+        }
+    }
+}
+";
+
+    // One type per coverage diagnostic (DINJ001-005) plus a clean control that must NOT be flagged.
+    private const string DiagCorpus = @"
+namespace DiagGame
+{
+    public class Svc { }
+
+    public class NonPartialInject { [DInject.Inject] public Svc A; }                       // DINJ001
+
+    public partial struct StructInject { [DInject.Inject] public Svc A; }                  // DINJ002
+
+    public class NonPartialOuter { public partial class NestedInject { [DInject.Inject] public Svc A; } } // DINJ003 (containing type not partial)
+
+    public partial class GetOnlyInject { [DInject.Inject] public Svc A { get; } }          // DINJ004
+
+    public partial class MultiCtorInject
+    {
+        [DInject.Inject] public MultiCtorInject(Svc a) { }
+        [DInject.Inject] public MultiCtorInject(Svc a, Svc b) { }
+    }                                                                                       // DINJ005
+
+    public partial class CleanInject { [DInject.Inject] public Svc A; }                    // no diagnostic
 }
 ";
 
@@ -232,8 +274,8 @@ namespace Game
         void Expect(bool cond, string msg) { if (!cond) failures.Add("expectation failed: " + msg); }
 
         int factories = Count(all, "private static object __zenCreate(");
-        Expect(factories == 10, "expected 10 factories (all but the Component MonoLike), got " + factories);
-        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 11, "expected 11 getters");
+        Expect(factories == 13, "expected 13 factories (all but the Component MonoLike), got " + factories);
+        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 14, "expected 14 getters");
         Expect(all.Contains("new global::Game.CtorInject((global::Game.SimpleService)P_0[0])"), "CtorInject factory arg cast");
 
         var monoSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class MonoLike"));
@@ -286,9 +328,45 @@ namespace Game
         Expect(!all.Contains("RegisterGeneratedGetter(typeof(global::Game.GenericPool"),
             "open generic GenericPool must NOT be registered (resolved via GetMethod probe)");
 
-        // 10 non-generic corpus types are registered; the open generic GenericPool is excluded.
-        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 10, "expected 10 registry entries");
+        // Nested type covered: emitted re-opening the containing partial chain.
+        var nestSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class NestInner"));
+        Expect(nestSrc != null && nestSrc.Contains("partial class NestOuter") && nestSrc.Contains("partial class NestInner"),
+            "nested NestInner must be emitted inside a re-opened 'partial class NestOuter'");
+
+        // Registration is by CASCADE with NO reflection: the registry calls __zenRegister() on the
+        // top-level NestOuter only; NestOuter cascades into its nested types, INCLUDING the PRIVATE one.
+        // Each type self-registers typeof(self) from within itself, so a private nested type needs no probe.
+        Expect(all.Contains("NestInner.__zenRegister();") && all.Contains("NestPrivate.__zenRegister();"),
+            "NestOuter.__zenRegister must cascade into NestInner and the private NestPrivate");
+        Expect(all.Contains("global::Game.NestOuter.__zenRegister();"),
+            "registry must call top-level NestOuter.__zenRegister()");
+        Expect(!all.Contains("global::Game.NestOuter.NestInner.__zenRegister();"),
+            "registry must NOT call a nested type directly (reached via the cascade)");
+        Expect(all.Contains("RegisterGeneratedGetter(typeof(global::Game.NestOuter.NestPrivate)"),
+            "PRIVATE nested NestPrivate must be registered via the cascade (zero reflection)");
+        var privSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class NestPrivate"));
+        Expect(privSrc != null && privSrc.Contains("__zenCreateInjectTypeInfo()") && privSrc.Contains("internal static void __zenRegister()"),
+            "private nested NestPrivate must emit both a getter and a __zenRegister");
+
+        // Every non-generic type self-registers exactly once (in its own __zenRegister); 13 of them here.
+        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 13, "expected 13 self-registrations (all non-generic types)");
         Expect(all.Contains("global::DInject.InjectSources.Any"), "Any source present");
+
+        // ---- Coverage diagnostics (DINJ001-005): each bad shape must be flagged, the clean one must not.
+        var diagComp = CSharpCompilation.Create(
+            "DInjectDiag",
+            new[] { CSharpSyntaxTree.ParseText(Stubs), CSharpSyntaxTree.ParseText(DiagCorpus) },
+            refs,
+            new CSharpCompilationOptions(OutputKind.DynamicallyLinkedLibrary));
+        GeneratorDriver diagDriver = CSharpGeneratorDriver.Create(new InjectTypeInfoGenerator().AsSourceGenerator());
+        diagDriver = diagDriver.RunGeneratorsAndUpdateCompilation(diagComp, out _, out var diagDiags);
+        var dinj = diagDiags.Where(d => d.Id.StartsWith("DINJ", StringComparison.Ordinal)).Select(d => d.Id).ToList();
+        foreach (var id in new[] { "DINJ001", "DINJ002", "DINJ003", "DINJ004", "DINJ005" })
+        {
+            Expect(dinj.Contains(id), "expected coverage diagnostic " + id + " (got: " + string.Join(",", dinj) + ")");
+        }
+        // Exactly 5 - the clean control (CleanInject) and the non-injectable Outer/Svc must not be flagged.
+        Expect(dinj.Count == 5, "expected exactly 5 DINJ diagnostics, got " + dinj.Count + ": " + string.Join(",", dinj));
 
         if (failures.Count == 0)
         {

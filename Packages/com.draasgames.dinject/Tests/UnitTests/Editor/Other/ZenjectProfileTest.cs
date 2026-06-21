@@ -3,9 +3,9 @@ using NUnit.Framework;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class ZenjectProfileTest
+    public partial class ZenjectProfileTest
     {
-        class Test0
+        partial class Test0
         {
             public void DoStuff()
             {
@@ -16,7 +16,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        class Test1
+        partial class Test1
         {
             [Inject]
             public Test0 TestB
@@ -41,7 +41,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        class Test2
+        partial class Test2
         {
             [Inject]
             public Test1 TestB

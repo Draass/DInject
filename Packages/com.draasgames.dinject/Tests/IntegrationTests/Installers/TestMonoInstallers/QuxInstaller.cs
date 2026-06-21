@@ -1,6 +1,6 @@
 namespace DInject.Tests.Installers.MonoInstallers
 {
-    public class QuxInstaller : MonoInstaller<string, float, int, QuxInstaller>
+    public partial class QuxInstaller : MonoInstaller<string, float, int, QuxInstaller>
     {
         string _p1;
 

@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestListInjection : ZenjectUnitTestFixture
+    public partial class TestListInjection : ZenjectUnitTestFixture
     {
         [Test]
         public void TestConstructor1()
@@ -60,7 +60,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(values[1], "bar");
         }
 
-        class Test1
+        partial class Test1
         {
             public Test1(List<string> values)
             {
@@ -73,13 +73,13 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test3
+        partial class Test3
         {
             [Inject]
             public List<string> Values = null;
         }
 
-        class Test2
+        partial class Test2
         {
             public Test2(IList<string> values)
             {
@@ -92,7 +92,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test4
+        partial class Test4
         {
             public Test4(IEnumerable<string> values)
             {
@@ -105,7 +105,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test5
+        partial class Test5
         {
             public Test5(string[] values)
             {

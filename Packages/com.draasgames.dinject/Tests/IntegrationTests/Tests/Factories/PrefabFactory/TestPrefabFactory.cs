@@ -6,7 +6,7 @@ using DInject.Tests.Factories.PrefabFactory;
 
 namespace DInject.Tests.Factories
 {
-    public class TestPrefabFactory : ZenjectIntegrationTestFixture
+    public partial class TestPrefabFactory : ZenjectIntegrationTestFixture
     {
         string FooPrefabResourcePath
         {
@@ -76,7 +76,7 @@ namespace DInject.Tests.Factories
             yield break;
         }
 
-        public class Runner : IInitializable
+        public partial class Runner : IInitializable
         {
             readonly GameObject _prefab;
             readonly Foo.Factory _fooFactory;
@@ -97,7 +97,7 @@ namespace DInject.Tests.Factories
             }
         }
 
-        public class Runner2 : IInitializable
+        public partial class Runner2 : IInitializable
         {
             readonly GameObject _prefab;
             readonly Foo2.Factory _fooFactory;
@@ -118,7 +118,7 @@ namespace DInject.Tests.Factories
             }
         }
 
-        public class Runner3 : IInitializable
+        public partial class Runner3 : IInitializable
         {
             readonly string _prefabPath;
             readonly Foo.Factory2 _fooFactory;
@@ -138,7 +138,7 @@ namespace DInject.Tests.Factories
             }
         }
 
-        public class Runner4 : IInitializable
+        public partial class Runner4 : IInitializable
         {
             readonly string _prefabPath;
             readonly Foo2.Factory2 _fooFactory;

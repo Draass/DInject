@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestLazy : ZenjectIntegrationTestFixture
+    public partial class TestLazy : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator Test1()
@@ -101,7 +101,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Bar
+        public partial class Bar
         {
             public static int InstanceCount;
 
@@ -115,7 +115,7 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
             readonly LazyInject<Bar> _bar;
 
@@ -130,13 +130,13 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        public class Qux
+        public partial class Qux
         {
             [Inject(Optional = true)]
             public LazyInject<Bar> Bar;
         }
 
-        public class Gorp
+        public partial class Gorp
         {
             public LazyInject<Bar> Bar;
         }

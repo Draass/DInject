@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestBindingInheritanceMethod : ZenjectUnitTestFixture
+    public partial class TestBindingInheritanceMethod : ZenjectUnitTestFixture
     {
         [Test]
         public void TestNoCopy()
@@ -81,11 +81,11 @@ namespace DInject.Tests.Other
         {
         }
 
-        public class Foo
+        public partial class Foo
         {
         }
 
-        public class Bar : IBar
+        public partial class Bar : IBar
         {
         }
     }

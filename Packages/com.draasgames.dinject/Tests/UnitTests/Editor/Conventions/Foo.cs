@@ -4,7 +4,7 @@ using System;
 
 namespace DInject.Tests.Convention
 {
-    public class ConventionTestAttribute : Attribute
+    public partial class ConventionTestAttribute : Attribute
     {
         public ConventionTestAttribute(int num)
         {
@@ -22,17 +22,17 @@ namespace DInject.Tests.Convention
     {
     }
 
-    public class Foo1 : IFoo
+    public partial class Foo1 : IFoo
     {
     }
 
     [ConventionTest(0)]
-    public class Foo2 : IFoo
+    public partial class Foo2 : IFoo
     {
     }
 
     [ConventionTest(1)]
-    public class Foo3 : IFoo
+    public partial class Foo3 : IFoo
     {
     }
 }

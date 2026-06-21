@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Factories.PrefabFactory
 {
-    public class Foo2 : MonoBehaviour
+    public partial class Foo2 : MonoBehaviour
     {
         [Inject]
         public string Value
@@ -10,11 +10,11 @@ namespace DInject.Tests.Factories.PrefabFactory
             get; private set;
         }
 
-        public class Factory : PlaceholderFactory<Object, string, Foo2>
+        public partial class Factory : PlaceholderFactory<Object, string, Foo2>
         {
         }
 
-        public class Factory2 : PlaceholderFactory<string, string, Foo2>
+        public partial class Factory2 : PlaceholderFactory<string, string, Foo2>
         {
         }
     }

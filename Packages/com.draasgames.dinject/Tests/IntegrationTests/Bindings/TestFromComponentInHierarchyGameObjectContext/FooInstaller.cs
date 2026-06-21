@@ -4,7 +4,7 @@
 
 namespace DInject.Tests.Bindings.FromComponentInHierarchyGameObjectContext
 {
-    public class FooInstaller : MonoInstaller
+    public partial class FooInstaller : MonoInstaller
     {
         [SerializeField]
         Foo _foo;

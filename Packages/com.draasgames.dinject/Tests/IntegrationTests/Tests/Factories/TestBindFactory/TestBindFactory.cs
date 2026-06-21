@@ -7,7 +7,7 @@ using DInject.Tests.Factories.BindFactory;
 
 namespace DInject.Tests.Factories
 {
-    public class TestBindFactory : ZenjectIntegrationTestFixture
+    public partial class TestBindFactory : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {
@@ -462,22 +462,22 @@ namespace DInject.Tests.Factories
             yield break;
         }
 
-        public class CameraFactory2 : PlaceholderFactory<string, Camera>
+        public partial class CameraFactory2 : PlaceholderFactory<string, Camera>
         {
         }
 
-        public class CameraFactory : PlaceholderFactory<Camera>
+        public partial class CameraFactory : PlaceholderFactory<Camera>
         {
         }
 
-        public class Foo3 : MonoBehaviour
+        public partial class Foo3 : MonoBehaviour
         {
-            public class Factory : PlaceholderFactory<Foo3>
+            public partial class Factory : PlaceholderFactory<Foo3>
             {
             }
         }
 
-        public class Foo2 : MonoBehaviour
+        public partial class Foo2 : MonoBehaviour
         {
             [Inject]
             public int Value
@@ -485,11 +485,11 @@ namespace DInject.Tests.Factories
                 get; private set;
             }
 
-            public class Factory : PlaceholderFactory<Foo2>
+            public partial class Factory : PlaceholderFactory<Foo2>
             {
             }
 
-            public class Factory2 : PlaceholderFactory<int, Foo2>
+            public partial class Factory2 : PlaceholderFactory<int, Foo2>
             {
             }
         }

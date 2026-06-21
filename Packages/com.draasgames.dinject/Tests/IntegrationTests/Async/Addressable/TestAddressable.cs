@@ -13,7 +13,7 @@ using Assert = NUnit.Framework.Assert;
 
 namespace DInject.Tests.IntegrationTests.Async.Addressable
 {
-    public class TestAddressable : ZenjectIntegrationTestFixture
+    public partial class TestAddressable : ZenjectIntegrationTestFixture
     {
         private AssetReferenceT<GameObject> addressablePrefabReference;
 
@@ -135,7 +135,7 @@ namespace DInject.Tests.IntegrationTests.Async.Addressable
             Assert.IsTrue(asyncGameObj.IsFaulted);
         }
 
-        private class FailedOperation : AsyncOperationBase<GameObject>
+        private partial class FailedOperation : AsyncOperationBase<GameObject>
         {
             protected override void Execute()
             {

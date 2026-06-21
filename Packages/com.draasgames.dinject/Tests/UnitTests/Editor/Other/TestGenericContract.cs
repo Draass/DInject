@@ -5,14 +5,14 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestGenericContract : ZenjectUnitTestFixture
+    public partial class TestGenericContract : ZenjectUnitTestFixture
     {
-        class Test1<T>
+        partial class Test1<T>
         {
             public T Data;
         }
 
-        class Test2
+        partial class Test2
         {
         }
 
@@ -56,7 +56,7 @@ namespace DInject.Tests.Other
         {
         }
 
-        class Test2<T> : IFoo<T>, IBar<T>
+        partial class Test2<T> : IFoo<T>, IBar<T>
         {
         }
 
@@ -79,7 +79,7 @@ namespace DInject.Tests.Other
         public interface IQux {
         }
 
-        public class Qux : IQux {
+        public partial class Qux : IQux {
         }
 
         [Test]

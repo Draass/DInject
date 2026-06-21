@@ -8,7 +8,7 @@ using DInject.Internal;
 namespace DInject.Tests.IntegrationTests.MemoryPool
 {
     [TestFixture]
-    public class TestMemoryPool : ZenjectIntegrationTestFixture
+    public partial class TestMemoryPool : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestDestroyAnInactiveItemInPool()

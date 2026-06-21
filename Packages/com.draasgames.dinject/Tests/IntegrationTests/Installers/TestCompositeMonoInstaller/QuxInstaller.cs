@@ -3,7 +3,7 @@ using DInject;
 
 namespace DInject.Tests.Installers.CompositeMonoInstallers
 {
-    public class QuxInstaller : MonoInstaller<QuxInstaller>
+    public partial class QuxInstaller : MonoInstaller<QuxInstaller>
     {
         [SerializeField] string _p1;
         [SerializeField] float _p2;

@@ -5,9 +5,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Conditions
 {
     [TestFixture]
-    public class TestConditionsParents : ZenjectUnitTestFixture
+    public partial class TestConditionsParents : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
@@ -15,7 +15,7 @@ namespace DInject.Tests.Conditions
         {
         }
 
-        class Test1 : ITest1
+        partial class Test1 : ITest1
         {
             public Test0 test0;
 
@@ -25,7 +25,7 @@ namespace DInject.Tests.Conditions
             }
         }
 
-        class Test2 : ITest1
+        partial class Test2 : ITest1
         {
             public Test0 test0;
 
@@ -35,7 +35,7 @@ namespace DInject.Tests.Conditions
             }
         }
 
-        class Test3 : ITest1
+        partial class Test3 : ITest1
         {
             public Test1 test1;
 
@@ -45,7 +45,7 @@ namespace DInject.Tests.Conditions
             }
         }
 
-        class Test4 : ITest1
+        partial class Test4 : ITest1
         {
             public Test1 test1;
 

@@ -16,6 +16,7 @@ namespace DInject
 
         bool _hasEndedInstall;
         bool _hasStartedInstall;
+        ReflectionBakingCoverageModes _previousCoverageMode;
 
         protected DiContainer Container
         {
@@ -45,6 +46,12 @@ namespace DInject
 
             ZenjectTestUtil.DestroyEverythingExceptTestRunner(true);
             StaticContext.Clear();
+
+            // Run integration tests CODEGEN-ONLY (no reflection fallback) so uncovered types fail the
+            // test instead of being silently served by editor reflection. Red tests == coverage gaps.
+            _previousCoverageMode = TypeAnalyzer.ReflectionBakingCoverageMode;
+            TypeAnalyzer.ReflectionBakingCoverageMode = ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
+            TypeAnalyzer.ClearTypeInfoCache();
         }
 
         protected void SkipInstall()
@@ -150,6 +157,9 @@ namespace DInject
 
             _hasStartedInstall = false;
             _hasEndedInstall = false;
+
+            TypeAnalyzer.ReflectionBakingCoverageMode = _previousCoverageMode;
+            TypeAnalyzer.ClearTypeInfoCache();
         }
     }
 }

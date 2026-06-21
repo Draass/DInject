@@ -5,7 +5,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestPoolableStaticMemoryPool : ZenjectUnitTestFixture
+    public partial class TestPoolableStaticMemoryPool : ZenjectUnitTestFixture
     {
         [Test]
         public void RunTest()
@@ -33,7 +33,7 @@ namespace DInject.Tests
             Assert.IsEqual(foo.Data, null);
         }
 
-        public class Foo : IPoolable<string>, IDisposable
+        public partial class Foo : IPoolable<string>, IDisposable
         {
             public static readonly PoolableStaticMemoryPool<string, Foo> Pool =
                 new PoolableStaticMemoryPool<string, Foo>();

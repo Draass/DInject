@@ -8,7 +8,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromGameObject : ZenjectIntegrationTestFixture
+    public partial class TestFromGameObject : ZenjectIntegrationTestFixture
     {
         const string GameObjName = "TestObj";
 
@@ -195,11 +195,11 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        public class Foo : MonoBehaviour, IFoo, IBar
+        public partial class Foo : MonoBehaviour, IFoo, IBar
         {
         }
 
-        public class Bar : MonoBehaviour, IFoo, IBar
+        public partial class Bar : MonoBehaviour, IFoo, IBar
         {
         }
     }

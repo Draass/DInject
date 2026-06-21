@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestArrayPool : ZenjectUnitTestFixture
+    public partial class TestArrayPool : ZenjectUnitTestFixture
     {
         [Test]
         public void RunTest()

@@ -1,10 +1,10 @@
 namespace DInject.Tests.Installers.MonoInstallers
 {
-    public class Foo
+    public partial class Foo
     {
     }
 
-    public class FooInstaller : MonoInstaller<FooInstaller>
+    public partial class FooInstaller : MonoInstaller<FooInstaller>
     {
         public override void InstallBindings()
         {

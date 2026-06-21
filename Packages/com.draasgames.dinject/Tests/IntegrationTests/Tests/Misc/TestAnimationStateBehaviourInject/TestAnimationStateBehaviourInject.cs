@@ -5,7 +5,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.TestAnimationStateBehaviourInject
 {
-    public class TestAnimationStateBehaviourInject : ZenjectIntegrationTestFixture
+    public partial class TestAnimationStateBehaviourInject : ZenjectIntegrationTestFixture
     {
         const string ResourcePrefix = "TestAnimationStateBehaviourInject/";
 
@@ -26,7 +26,7 @@ namespace DInject.Tests.TestAnimationStateBehaviourInject
             Assert.IsEqual(StateBehaviour1.OnStateEnterCalls, 1);
         }
 
-        public class Foo : IInitializable
+        public partial class Foo : IInitializable
         {
             public bool HasInitialized
             {

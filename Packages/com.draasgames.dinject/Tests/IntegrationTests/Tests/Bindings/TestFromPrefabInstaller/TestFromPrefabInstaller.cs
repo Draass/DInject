@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings.FromPrefabInstaller
 {
-    public class TestFromPrefabInstaller : ZenjectIntegrationTestFixture
+    public partial class TestFromPrefabInstaller : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {
@@ -107,7 +107,7 @@ namespace DInject.Tests.Bindings.FromPrefabInstaller
             subContainer.Bind<Qux>().AsSingle().WithArguments("asdf");
         }
 
-        public class Qux
+        public partial class Qux
         {
             [Inject]
             public string Data;
@@ -116,7 +116,7 @@ namespace DInject.Tests.Bindings.FromPrefabInstaller
             public Foo Foo;
         }
 
-        public class FooInstaller : Installer<FooInstaller>
+        public partial class FooInstaller : Installer<FooInstaller>
         {
             public override void InstallBindings()
             {

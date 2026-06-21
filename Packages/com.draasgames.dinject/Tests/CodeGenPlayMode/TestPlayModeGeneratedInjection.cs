@@ -10,7 +10,7 @@ namespace DInject.Tests.CodeGenPlayMode
     // onto a GameObject and injected with runtime reflection DISABLED (NoCheckAssumeFullCoverage). This
     // exercises the full generated path end-to-end: the per-assembly registry registers the generated
     // getter at SubsystemRegistration, and DiContainer.Inject uses it - no direct reflection.
-    public class TestPlayModeGeneratedInjection
+    public partial class TestPlayModeGeneratedInjection
     {
         static bool GeneratorActive()
         {

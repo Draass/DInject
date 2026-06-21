@@ -2,9 +2,9 @@ using UnityEngine;
 
 namespace DInject.Tests.IntegrationTests.MemoryPool
 {
-    public class FooMemoryPool : MonoBehaviour
+    public partial class FooMemoryPool : MonoBehaviour
     {
-        public class Pool : MonoMemoryPool<FooMemoryPool>
+        public partial class Pool : MonoMemoryPool<FooMemoryPool>
         {
         }
     }

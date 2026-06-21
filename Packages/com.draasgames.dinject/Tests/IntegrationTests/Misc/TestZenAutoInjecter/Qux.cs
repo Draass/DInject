@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace DInject.Tests.AutoInjecter
 {
-    public class Qux : MonoBehaviour
+    public partial class Qux : MonoBehaviour
     {
         [Inject]
         public DiContainer Container;

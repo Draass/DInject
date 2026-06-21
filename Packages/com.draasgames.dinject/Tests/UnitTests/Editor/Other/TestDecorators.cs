@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestDecorators : ZenjectUnitTestFixture
+    public partial class TestDecorators : ZenjectUnitTestFixture
     {
         static int CallCounter;
 
@@ -13,7 +13,7 @@ namespace DInject.Tests.Other
             void Save();
         }
 
-        public class SaveHandler : ISaveHandler
+        public partial class SaveHandler : ISaveHandler
         {
             public SaveHandler()
             {
@@ -36,7 +36,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class SaveDecorator1 : ISaveHandler
+        public partial class SaveDecorator1 : ISaveHandler
         {
             readonly ISaveHandler _handler;
 
@@ -63,7 +63,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class SaveDecorator2 : ISaveHandler
+        public partial class SaveDecorator2 : ISaveHandler
         {
             readonly ISaveHandler _handler;
 
@@ -84,7 +84,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
         }
 

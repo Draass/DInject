@@ -6,13 +6,13 @@ namespace DInject.Tests.Factories.BindFactory
     {
     }
 
-    public class IFooFactory : PlaceholderFactory<IFoo>
+    public partial class IFooFactory : PlaceholderFactory<IFoo>
     {
     }
 
-    public class Foo : MonoBehaviour, IFoo
+    public partial class Foo : MonoBehaviour, IFoo
     {
-        public class Factory : PlaceholderFactory<Foo>
+        public partial class Factory : PlaceholderFactory<Foo>
         {
         }
     }

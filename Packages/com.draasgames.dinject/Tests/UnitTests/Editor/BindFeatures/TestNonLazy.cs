@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestNonLazy : ZenjectUnitTestFixture
+    public partial class TestNonLazy : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -31,14 +31,14 @@ namespace DInject.Tests.Bindings
             Container.ResolveRoots();
         }
 
-        public class Foo
+        public partial class Foo
         {
             public Foo(Bar bar)
             {
             }
         }
 
-        public class Bar
+        public partial class Bar
         {
         }
     }

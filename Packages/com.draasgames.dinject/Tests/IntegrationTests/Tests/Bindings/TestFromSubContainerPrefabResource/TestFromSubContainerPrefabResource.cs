@@ -6,7 +6,7 @@ using DInject.Tests.Bindings.FromSubContainerPrefabResource;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromSubContainerPrefabResource : ZenjectIntegrationTestFixture
+    public partial class TestFromSubContainerPrefabResource : ZenjectIntegrationTestFixture
     {
         const string PathPrefix = "TestFromSubContainerPrefabResource/";
         const string FooResourcePath = PathPrefix + "FooSubContainer";

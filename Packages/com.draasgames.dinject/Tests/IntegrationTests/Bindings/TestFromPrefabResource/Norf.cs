@@ -6,7 +6,7 @@ namespace DInject.Tests.Bindings.FromPrefabResource
     {
     }
 
-    public class Norf : MonoBehaviour, INorf
+    public partial class Norf : MonoBehaviour, INorf
     {
     }
 }

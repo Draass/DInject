@@ -9,7 +9,7 @@ namespace DInject.Tests.CodeGen
     // reflectively by name so this fixture compiles whether or not the DInject source generator is
     // active; if it is not active (no generated method) the cases are Ignored rather than failing.
     [TestFixture]
-    public class TestGeneratedEquivalence : ZenjectUnitTestFixture
+    public partial class TestGeneratedEquivalence : ZenjectUnitTestFixture
     {
         [TearDown]
         public void ResetCodeGenState()

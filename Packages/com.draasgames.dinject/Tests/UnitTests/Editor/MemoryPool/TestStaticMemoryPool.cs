@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestStaticMemoryPool : ZenjectUnitTestFixture
+    public partial class TestStaticMemoryPool : ZenjectUnitTestFixture
     {
         [SetUp]
         public void CommonInstall()
@@ -211,7 +211,7 @@ namespace DInject.Tests
             Assert.Throws(() => pool.ShrinkBy(1));
         }
 
-        public class Bar
+        public partial class Bar
         {
             public static readonly StaticMemoryPool<Bar> Pool =
                 new StaticMemoryPool<Bar>(OnSpawned, OnDespawned);
@@ -225,7 +225,7 @@ namespace DInject.Tests
             }
         }
 
-        public class Foo : IDisposable
+        public partial class Foo : IDisposable
         {
             public static readonly StaticMemoryPool<string, Foo> Pool =
                 new StaticMemoryPool<string, Foo>(OnSpawned, OnDespawned);

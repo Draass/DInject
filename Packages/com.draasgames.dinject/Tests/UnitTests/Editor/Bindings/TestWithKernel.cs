@@ -4,11 +4,11 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestWithKernel : ZenjectUnitTestFixture
+    public partial class TestWithKernel : ZenjectUnitTestFixture
     {
         static int GlobalInitializeCount;
 
-        public class Foo : IInitializable
+        public partial class Foo : IInitializable
         {
             public bool WasInitialized
             {
@@ -27,7 +27,7 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        public class FooFacade
+        public partial class FooFacade
         {
             [Inject]
             public Foo Foo
@@ -36,7 +36,7 @@ namespace DInject.Tests.Bindings
             }
         }
 
-        public class FooInstaller : Installer<FooInstaller>
+        public partial class FooInstaller : Installer<FooInstaller>
         {
             public override void InstallBindings()
             {
@@ -82,11 +82,11 @@ namespace DInject.Tests.Bindings
             Assert.That(facade.Foo.WasInitialized);
         }
 
-        public class FooKernel : Kernel
+        public partial class FooKernel : Kernel
         {
         }
 
-        public class Bar : IInitializable
+        public partial class Bar : IInitializable
         {
             public int InitializeCount
             {

@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestNullableValues : ZenjectUnitTestFixture
+    public partial class TestNullableValues : ZenjectUnitTestFixture
     {
-        class Test1
+        partial class Test1
         {
             public int? val;
 
@@ -16,7 +16,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class Test2
+        partial class Test2
         {
             public int? val;
 

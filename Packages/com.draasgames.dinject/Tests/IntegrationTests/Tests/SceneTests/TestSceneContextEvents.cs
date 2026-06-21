@@ -4,7 +4,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests
 {
-    public class TestSceneContextEvents : SceneTestFixture
+    public partial class TestSceneContextEvents : SceneTestFixture
     {
         [UnityTest]
         public IEnumerator TestScene()

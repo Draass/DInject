@@ -6,7 +6,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromFactory : ZenjectUnitTestFixture
+    public partial class TestFromFactory : ZenjectUnitTestFixture
     {
         static Foo StaticFoo = new Foo();
 
@@ -160,7 +160,7 @@ namespace DInject.Tests.Bindings
             Assert.IsEqual(FooFactory.InstanceCount, 1);
         }
 
-        class FooFactory : IFactory<Foo>
+        partial class FooFactory : IFactory<Foo>
         {
             public static int InstanceCount;
 
@@ -179,7 +179,7 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
         }
     }

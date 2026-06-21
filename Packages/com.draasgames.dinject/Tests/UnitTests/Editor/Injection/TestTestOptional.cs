@@ -4,25 +4,25 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestTestOptional : ZenjectUnitTestFixture
+    public partial class TestTestOptional : ZenjectUnitTestFixture
     {
-        class Test1
+        partial class Test1
         {
         }
 
-        class Test2
+        partial class Test2
         {
             [Inject]
             public Test1 val1 = null;
         }
 
-        class Test3
+        partial class Test3
         {
             [InjectOptional]
             public Test1 val1 = null;
         }
 
-        class Test0
+        partial class Test0
         {
             [InjectOptional]
             public int Val1 = 5;
@@ -70,14 +70,14 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(Container.Resolve<Test0>().Val1, 3);
         }
 
-        class Test4
+        partial class Test4
         {
             public Test4(Test1 val1)
             {
             }
         }
 
-        class Test5
+        partial class Test5
         {
             public Test1 Val1;
 
@@ -107,7 +107,7 @@ namespace DInject.Tests.Injection
             Assert.That(test.Val1 == null);
         }
 
-        class Test6
+        partial class Test6
         {
             public Test6(Test2 test2)
             {
@@ -124,7 +124,7 @@ namespace DInject.Tests.Injection
                 delegate { Container.Resolve<Test6>(); });
         }
 
-        class Test7
+        partial class Test7
         {
             public int Val1;
 
@@ -144,7 +144,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(Container.Resolve<Test7>().Val1, 0);
         }
 
-        class Test8
+        partial class Test8
         {
             public int Val1;
 
@@ -164,7 +164,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(Container.Resolve<Test8>().Val1, 5);
         }
 
-        class Test8_2
+        partial class Test8_2
         {
             public int Val1;
 
@@ -191,7 +191,7 @@ namespace DInject.Tests.Injection
             Assert.IsEqual(Container.Resolve<Test8_2>().Val1, 2);
         }
 
-        class Test9
+        partial class Test9
         {
             public int? Val1;
 

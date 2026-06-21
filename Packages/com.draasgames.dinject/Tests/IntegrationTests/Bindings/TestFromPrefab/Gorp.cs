@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Bindings.FromPrefab
 {
-    public class Gorp : MonoBehaviour
+    public partial class Gorp : MonoBehaviour
     {
         [Inject]
         string _arg;

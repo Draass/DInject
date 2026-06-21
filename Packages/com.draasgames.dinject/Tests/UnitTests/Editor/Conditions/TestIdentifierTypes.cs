@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Conditions
 {
     [TestFixture]
-    public class TestIdentifierTypes : ZenjectUnitTestFixture
+    public partial class TestIdentifierTypes : ZenjectUnitTestFixture
     {
-        class Foo
+        partial class Foo
         {
         }
 
@@ -16,7 +16,7 @@ namespace DInject.Tests.Conditions
             Thing2
         }
 
-        class Test0
+        partial class Test0
         {
             public Test0(
                 [Inject(Id = "asdf")]
@@ -43,7 +43,7 @@ namespace DInject.Tests.Conditions
             Assert.IsNotNull(Container.Resolve<Test0>());
         }
 
-        class Test1
+        partial class Test1
         {
             public Test1(
                 [Inject(Id = 5)]
@@ -79,7 +79,7 @@ namespace DInject.Tests.Conditions
             Assert.IsNotNull(Container.Resolve<Test1>());
         }
 
-        class Test2
+        partial class Test2
         {
             public Test2(
                 [Inject(Id = Things.Thing1)]

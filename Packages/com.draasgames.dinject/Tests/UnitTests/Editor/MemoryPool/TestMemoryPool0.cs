@@ -7,7 +7,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestMemoryPool0 : ZenjectUnitTestFixture
+    public partial class TestMemoryPool0 : ZenjectUnitTestFixture
     {
         [Test]
         public void TestFactoryProperties()
@@ -326,21 +326,21 @@ namespace DInject.Tests.Bindings
             Assert.IsEqual(pool.NumInactive, 4);
         }
 
-        class Bar
+        partial class Bar
         {
-            public class Pool : MemoryPool<Bar>
+            public partial class Pool : MemoryPool<Bar>
             {
             }
         }
 
-        class Foo
+        partial class Foo
         {
             public int ResetCount
             {
                 get; private set;
             }
 
-            public class Pool : MemoryPool<Foo>
+            public partial class Pool : MemoryPool<Foo>
             {
                 protected override void OnSpawned(Foo foo)
                 {
@@ -364,9 +364,9 @@ namespace DInject.Tests.Bindings
             subContainer.Bind<Qux>().AsSingle();
         }
 
-        class Qux
+        partial class Qux
         {
-            public class Pool : MemoryPool<Qux>
+            public partial class Pool : MemoryPool<Qux>
             {
             }
         }

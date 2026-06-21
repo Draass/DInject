@@ -9,7 +9,7 @@ namespace DInject.Tests.CodeGen
     // reflection oracle is self-consistent and the behavioral delegate checks work - BEFORE any
     // generated getter exists. At M3+ the same comparer diffs the oracle against generated getters.
     [TestFixture]
-    public class TestInjectTypeInfoEquivalence : ZenjectUnitTestFixture
+    public partial class TestInjectTypeInfoEquivalence : ZenjectUnitTestFixture
     {
         [TearDown]
         public void ResetCodeGenState()

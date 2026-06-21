@@ -5,7 +5,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestFacadeSubContainer
+    public partial class TestFacadeSubContainer
     {
         static int NumInstalls;
 
@@ -54,11 +54,11 @@ namespace DInject.Tests.Other
             subContainer.Bind<IDisposable>().To<DisposeTest>().AsSingle();
         }
 
-        public class FooKernel : Kernel
+        public partial class FooKernel : Kernel
         {
         }
 
-        public class InitTest : IInitializable
+        public partial class InitTest : IInitializable
         {
             public static bool WasRun;
 
@@ -68,7 +68,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class TickTest : ITickable
+        public partial class TickTest : ITickable
         {
             public static bool WasRun;
 
@@ -78,7 +78,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class DisposeTest : IDisposable
+        public partial class DisposeTest : IDisposable
         {
             public static bool WasRun;
 

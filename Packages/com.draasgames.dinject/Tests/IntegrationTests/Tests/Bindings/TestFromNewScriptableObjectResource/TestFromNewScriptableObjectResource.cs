@@ -6,7 +6,7 @@ using DInject.Tests.Bindings.FromNewScriptableObjectResource;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromNewScriptableObjectResource : ZenjectIntegrationTestFixture
+    public partial class TestFromNewScriptableObjectResource : ZenjectIntegrationTestFixture
     {
         const string PathPrefix = "TestFromNewScriptableObjectResource/";
 

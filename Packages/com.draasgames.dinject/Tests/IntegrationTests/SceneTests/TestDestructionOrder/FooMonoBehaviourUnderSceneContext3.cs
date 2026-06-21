@@ -2,7 +2,7 @@
 
 namespace DInject.Tests.TestDestructionOrder
 {
-    public class FooMonoBehaviourUnderSceneContext3 : MonoBehaviour
+    public partial class FooMonoBehaviourUnderSceneContext3 : MonoBehaviour
     {
         public void OnDestroy()
         {

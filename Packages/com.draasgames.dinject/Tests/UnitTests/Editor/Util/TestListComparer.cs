@@ -7,7 +7,7 @@ using Assert=DInject.Internal.Assert;
 
 namespace DInject.Tests
 {
-    public static class TestListComparer
+    public static partial class TestListComparer
     {
         public static bool ContainSameElements(IEnumerable listA, IEnumerable listB)
         {

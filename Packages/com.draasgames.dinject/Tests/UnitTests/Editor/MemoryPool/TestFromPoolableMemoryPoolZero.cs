@@ -6,9 +6,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromPoolableMemoryPoolZero : ZenjectUnitTestFixture
+    public partial class TestFromPoolableMemoryPoolZero : ZenjectUnitTestFixture
     {
-        public class Foo : IPoolable<IMemoryPool>, IDisposable
+        public partial class Foo : IPoolable<IMemoryPool>, IDisposable
         {
             IMemoryPool _pool;
 
@@ -38,7 +38,7 @@ namespace DInject.Tests.Bindings
                 _pool = pool;
             }
 
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

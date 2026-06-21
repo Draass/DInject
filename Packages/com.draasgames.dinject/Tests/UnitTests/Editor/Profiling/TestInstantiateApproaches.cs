@@ -13,7 +13,7 @@ namespace DInject.Tests.Injection
     // baking during the instantiate (though there are wins during initialization)
     // When compiled expressions are not used such as IL2CPP however there is a noticable
     // improvement of maybe 15-20% for instantiate
-    public class TestInstantiateApproaches : ZenjectUnitTestFixture
+    public partial class TestInstantiateApproaches : ZenjectUnitTestFixture
     {
         //[Test]
         public void TestWithoutReflectionBaking()
@@ -53,12 +53,12 @@ namespace DInject.Tests.Injection
         }
 
         [NoReflectionBaking]
-        class Test0
+        partial class Test0
         {
         }
 
         [NoReflectionBaking]
-        abstract class FooBaseBaked
+        abstract partial class FooBaseBaked
         {
             [Inject]
             public Test0 BaseFieldPublic = null;
@@ -154,7 +154,7 @@ namespace DInject.Tests.Injection
         }
 
         [NoReflectionBaking]
-        class FooDerivedBaked : FooBaseBaked
+        partial class FooDerivedBaked : FooBaseBaked
         {
             public Test0 ConstructorParam = null;
 
@@ -260,7 +260,7 @@ namespace DInject.Tests.Injection
         }
 
         [NoReflectionBaking]
-        abstract class FooBaseNoBaking
+        abstract partial class FooBaseNoBaking
         {
             [Inject]
             public Test0 BaseFieldPublic = null;
@@ -304,7 +304,7 @@ namespace DInject.Tests.Injection
         }
 
         [NoReflectionBaking]
-        class FooDerivedNoBaking : FooBaseNoBaking
+        partial class FooDerivedNoBaking : FooBaseNoBaking
         {
             public Test0 ConstructorParam = null;
 

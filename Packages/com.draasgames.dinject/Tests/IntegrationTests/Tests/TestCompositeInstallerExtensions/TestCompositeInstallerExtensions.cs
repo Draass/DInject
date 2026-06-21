@@ -6,7 +6,7 @@ using DInject;
 
 namespace DInject.Tests.Installers
 {
-    public class TestCompositeInstallerExtensions
+    public partial class TestCompositeInstallerExtensions
     {
         TestInstaller _installer1;
 
@@ -439,13 +439,13 @@ namespace DInject.Tests.Installers
             Assert.AreEqual(3, reusableParentInstallers.Count);
         }
 
-        public class TestInstaller : IInstaller
+        public partial class TestInstaller : IInstaller
         {
             public bool IsEnabled => false;
             public void InstallBindings() { }
         }
 
-        public class TestCompositeInstaller : TestInstaller, ICompositeInstaller<TestInstaller>
+        public partial class TestCompositeInstaller : TestInstaller, ICompositeInstaller<TestInstaller>
         {
             public List<TestInstaller> _leafInstallers;
             public IReadOnlyList<TestInstaller> LeafInstallers => _leafInstallers;

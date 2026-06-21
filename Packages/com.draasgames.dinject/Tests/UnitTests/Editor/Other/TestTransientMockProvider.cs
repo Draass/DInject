@@ -3,7 +3,7 @@ using NUnit.Framework;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestTransientMockProvider : ZenjectUnitTestFixture
+    public partial class TestTransientMockProvider : ZenjectUnitTestFixture
     {
         public interface IFoo
         {

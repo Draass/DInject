@@ -7,7 +7,7 @@ namespace DInject.Tests.CodeGen
     // InjectableInfo, plus member/method ordering, plus delegate null-ness (delegates cannot be
     // compared by identity - behavioral equivalence is checked separately by invoking them).
     // Returns null when equivalent, otherwise a human-readable diff path.
-    public static class InjectTypeInfoComparer
+    public static partial class InjectTypeInfoComparer
     {
         public static string Compare(InjectTypeInfo a, InjectTypeInfo b)
         {

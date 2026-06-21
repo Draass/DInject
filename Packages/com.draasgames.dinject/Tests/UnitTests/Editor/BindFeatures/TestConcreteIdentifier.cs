@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.BindFeatures
 {
     [TestFixture]
-    public class TestConcreteIdentifier : ZenjectUnitTestFixture
+    public partial class TestConcreteIdentifier : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -29,7 +29,7 @@ namespace DInject.Tests.BindFeatures
             }
         }
 
-        class Foo : IFoo
+        partial class Foo : IFoo
         {
             public Foo(string data)
             {

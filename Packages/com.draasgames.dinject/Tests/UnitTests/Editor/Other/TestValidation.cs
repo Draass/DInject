@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests
 {
     [TestFixture]
-    public class TestValidation
+    public partial class TestValidation
     {
         DiContainer Container
         {
@@ -146,7 +146,7 @@ namespace DInject.Tests
             Assert.IsEqual(Container.Resolve<Loy>().CallCount, 1);
         }
 
-        public class Loy : IValidatable, IInitializable, ITickable
+        public partial class Loy : IValidatable, IInitializable, ITickable
         {
             public int CallCount
             {
@@ -167,13 +167,13 @@ namespace DInject.Tests
             }
         }
 
-        public class Jaze
+        public partial class Jaze
         {
             [Inject]
             public LazyInject<Qux> Qux;
         }
 
-        public class QuxInstaller : Installer<QuxInstaller>
+        public partial class QuxInstaller : Installer<QuxInstaller>
         {
             public override void InstallBindings()
             {
@@ -182,26 +182,26 @@ namespace DInject.Tests
             }
         }
 
-        public class Qux
+        public partial class Qux
         {
         }
 
-        public class Bar
+        public partial class Bar
         {
             public Bar(Foo foo)
             {
             }
 
-            public class Factory : PlaceholderFactory<Bar>
+            public partial class Factory : PlaceholderFactory<Bar>
             {
             }
 
-            public class Pool : MemoryPool<Bar>
+            public partial class Pool : MemoryPool<Bar>
             {
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
         }
 
@@ -209,7 +209,7 @@ namespace DInject.Tests
         {
         }
 
-        public class Gorp : IGorp, IValidatable
+        public partial class Gorp : IGorp, IValidatable
         {
             public static int CallCount
             {

@@ -6,7 +6,7 @@ using DInject.Tests.Installers.Installers;
 
 namespace DInject.Tests.Installers
 {
-    public class TestInstallers : ZenjectIntegrationTestFixture
+    public partial class TestInstallers : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestZeroArgs()

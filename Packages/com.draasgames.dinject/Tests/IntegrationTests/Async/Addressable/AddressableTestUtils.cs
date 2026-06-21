@@ -9,7 +9,7 @@ using UnityEngine.ResourceManagement.ResourceLocations;
 
 namespace DInject.Tests.IntegrationTests.Async.Addressable
 {
-    public class AddressableTestUtils
+    public partial class AddressableTestUtils
     {
         public static IEnumerator GetAddressableReference(string key, Action<AssetReferenceGameObject> onFound)
         {

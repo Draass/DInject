@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromIFactory : ZenjectUnitTestFixture
+    public partial class TestFromIFactory : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -22,7 +22,7 @@ namespace DInject.Tests.Bindings
             Assert.IsEqual(factory2.Create().Value, "zxcv");
         }
 
-        public class Foo
+        public partial class Foo
         {
             public Foo(string value)
             {
@@ -34,12 +34,12 @@ namespace DInject.Tests.Bindings
                 get; private set;
             }
 
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }
 
-        public class FooFactory : IFactory<Foo>
+        public partial class FooFactory : IFactory<Foo>
         {
             readonly string _value;
             readonly DiContainer _container;

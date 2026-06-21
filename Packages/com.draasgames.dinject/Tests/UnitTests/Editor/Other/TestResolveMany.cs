@@ -5,17 +5,17 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestResolveMany : ZenjectUnitTestFixture
+    public partial class TestResolveMany : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1 : Test0
+        partial class Test1 : Test0
         {
         }
 
-        class Test2 : Test0
+        partial class Test2 : Test0
         {
         }
 

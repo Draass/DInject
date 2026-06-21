@@ -5,7 +5,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestSubContainers4 : ZenjectUnitTestFixture
+    public partial class TestSubContainers4 : ZenjectUnitTestFixture
     {
         readonly Dictionary<object, DiContainer> _subContainers = new Dictionary<object, DiContainer>();
 
@@ -59,13 +59,13 @@ namespace DInject.Tests.Other
             subContainer.Bind<RotorModel>().AsSingle();
         }
 
-        public class RotorController
+        public partial class RotorController
         {
             [Inject]
             public RotorModel Model;
         }
 
-        public class RotorView
+        public partial class RotorView
         {
             [Inject]
             public RotorController Controller;
@@ -74,7 +74,7 @@ namespace DInject.Tests.Other
             public RotorModel Model;
         }
 
-        public class RotorModel
+        public partial class RotorModel
         {
         }
     }

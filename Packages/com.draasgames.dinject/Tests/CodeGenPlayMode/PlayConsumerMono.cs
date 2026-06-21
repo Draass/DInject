@@ -4,7 +4,7 @@ using DInject;
 namespace DInject.Tests.CodeGenPlayMode
 {
     // Leaf service bound as an instance (never constructed via TypeAnalyzer).
-    public class PlayService
+    public partial class PlayService
     {
     }
 

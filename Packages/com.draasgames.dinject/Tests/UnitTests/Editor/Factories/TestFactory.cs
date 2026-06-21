@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.AbstractFactory
 {
     [TestFixture]
-    public class TestFactory : ZenjectUnitTestFixture
+    public partial class TestFactory : ZenjectUnitTestFixture
     {
         [Test]
         public void TestToSelf()
@@ -18,9 +18,9 @@ namespace DInject.Tests.AbstractFactory
         {
         }
 
-        public class Foo : IFoo
+        public partial class Foo : IFoo
         {
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

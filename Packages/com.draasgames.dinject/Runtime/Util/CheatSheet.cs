@@ -181,12 +181,16 @@ namespace DInject
         }
 
         // Then when we inject these dependencies we have to use the same ID:
+        // [NoReflectionBaking]: these are nested documentation examples, not real injectables; opt them
+        // out of codegen so they don't trip the DINJ003 (nested injectable) coverage diagnostic.
+        [NoReflectionBaking]
         public class Norf
         {
             [Inject(Id = "FooA")]
             public string Foo;
         }
 
+        [NoReflectionBaking]
         public class Qux
         {
             [Inject(Id = "FooB")]
@@ -212,6 +216,7 @@ namespace DInject
         // instance
         // Bindings without IDs can therefore be used as a default and we can
         // specify IDs for specific versions of the same type
+        [NoReflectionBaking]
         public class Norf2
         {
             [Inject]
@@ -220,6 +225,7 @@ namespace DInject
 
         // Qux2._foo will be the same instance as Norf2._foo
         // This is because we are using AsCached rather than AsTransient
+        [NoReflectionBaking]
         public class Qux2
         {
             [Inject]

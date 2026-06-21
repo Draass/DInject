@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace DInject.Tests.IntegrationTests.Async.Addressable
 {
-    public class TestAddressableFactory : ZenjectIntegrationTestFixture
+    public partial class TestAddressableFactory : ZenjectIntegrationTestFixture
     {
         private AssetReferenceGameObject addressablePrefabReference;
 
@@ -156,7 +156,7 @@ namespace DInject.Tests.IntegrationTests.Async.Addressable
             }
         }
 
-        public class SimpleFactory : PlaceholderFactory<GameObject>
+        public partial class SimpleFactory : PlaceholderFactory<GameObject>
         {
         }
     }

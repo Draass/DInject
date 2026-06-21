@@ -4,11 +4,11 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestPoolableManager : ZenjectUnitTestFixture
+    public partial class TestPoolableManager : ZenjectUnitTestFixture
     {
         static int CallCount;
 
-        public class Foo : IPoolable
+        public partial class Foo : IPoolable
         {
             public static int SpawnCallCount;
             public static int DespawnCallCount;
@@ -24,7 +24,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class Bar : IPoolable
+        public partial class Bar : IPoolable
         {
             public static int SpawnCallCount;
             public static int DespawnCallCount;

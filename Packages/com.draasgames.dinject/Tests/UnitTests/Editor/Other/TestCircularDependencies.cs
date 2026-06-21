@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestCircularDependencies : ZenjectUnitTestFixture
+    public partial class TestCircularDependencies : ZenjectUnitTestFixture
     {
         [Test]
         public void TestThrows()
@@ -16,14 +16,14 @@ namespace DInject.Tests.Other
             Assert.Throws(() => Container.Resolve<Bar1>());
         }
 
-        public class Foo1
+        public partial class Foo1
         {
             public Foo1(Bar1 bar)
             {
             }
         }
 
-        public class Bar1
+        public partial class Bar1
         {
             public Bar1(Foo1 foo)
             {
@@ -40,7 +40,7 @@ namespace DInject.Tests.Other
             Assert.IsNotNull(Container.Resolve<Bar2>());
         }
 
-        public class Foo2
+        public partial class Foo2
         {
             [Inject]
             public void Init(Bar2 bar)
@@ -48,7 +48,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class Bar2
+        public partial class Bar2
         {
             [Inject]
             public void Init(Foo2 foo)
@@ -66,13 +66,13 @@ namespace DInject.Tests.Other
             Assert.IsNotNull(Container.Resolve<Bar3>().Foo);
         }
 
-        public class Foo3
+        public partial class Foo3
         {
             [Inject]
             public Bar3 Bar;
         }
 
-        public class Bar3
+        public partial class Bar3
         {
             [Inject]
             public Foo3 Foo;

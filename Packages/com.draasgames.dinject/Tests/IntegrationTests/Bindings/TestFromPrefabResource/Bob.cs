@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace DInject.Tests.Bindings.FromPrefabResource
 {
-    public class Bob : MonoBehaviour
+    public partial class Bob : MonoBehaviour
     {
         [NonSerialized]
         [Inject]

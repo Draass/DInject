@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 namespace DInject.Tests
 {
-    public static class FixtureUtil
+    public static partial class FixtureUtil
     {
         public static GameObject GetPrefab(string resourcePath)
         {

@@ -4,21 +4,21 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Injection
 {
     [TestFixture]
-    public class TestPostInjectCall : ZenjectUnitTestFixture
+    public partial class TestPostInjectCall : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
-        class Test1
+        partial class Test1
         {
         }
 
-        class Test2
+        partial class Test2
         {
         }
 
-        class Test3
+        partial class Test3
         {
             public bool HasInitialized;
             public bool HasInitialized2;
@@ -66,7 +66,7 @@ namespace DInject.Tests.Injection
             Assert.That(test3.HasInitialized2);
         }
 
-        public class SimpleBase
+        public partial class SimpleBase
         {
             public bool WasCalled;
 
@@ -77,7 +77,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        public class SimpleDerived : SimpleBase
+        public partial class SimpleDerived : SimpleBase
         {
         }
 
@@ -131,7 +131,7 @@ namespace DInject.Tests.Injection
         {
         }
 
-        class FooBase : IFoo
+        partial class FooBase : IFoo
         {
             public bool WasBaseCalled;
             public bool WasBaseCalled2;
@@ -153,7 +153,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class FooDerived : FooBase
+        partial class FooDerived : FooBase
         {
             public bool WasDerivedCalled;
             public bool WasDerivedCalled2;
@@ -175,7 +175,7 @@ namespace DInject.Tests.Injection
             }
         }
 
-        class FooDerived2 : FooDerived
+        partial class FooDerived2 : FooDerived
         {
             public bool WasDerived2Called;
             public static int Derived2CallOrder;

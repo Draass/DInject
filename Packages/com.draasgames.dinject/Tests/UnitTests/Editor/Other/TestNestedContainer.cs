@@ -4,14 +4,14 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestNestedContainer : ZenjectUnitTestFixture
+    public partial class TestNestedContainer : ZenjectUnitTestFixture
     {
         public interface IFoo
         {
             int GetBar();
         }
 
-        public class Foo : IFoo
+        public partial class Foo : IFoo
         {
             public int GetBar()
             {
@@ -19,7 +19,7 @@ namespace DInject.Tests.Other
             }
         }
 
-        public class Foo2 : IFoo
+        public partial class Foo2 : IFoo
         {
             public int GetBar()
             {

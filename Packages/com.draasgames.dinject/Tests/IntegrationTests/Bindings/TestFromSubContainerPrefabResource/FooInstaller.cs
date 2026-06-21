@@ -4,7 +4,7 @@
 
 namespace DInject.Tests.Bindings.FromSubContainerPrefabResource
 {
-    public class FooInstaller : MonoInstaller
+    public partial class FooInstaller : MonoInstaller
     {
         [SerializeField]
         Bar _bar;

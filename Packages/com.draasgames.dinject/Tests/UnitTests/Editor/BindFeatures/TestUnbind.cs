@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.BindFeatures
 {
     [TestFixture]
-    public class TestUnbind : ZenjectUnitTestFixture
+    public partial class TestUnbind : ZenjectUnitTestFixture
     {
         interface ITest
         {
@@ -14,7 +14,7 @@ namespace DInject.Tests.BindFeatures
         {
         }
 
-        class Test2 : ITest, ITest2
+        partial class Test2 : ITest, ITest2
         {
         }
 

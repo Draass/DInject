@@ -4,7 +4,7 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings.Singletons
 {
     [TestFixture]
-    public class TestLazy : ZenjectUnitTestFixture
+    public partial class TestLazy : ZenjectUnitTestFixture
     {
         [Test]
         public void Test1()
@@ -50,7 +50,7 @@ namespace DInject.Tests.Bindings.Singletons
             Assert.Throws(() => temp = gorp.Bar.Value);
         }
 
-        public class Bar
+        public partial class Bar
         {
             public static int InstanceCount;
 
@@ -64,7 +64,7 @@ namespace DInject.Tests.Bindings.Singletons
             }
         }
 
-        public class Foo
+        public partial class Foo
         {
             readonly LazyInject<Bar> _bar;
 
@@ -79,13 +79,13 @@ namespace DInject.Tests.Bindings.Singletons
             }
         }
 
-        public class Qux
+        public partial class Qux
         {
             [Inject(Optional = true)]
             public LazyInject<Bar> Bar;
         }
 
-        public class Gorp
+        public partial class Gorp
         {
             public LazyInject<Bar> Bar;
         }

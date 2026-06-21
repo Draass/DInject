@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestMemoryPool1 : ZenjectIntegrationTestFixture
+    public partial class TestMemoryPool1 : ZenjectIntegrationTestFixture
     {
         [UnityTest]
         public IEnumerator TestFactoryProperties()
@@ -77,7 +77,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        class Foo
+        partial class Foo
         {
             public string Value
             {
@@ -90,7 +90,7 @@ namespace DInject.Tests.Bindings
                 get; private set;
             }
 
-            public class Pool : MemoryPool<string, Foo>
+            public partial class Pool : MemoryPool<string, Foo>
             {
                 protected override void Reinitialize(string value, Foo foo)
                 {
@@ -133,11 +133,11 @@ namespace DInject.Tests.Bindings
         {
         }
 
-        public class Bar : IBar
+        public partial class Bar : IBar
         {
         }
 
-        public class BarPool : MemoryPool<int, IBar>
+        public partial class BarPool : MemoryPool<int, IBar>
         {
         }
     }

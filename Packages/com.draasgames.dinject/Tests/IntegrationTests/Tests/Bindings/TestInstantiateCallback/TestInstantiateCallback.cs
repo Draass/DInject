@@ -6,7 +6,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings.InstantiateCallback
 {
-    public class TestInstantiateCallback : ZenjectIntegrationTestFixture
+    public partial class TestInstantiateCallback : ZenjectIntegrationTestFixture
     {
         GameObject FooPrefab
         {
@@ -152,7 +152,7 @@ namespace DInject.Tests.Bindings.InstantiateCallback
             yield break;
         }
 
-        public class Bar : MonoBehaviour
+        public partial class Bar : MonoBehaviour
         {
             [Inject]
             public Foo Foo;

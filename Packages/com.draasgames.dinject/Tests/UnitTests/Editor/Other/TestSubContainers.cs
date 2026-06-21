@@ -4,9 +4,9 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestSubContainers : ZenjectUnitTestFixture
+    public partial class TestSubContainers : ZenjectUnitTestFixture
     {
-        class Test0
+        partial class Test0
         {
         }
 
@@ -24,7 +24,7 @@ namespace DInject.Tests.Other
                 delegate { Container.Resolve<Test0>(); });
         }
 
-        class Test1
+        partial class Test1
         {
             [Inject]
             public Test0 Test = null;
@@ -69,7 +69,7 @@ namespace DInject.Tests.Other
         {
         }
 
-        class Foo : IFoo, IFoo2
+        partial class Foo : IFoo, IFoo2
         {
         }
 

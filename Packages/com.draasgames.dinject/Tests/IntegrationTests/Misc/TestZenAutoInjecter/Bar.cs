@@ -2,13 +2,13 @@ using UnityEngine;
 
 namespace DInject.Tests.AutoInjecter
 {
-    public class Foo
+    public partial class Foo
     {
         [Inject]
         public DiContainer Container;
     }
 
-    public class Bar : MonoBehaviour
+    public partial class Bar : MonoBehaviour
     {
         [Inject]
         public Foo Foo;

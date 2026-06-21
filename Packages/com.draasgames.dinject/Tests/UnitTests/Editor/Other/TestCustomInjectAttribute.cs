@@ -7,18 +7,18 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Other
 {
     [TestFixture]
-    public class TestCustomInjectAttribute : ZenjectUnitTestFixture
+    public partial class TestCustomInjectAttribute : ZenjectUnitTestFixture
     {
-        public class InjectCustomAttribute : Attribute
+        public partial class InjectCustomAttribute : Attribute
         {
         }
 
-        class Bar
+        partial class Bar
         {
         }
 
         [NoReflectionBaking]
-        class Foo
+        partial class Foo
         {
             [InjectCustom]
             public Bar BarField = null;

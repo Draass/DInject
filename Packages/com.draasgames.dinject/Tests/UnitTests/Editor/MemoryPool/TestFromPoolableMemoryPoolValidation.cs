@@ -6,13 +6,13 @@ using Assert = DInject.Internal.Assert;
 namespace DInject.Tests.Bindings
 {
     [TestFixture]
-    public class TestFromPoolableMemoryPoolValidation
+    public partial class TestFromPoolableMemoryPoolValidation
     {
-        public class Bar
+        public partial class Bar
         {
         }
 
-        public class Foo : IPoolable<IMemoryPool>, IDisposable
+        public partial class Foo : IPoolable<IMemoryPool>, IDisposable
         {
             IMemoryPool _pool;
 
@@ -46,7 +46,7 @@ namespace DInject.Tests.Bindings
                 _pool = pool;
             }
 
-            public class Factory : PlaceholderFactory<Foo>
+            public partial class Factory : PlaceholderFactory<Foo>
             {
             }
         }

@@ -6,7 +6,7 @@ using DInject.Tests.Factories.BindFactoryOne;
 
 namespace DInject.Tests.Factories
 {
-    public class TestBindFactoryOneWithArguments : ZenjectIntegrationTestFixture
+    public partial class TestBindFactoryOneWithArguments : ZenjectIntegrationTestFixture
     {
         private const string ArgumentValue = "asdf";
 
@@ -141,7 +141,7 @@ namespace DInject.Tests.Factories
             Container.BindExecutionOrder<FooFactoryTester<TValue>>(-100);
         }
 
-        public class FooFactoryTester<TValue> : IInitializable
+        public partial class FooFactoryTester<TValue> : IInitializable
             where TValue : IFoo
         {
             readonly IFactory<TValue> _factory;

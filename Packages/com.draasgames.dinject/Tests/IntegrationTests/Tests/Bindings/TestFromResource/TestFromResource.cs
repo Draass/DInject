@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 namespace DInject.Tests.Bindings
 {
-    public class TestFromResource : ZenjectIntegrationTestFixture
+    public partial class TestFromResource : ZenjectIntegrationTestFixture
     {
         const string ResourcePath = "TestFromResource/TestTexture";
         const string ResourcePath2 = "TestFromResource/TestTexture2";
@@ -75,7 +75,7 @@ namespace DInject.Tests.Bindings
             yield break;
         }
 
-        public class Runner : MonoBehaviour
+        public partial class Runner : MonoBehaviour
         {
             List<Texture> _textures;
 

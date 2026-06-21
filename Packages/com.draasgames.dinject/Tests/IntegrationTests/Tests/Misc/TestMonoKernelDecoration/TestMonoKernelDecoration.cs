@@ -10,7 +10,7 @@ using DInject.Tests.TestAnimationStateBehaviourInject;
 
 namespace DInject.Tests.Misc.TestMonoKernelDecoration
 {
-    public class TestMonoKernelDecoration : ZenjectIntegrationTestFixture
+    public partial class TestMonoKernelDecoration : ZenjectIntegrationTestFixture
     {
         
         [UnityTest]
@@ -34,7 +34,7 @@ namespace DInject.Tests.Misc.TestMonoKernelDecoration
             Assert.IsTrue(initializedAfterDelay);
         }
         
-        private class InitializableManagerSpy : InitializableManager
+        private partial class InitializableManagerSpy : InitializableManager
         {
             
             public InitializableManagerSpy(List<IInitializable> initializables, List<ValuePair<Type, int>> priorities) : base(initializables, priorities){}

@@ -3,7 +3,7 @@ using UnityEngine;
 namespace DInject.Tests.Factories.BindFactoryOne
 {
     //[CreateAssetMenu(fileName = "Bar", menuName = "Installers/Bar")]
-    public class Bar : ScriptableObject
+    public partial class Bar : ScriptableObject
     {
         [Inject]
         public void Init(string value)
@@ -17,7 +17,7 @@ namespace DInject.Tests.Factories.BindFactoryOne
             private set;
         }
 
-        public class Factory : PlaceholderFactory<string, Bar>
+        public partial class Factory : PlaceholderFactory<string, Bar>
         {
         }
     }

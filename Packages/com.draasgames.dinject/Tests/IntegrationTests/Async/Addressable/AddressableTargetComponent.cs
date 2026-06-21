@@ -3,11 +3,11 @@ using UnityEngine;
 
 namespace DInject.Tests.IntegrationTests.Async.Addressable
 {
-    public class AddressableTargetComponent : MonoBehaviour, IPoolable<int, IMemoryPool>
+    public partial class AddressableTargetComponent : MonoBehaviour, IPoolable<int, IMemoryPool>
     {
         [InjectOptional] public int InjectedValue;
         
-        public class Factory : PlaceholderFactory<int, AddressableTargetComponent>
+        public partial class Factory : PlaceholderFactory<int, AddressableTargetComponent>
         {
         }
 

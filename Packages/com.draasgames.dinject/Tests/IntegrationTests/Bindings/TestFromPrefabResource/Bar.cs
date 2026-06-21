@@ -2,7 +2,7 @@
 
 namespace DInject.Tests.Bindings.FromPrefabResource
 {
-    public class Bar : MonoBehaviour
+    public partial class Bar : MonoBehaviour
     {
     }
 }

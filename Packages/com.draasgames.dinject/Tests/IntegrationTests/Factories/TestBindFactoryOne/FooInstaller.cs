@@ -1,6 +1,6 @@
 namespace DInject.Tests.Factories.BindFactoryOne
 {
-    public class FooInstaller : MonoInstaller
+    public partial class FooInstaller : MonoInstaller
     {
         string _param1;
 
