@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 namespace DInject.Tests.CodeGenPlayMode
 {
     // M5: the real PlayMode MonoBehaviour case. In play mode a runtime MonoBehaviour is AddComponent'd
-    // onto a GameObject and injected with runtime reflection DISABLED (NoCheckAssumeFullCoverage). This
+    // onto a GameObject and injected with no reflection fallback (DInject is codegen-only). This
     // exercises the full generated path end-to-end: the per-assembly registry registers the generated
     // getter at SubsystemRegistration, and DiContainer.Inject uses it - no direct reflection.
     public partial class TestPlayModeGeneratedInjection
@@ -30,13 +30,10 @@ namespace DInject.Tests.CodeGenPlayMode
                     "verify the RoslynAnalyzer label on the copied DInject.CodeGen.dll.");
             }
 
-            var previousMode = TypeAnalyzer.ReflectionBakingCoverageMode;
             GameObject go = null;
             try
             {
                 TypeAnalyzer.ClearTypeInfoCache();
-                TypeAnalyzer.ReflectionBakingCoverageMode =
-                    ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
 
                 var container = new DiContainer();
                 container.Bind<PlayService>().FromInstance(new PlayService());
@@ -55,7 +52,6 @@ namespace DInject.Tests.CodeGenPlayMode
                 {
                     Object.DestroyImmediate(go);
                 }
-                TypeAnalyzer.ReflectionBakingCoverageMode = previousMode;
                 TypeAnalyzer.ClearTypeInfoCache();
             }
         }

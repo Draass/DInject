@@ -27,12 +27,6 @@ namespace DInject
         bool _parentNewObjectsUnderContext = true;
 
         [SerializeField]
-        ReflectionBakingCoverageModes _editorReflectionBakingCoverageMode = ReflectionBakingCoverageModes.FallbackToDirectReflection;
-
-        [SerializeField]
-        ReflectionBakingCoverageModes _buildsReflectionBakingCoverageMode = ReflectionBakingCoverageModes.FallbackToDirectReflection;
-
-        [SerializeField]
         ZenjectSettings _settings = ZenjectSettings.Default;
 
         DiContainer _container;
@@ -234,22 +228,6 @@ namespace DInject
         {
             Assert.IsNull(_container);
             
-            // Do this as early as possible before any type analysis occurs.
-            // Editor-only: the reflection ctor-selection path is compiled out of player builds
-            // (codegen bakes the chosen constructor at compile time).
-#if UNITY_EDITOR
-            ReflectionTypeAnalyzer.ConstructorChoiceStrategy = _settings.ConstructorChoiceStrategy;
-#endif
-
-            if (Application.isEditor)
-            {
-                TypeAnalyzer.ReflectionBakingCoverageMode = _editorReflectionBakingCoverageMode;
-            }
-            else
-            {
-                TypeAnalyzer.ReflectionBakingCoverageMode = _buildsReflectionBakingCoverageMode;
-            }
-
             var isValidating = ValidateOnNextRun;
 
             // Reset immediately to ensure it doesn't get used in another run

@@ -15,17 +15,18 @@ namespace DInject.CodeGen
     //   __zenInjectMethod{i}, __zenFieldSetter{i}, __zenPropertySetter{i},
     //   [Preserve] internal static InjectTypeInfo __zenCreateInjectTypeInfo()
     // plus a per-assembly registry that registers every getter via TypeAnalyzer.RegisterGeneratedGetter
-    // at SubsystemRegistration. The emitted metadata mirrors DInject's reflection path
-    // (ReflectionTypeAnalyzer + ReflectionInfoTypeInfoConverter) so it is a drop-in for the
-    // reflection-baked getter the weaver used to produce.
+    // at SubsystemRegistration. The emitted metadata is the sole source of inject info at runtime:
+    // DInject is codegen-only (the legacy reflection inject path has been removed), so every injectable
+    // type must be covered here, or via [assembly: GenerateInjector] for types that cannot be made partial.
     [Generator(LanguageNames.CSharp)]
     public sealed class InjectTypeInfoGenerator : IIncrementalGenerator
     {
         static readonly SymbolDisplayFormat Fq = SymbolDisplayFormat.FullyQualifiedFormat;
 
-        // Diagnostics. These surface, AT EDITOR COMPILE TIME, the cases the generator cannot cover so
-        // they are caught here instead of being silently masked by the editor reflection fallback and
-        // only failing (NRE / missing dependency) in a player / IL2CPP build. A type "declares
+        // Diagnostics. These surface, AT EDITOR COMPILE TIME, the cases the generator cannot cover.
+        // DInject is codegen-only (no reflection fallback), so an uncovered injectable type yields no
+        // InjectTypeInfo and fails at run time (NRE / missing dependency) - catching it here at compile
+        // time is the safety net. A type "declares
         // injection" if any of its members/constructors carries an attribute deriving from
         // DInject.InjectAttributeBase. [NoReflectionBaking] types are an explicit opt-out and are not
         // reported. Severity is intentionally escalatable to Error once the codebase is clean.
@@ -50,10 +51,17 @@ namespace DInject.CodeGen
             context.RegisterSourceOutput(models, static (spc, model) =>
                 spc.AddSource(model.HintName, SourceText.From(Emit(model), Encoding.UTF8)));
 
-            var collected = models.Collect().Combine(context.CompilationProvider);
+            // External getters from [assembly: GenerateInjector(typeof(X))] for non-partial / referenced types.
+            var externalModels = context.CompilationProvider.Select(static (comp, _) => BuildExternalModels(comp));
+            context.RegisterSourceOutput(externalModels, static (spc, ext) =>
+            {
+                foreach (var m in ext) spc.AddSource(m.HintName, SourceText.From(Emit(m), Encoding.UTF8));
+            });
+
+            var collected = models.Collect().Combine(externalModels).Combine(context.CompilationProvider);
             context.RegisterSourceOutput(collected, static (spc, pair) =>
             {
-                var registry = EmitRegistry(pair.Left, pair.Right.AssemblyName);
+                var registry = EmitRegistry(pair.Left.Left, pair.Left.Right, pair.Right.AssemblyName);
                 if (registry != null)
                 {
                     spc.AddSource("__DInjectRegistry.g.cs", SourceText.From(registry, Encoding.UTF8));
@@ -97,6 +105,15 @@ namespace DInject.CodeGen
             if (noBaking != null && symbol.GetAttributes().Any(a => SymbolEqualityComparer.Default.Equals(a.AttributeClass, noBaking)))
             {
                 return ImmutableArray<Diagnostic>.Empty; // explicit opt-out.
+            }
+            // Covered by an external getter ([assembly: GenerateInjector(typeof(this))]) - not a gap.
+            var genAttr = comp.GetTypeByMetadataName("DInject.GenerateInjectorAttribute");
+            if (genAttr != null && comp.Assembly.GetAttributes().Any(a =>
+                    SymbolEqualityComparer.Default.Equals(a.AttributeClass, genAttr)
+                    && a.ConstructorArguments.Length == 1
+                    && SymbolEqualityComparer.Default.Equals(a.ConstructorArguments[0].Value as ISymbol, symbol)))
+            {
+                return ImmutableArray<Diagnostic>.Empty;
             }
             var ns = symbol.ContainingNamespace?.ToDisplayString();
             if (ns != null && ns.Contains("UnityEngine"))
@@ -384,6 +401,153 @@ namespace DInject.CodeGen
             return model;
         }
 
+        // ---------------------------------------------------------------- external getters
+        // [assembly: GenerateInjector(typeof(X))] - emit an EXTERNAL getter (in a separate generated class,
+        // NOT a member of X) for a type that cannot be made partial (e.g. from a referenced assembly), so it
+        // is covered by codegen instead of reflection. Because the getter is external, it can only touch
+        // members ACCESSIBLE from this assembly (public, or internal-with-InternalsVisibleTo); inaccessible
+        // [Inject] members are skipped. The type is registered directly (not via the partial __zenRegister
+        // cascade and not probe-findable, since X has no generated member).
+        static ImmutableArray<TypeModel> BuildExternalModels(Compilation comp)
+        {
+            var injectBase = comp.GetTypeByMetadataName("DInject.InjectAttributeBase");
+            var genAttr = comp.GetTypeByMetadataName("DInject.GenerateInjectorAttribute");
+            if (injectBase == null || genAttr == null)
+            {
+                return ImmutableArray<TypeModel>.Empty;
+            }
+
+            var ctxAttrs = new AttrCtx(injectBase,
+                comp.GetTypeByMetadataName("DInject.InjectOptionalAttribute"),
+                comp.GetTypeByMetadataName("DInject.InjectLocalAttribute"));
+            var component = comp.GetTypeByMetadataName("UnityEngine.Component");
+
+            var seen = new HashSet<string>();
+            var builder = ImmutableArray.CreateBuilder<TypeModel>();
+            foreach (var attr in comp.Assembly.GetAttributes())
+            {
+                if (!SymbolEqualityComparer.Default.Equals(attr.AttributeClass, genAttr)) continue;
+                if (attr.ConstructorArguments.Length != 1) continue;
+                if (!(attr.ConstructorArguments[0].Value is INamedTypeSymbol t)) continue;
+                if (t.TypeKind != TypeKind.Class || t.IsStatic) continue;
+                // Closed generics are fine (typeof(Foo<Bar>) registers directly); open/unbound are not.
+                if (t.IsUnboundGenericType || t.TypeArguments.Any(a => a is ITypeParameterSymbol)) continue;
+                if (!comp.IsSymbolAccessibleWithin(t, comp.Assembly)) continue; // can't even name it
+                var model = BuildExternalModel(t, comp, ctxAttrs, component);
+                if (model != null && seen.Add(model.Fq)) builder.Add(model);
+            }
+            return builder.ToImmutable();
+        }
+
+        static TypeModel BuildExternalModel(INamedTypeSymbol symbol, Compilation comp, AttrCtx ctxAttrs, INamedTypeSymbol component)
+        {
+            var fq = symbol.ToDisplayString(Fq);
+            var sanitized = fq.Replace("global::", "").Replace('.', '_')
+                .Replace("<", "_").Replace(">", "_").Replace(", ", "_").Replace(",", "_").Replace(" ", "");
+
+            var model = new TypeModel
+            {
+                Fq = fq,
+                IsExternal = true,
+                ExternalClassName = "__DInjectExternal_" + sanitized,
+                HintName = sanitized + "_ZenInjectExternal.g.cs",
+            };
+
+            // ---- Constructor / factory (accessible ctor only) ----
+            var ctor = SelectConstructor(symbol, component);
+            if (ctor != null && !comp.IsSymbolAccessibleWithin(ctor, comp.Assembly)) ctor = null;
+            if (ctor != null)
+            {
+                var castArgs = new List<string>();
+                for (int i = 0; i < ctor.Parameters.Length; i++)
+                {
+                    var p = ctor.Parameters[i];
+                    castArgs.Add("(" + p.Type.ToDisplayString(Fq) + ")P_0[" + i + "]");
+                    model.CtorParamInfos.Add(ParamInjectable(p, ctxAttrs));
+                }
+                model.FactoryBody = "return new " + fq + "(" + string.Join(", ", castArgs) + ");";
+                model.FactoryRef = "new global::DInject.ZenFactoryMethod(__zenCreate)";
+            }
+            else
+            {
+                model.FactoryRef = "null";
+            }
+
+            // ---- Inject methods (accessible only) ----
+            int methodIndex = 0;
+            foreach (var method in symbol.GetMembers().OfType<IMethodSymbol>()
+                .Where(m => m.MethodKind == MethodKind.Ordinary && !m.IsStatic))
+            {
+                if (!HasInjectAttr(method, ctxAttrs)) continue;
+                if (!comp.IsSymbolAccessibleWithin(method, comp.Assembly)) continue;
+
+                var castArgs = new List<string>();
+                var paramInfos = new List<string>();
+                for (int i = 0; i < method.Parameters.Length; i++)
+                {
+                    var p = method.Parameters[i];
+                    castArgs.Add("(" + p.Type.ToDisplayString(Fq) + ")P_1[" + i + "]");
+                    paramInfos.Add(ParamInjectable(p, ctxAttrs));
+                }
+                string helperName = "__zenInjectMethod" + methodIndex;
+                model.Helpers.Add(
+                    "    private static void " + helperName + "(object P_0, object[] P_1)\n" +
+                    "    {\n" +
+                    "        ((" + fq + ")P_0)." + method.Name + "(" + string.Join(", ", castArgs) + ");\n" +
+                    "    }");
+                model.MethodInfos.Add(
+                    "new global::DInject.InjectTypeInfo.InjectMethodInfo(new global::DInject.ZenInjectMethod(" + helperName + "), " +
+                    "new global::DInject.InjectableInfo[] { " + string.Join(", ", paramInfos) + " }, \"" + method.Name + "\")");
+                methodIndex++;
+            }
+
+            // ---- Inject fields (accessible only; readonly via UnsafeRef - the field is nameable+public) ----
+            int fieldIndex = 0;
+            foreach (var field in symbol.GetMembers().OfType<IFieldSymbol>()
+                .Where(f => !f.IsStatic && !f.IsConst && !f.IsImplicitlyDeclared && f.AssociatedSymbol == null))
+            {
+                if (!HasInjectAttr(field, ctxAttrs)) continue;
+                if (!comp.IsSymbolAccessibleWithin(field, comp.Assembly)) continue;
+
+                string helperName = "__zenFieldSetter" + fieldIndex;
+                string fieldTypeFq = field.Type.ToDisplayString(Fq);
+                string fieldLhs = field.IsReadOnly
+                    ? "global::DInject.Internal.UnsafeRef.As(in ((" + fq + ")P_0)." + field.Name + ")"
+                    : "((" + fq + ")P_0)." + field.Name;
+                model.Helpers.Add(
+                    "    private static void " + helperName + "(object P_0, object P_1)\n" +
+                    "    {\n" +
+                    "        " + fieldLhs + " = (" + fieldTypeFq + ")P_1;\n" +
+                    "    }");
+                model.MemberInfos.Add(
+                    "new global::DInject.InjectTypeInfo.InjectMemberInfo(new global::DInject.ZenMemberSetterMethod(" + helperName + "), " +
+                    MemberInjectable(field, field.Type, ctxAttrs) + ")");
+                fieldIndex++;
+            }
+
+            // ---- Inject properties (accessible settable only) ----
+            int propIndex = 0;
+            foreach (var prop in symbol.GetMembers().OfType<IPropertySymbol>()
+                .Where(p => !p.IsStatic && !p.IsIndexer))
+            {
+                if (!HasInjectAttr(prop, ctxAttrs) || prop.SetMethod == null || prop.SetMethod.IsInitOnly) continue;
+                if (!comp.IsSymbolAccessibleWithin(prop.SetMethod, comp.Assembly)) continue;
+
+                string helperName = "__zenPropertySetter" + propIndex;
+                model.Helpers.Add(
+                    "    private static void " + helperName + "(object P_0, object P_1)\n" +
+                    "    {\n" +
+                    "        ((" + fq + ")P_0)." + prop.Name + " = (" + prop.Type.ToDisplayString(Fq) + ")P_1;\n" +
+                    "    }");
+                model.MemberInfos.Add(
+                    "new global::DInject.InjectTypeInfo.InjectMemberInfo(new global::DInject.ZenMemberSetterMethod(" + helperName + "), " +
+                    MemberInjectable(prop, prop.Type, ctxAttrs) + ")");
+                propIndex++;
+            }
+
+            return model;
+        }
+
         // Mirrors TypeAnalyzer.ShouldSkipTypeAnalysis (minus abstract, which gets a null factory but
         // is still analyzed) plus the [NoReflectionBaking] opt-out and v1 limitations (no nested/generic).
         static bool ShouldSkip(INamedTypeSymbol t, INamedTypeSymbol noBaking)
@@ -560,6 +724,11 @@ namespace DInject.CodeGen
 
         static string Emit(TypeModel m)
         {
+            if (m.IsExternal)
+            {
+                return EmitExternal(m);
+            }
+
             var sb = new StringBuilder();
             sb.Append("// <auto-generated/>\n#nullable disable\n");
             bool hasNs = !string.IsNullOrEmpty(m.Namespace);
@@ -644,6 +813,45 @@ namespace DInject.CodeGen
             return new string(' ', level * 4);
         }
 
+        // External getter: a static class in DInject.Generated (not a member of the target type), so it can
+        // only touch accessible members. Registered directly by the registry (no __zenRegister cascade,
+        // not probe-findable). Mirrors Emit's getter body at a fixed 8-space member indent.
+        static string EmitExternal(TypeModel m)
+        {
+            var sb = new StringBuilder();
+            sb.Append("// <auto-generated/>\n#nullable disable\n");
+            sb.Append("namespace DInject.Generated\n{\n");
+            sb.Append("    internal static class ").Append(m.ExternalClassName).Append("\n    {\n");
+
+            if (m.FactoryBody != null)
+            {
+                sb.Append("        private static object __zenCreate(object[] P_0)\n");
+                sb.Append("        {\n");
+                sb.Append("            ").Append(m.FactoryBody).Append("\n");
+                sb.Append("        }\n");
+            }
+
+            foreach (var helper in m.Helpers)
+            {
+                sb.Append(Reindent(helper, "    ")).Append("\n");
+            }
+
+            sb.Append("        [global::DInject.Internal.Preserve]\n");
+            sb.Append("        internal static global::DInject.InjectTypeInfo __zenCreateInjectTypeInfo()\n");
+            sb.Append("        {\n");
+            sb.Append("            return new global::DInject.InjectTypeInfo(\n");
+            sb.Append("                typeof(").Append(m.Fq).Append("),\n");
+            sb.Append("                new global::DInject.InjectTypeInfo.InjectConstructorInfo(\n");
+            sb.Append("                    ").Append(m.FactoryRef).Append(",\n");
+            sb.Append("                    ").Append(Array("global::DInject.InjectableInfo", m.CtorParamInfos)).Append("),\n");
+            sb.Append("                ").Append(Array("global::DInject.InjectTypeInfo.InjectMethodInfo", m.MethodInfos)).Append(",\n");
+            sb.Append("                ").Append(Array("global::DInject.InjectTypeInfo.InjectMemberInfo", m.MemberInfos)).Append(");\n");
+            sb.Append("        }\n");
+
+            sb.Append("    }\n}\n");
+            return sb.ToString();
+        }
+
         static string Array(string elementType, List<string> items)
         {
             if (items.Count == 0)
@@ -660,13 +868,14 @@ namespace DInject.CodeGen
             return string.Join("\n", lines.Select(l => l.Length == 0 ? l : extra + l));
         }
 
-        static string EmitRegistry(ImmutableArray<TypeModel> models, string assemblyName)
+        static string EmitRegistry(ImmutableArray<TypeModel> models, ImmutableArray<TypeModel> external, string assemblyName)
         {
             // Call __zenRegister() only on TOP-LEVEL non-generic types; each cascades into its nested
             // generated types, so private/protected nested types register with NO reflection. Open
             // generics cannot be referenced via typeof(Foo<T>) and resolve via the GetMethod probe.
             var entryPoints = models.Where(m => m != null && !m.IsGeneric && m.ContainingChain.Count == 0).ToList();
-            if (entryPoints.Count == 0)
+            var externalPoints = external.Where(m => m != null).ToList();
+            if (entryPoints.Count == 0 && externalPoints.Count == 0)
             {
                 return null;
             }
@@ -690,6 +899,14 @@ namespace DInject.CodeGen
             foreach (var m in entryPoints)
             {
                 sb.Append("            ").Append(m.Fq).Append(".__zenRegister();\n");
+            }
+            // External getters (from [assembly: GenerateInjector]) are registered directly - they are not
+            // members of the target type, so there is no __zenRegister cascade and no probe to find them.
+            foreach (var m in externalPoints)
+            {
+                sb.Append("            global::DInject.TypeAnalyzer.RegisterGeneratedGetter(typeof(")
+                  .Append(m.Fq).Append("), new global::DInject.ZenTypeInfoGetter(global::DInject.Generated.")
+                  .Append(m.ExternalClassName).Append(".__zenCreateInjectTypeInfo));\n");
             }
             sb.Append("        }\n    }\n}\n");
             return sb.ToString();
@@ -718,6 +935,8 @@ namespace DInject.CodeGen
             public List<string> ContainingChain = new List<string>();
             public List<string> NestedChildren = new List<string>();
             public bool IsGeneric;
+            public bool IsExternal;
+            public string ExternalClassName;
             public string HintName;
             public string FactoryBody;
             public string FactoryRef = "null";

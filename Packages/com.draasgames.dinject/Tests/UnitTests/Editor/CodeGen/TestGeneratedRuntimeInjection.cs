@@ -3,10 +3,9 @@ using NUnit.Framework;
 
 namespace DInject.Tests.CodeGen
 {
-    // Proves the generated metadata drives real container injection with runtime reflection DISABLED
-    // (ReflectionBakingCoverageMode = NoCheckAssumeFullCoverage). The generated __zenCreateInjectTypeInfo
-    // is found by TypeAnalyzer's method probe, so member injection and a generated constructor factory
-    // build the whole dependency graph without any direct reflection.
+    // Proves the generated metadata drives real container injection with NO reflection fallback
+    // (DInject is codegen-only). The generated getters (registry / __zenCreateInjectTypeInfo probe)
+    // supply member injection and a generated constructor factory that build the whole dependency graph.
     //
     // Uses a plain class (not a MonoBehaviour) because Unity forbids AddComponent of an Editor-assembly
     // MonoBehaviour; real MonoBehaviour injection is validated separately in a PlayMode assembly.
@@ -27,12 +26,9 @@ namespace DInject.Tests.CodeGen
                 Assert.Ignore("DInject generator not active - import DInject.CodeGen.dll with the RoslynAnalyzer label.");
             }
 
-            var previousMode = TypeAnalyzer.ReflectionBakingCoverageMode;
+            TypeAnalyzer.ClearTypeInfoCache();
             try
             {
-                TypeAnalyzer.ClearTypeInfoCache();
-                TypeAnalyzer.ReflectionBakingCoverageMode =
-                    ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
 
                 // Leaf bound as an instance, so it is never constructed via TypeAnalyzer.
                 Container.Bind<CorpusSimpleService>().FromInstance(new CorpusSimpleService());
@@ -50,7 +46,6 @@ namespace DInject.Tests.CodeGen
             }
             finally
             {
-                TypeAnalyzer.ReflectionBakingCoverageMode = previousMode;
                 TypeAnalyzer.ClearTypeInfoCache();
             }
         }
@@ -66,12 +61,9 @@ namespace DInject.Tests.CodeGen
                 Assert.Ignore("DInject generator not active - import DInject.CodeGen.dll with the RoslynAnalyzer label.");
             }
 
-            var previousMode = TypeAnalyzer.ReflectionBakingCoverageMode;
+            TypeAnalyzer.ClearTypeInfoCache();
             try
             {
-                TypeAnalyzer.ClearTypeInfoCache();
-                TypeAnalyzer.ReflectionBakingCoverageMode =
-                    ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
 
                 var leaf = new CorpusSimpleService();
                 Container.Bind<CorpusSimpleService>().FromInstance(leaf);
@@ -87,7 +79,38 @@ namespace DInject.Tests.CodeGen
             }
             finally
             {
-                TypeAnalyzer.ReflectionBakingCoverageMode = previousMode;
+                TypeAnalyzer.ClearTypeInfoCache();
+            }
+        }
+
+        // Proves an EXTERNAL getter ([assembly: GenerateInjector(typeof(CorpusExternalType))]) drives
+        // construction + injection of a NON-partial type with reflection off - the codegen path for types
+        // that cannot be made partial (e.g. from a referenced assembly), so reflection is not needed.
+        [Test]
+        public void InjectsExternalTypeWithReflectionOff()
+        {
+            if (!GeneratorActive())
+            {
+                Assert.Ignore("DInject generator not active - import DInject.CodeGen.dll with the RoslynAnalyzer label.");
+            }
+
+            TypeAnalyzer.ClearTypeInfoCache();
+            try
+            {
+
+                var leaf = new CorpusSimpleService();
+                Container.Bind<CorpusSimpleService>().FromInstance(leaf);
+                // Constructed via its EXTERNAL generated getter (reflection off).
+                Container.Bind<CorpusExternalType>().AsSingle();
+
+                var resolved = Container.Resolve<CorpusExternalType>();
+
+                Assert.IsNotNull(resolved, "external (non-partial) type constructed via the external getter");
+                Assert.AreSame(leaf, resolved.Dep, "external getter injected the constructor dependency");
+                Assert.AreSame(leaf, resolved.Field, "external getter injected the public [Inject] field");
+            }
+            finally
+            {
                 TypeAnalyzer.ClearTypeInfoCache();
             }
         }
@@ -102,12 +125,9 @@ namespace DInject.Tests.CodeGen
                 Assert.Ignore("DInject generator not active - import DInject.CodeGen.dll with the RoslynAnalyzer label.");
             }
 
-            var previousMode = TypeAnalyzer.ReflectionBakingCoverageMode;
+            TypeAnalyzer.ClearTypeInfoCache();
             try
             {
-                TypeAnalyzer.ClearTypeInfoCache();
-                TypeAnalyzer.ReflectionBakingCoverageMode =
-                    ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage;
 
                 Container.Bind<CorpusSimpleService>().FromInstance(new CorpusSimpleService());
 
@@ -119,7 +139,6 @@ namespace DInject.Tests.CodeGen
             }
             finally
             {
-                TypeAnalyzer.ReflectionBakingCoverageMode = previousMode;
                 TypeAnalyzer.ClearTypeInfoCache();
             }
         }

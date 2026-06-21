@@ -10,13 +10,6 @@ namespace DInject
 {
     public delegate InjectTypeInfo ZenTypeInfoGetter();
 
-    public enum ReflectionBakingCoverageModes
-    {
-        FallbackToDirectReflection,
-        NoCheckAssumeFullCoverage,
-        FallbackToDirectReflectionWithWarning
-    }
-
     public static class TypeAnalyzer
     {
         static Dictionary<Type, InjectTypeInfo> _typeInfo = new Dictionary<Type, InjectTypeInfo>();
@@ -26,25 +19,17 @@ namespace DInject
         // we want to minimize the types that generate InjectTypeInfo for
         static Dictionary<Type, bool> _allowDuringValidation = new Dictionary<Type, bool>();
 
-        // Populated by code emitted by the DInject Roslyn source generator (typically from a
-        // [RuntimeInitializeOnLoadMethod(SubsystemRegistration)] in each generated assembly) via
-        // RegisterGeneratedGetter. Consulted before the reflection-baking method probe and before
-        // direct reflection, so the generated path costs no per-type reflection at all. An empty
-        // registry makes the lookup a no-op (current behaviour is unchanged until getters register).
+        // Populated by code emitted by the DInject Roslyn source generator (each generated assembly
+        // registers its getters from a [RuntimeInitializeOnLoadMethod(SubsystemRegistration)], and
+        // additionally from an [InitializeOnLoadMethod] in the editor) via RegisterGeneratedGetter.
+        // Consulted first; an O(1) hit costs no per-type reflection at all.
         static Dictionary<Type, ZenTypeInfoGetter> _generatedGetters = new Dictionary<Type, ZenTypeInfoGetter>();
 
-        // Use double underscores for generated methods since this is also what the C# compiler does
-        // for things like anonymous methods
-        public const string ReflectionBakingGetInjectInfoMethodName = "__zenCreateInjectTypeInfo";
-        public const string ReflectionBakingFactoryMethodName = "__zenCreate";
-        public const string ReflectionBakingInjectMethodPrefix = "__zenInjectMethod";
-        public const string ReflectionBakingFieldSetterPrefix = "__zenFieldSetter";
-        public const string ReflectionBakingPropertySetterPrefix = "__zenPropertySetter";
-
-        public static ReflectionBakingCoverageModes ReflectionBakingCoverageMode
-        {
-            get; set;
-        }
+        // Name of the generated static getter method (__zenCreateInjectTypeInfo) probed for as a
+        // fallback when a type is not in _generatedGetters - the only remaining case being closed
+        // generic instantiations formed at runtime (typeof(Foo<Bar>) cannot be registered for an
+        // open generic). Double underscores mirror the compiler's own generated-member convention.
+        public const string GeneratedGetterMethodName = "__zenCreateInjectTypeInfo";
 
 #if UNITY_EDITOR
         // Required for disabling domain reload in enter the play mode feature. See: https://docs.unity3d.com/Manual/DomainReloading.html
@@ -226,8 +211,9 @@ namespace DInject
                 return null;
             }
 
-            // Generated metadata (DInject source generator) takes precedence over the reflection-baking
-            // method probe and direct reflection. O(1) lookup, no per-type reflection. No-op while empty.
+            // Generated metadata (DInject source generator) is consulted first via the registry: an
+            // O(1) lookup, no per-type reflection. The method probe below only handles runtime-formed
+            // closed generics that cannot be pre-registered.
             {
                 ZenTypeInfoGetter generatedGetter;
                 if (_generatedGetters.TryGetValue(type, out generatedGetter))
@@ -249,7 +235,7 @@ namespace DInject
 #endif
             {
                 var getInfoMethod = type.GetMethod(
-                    ReflectionBakingGetInjectInfoMethodName,
+                    GeneratedGetterMethodName,
                     BindingFlags.Static | BindingFlags.NonPublic | BindingFlags.Public);
 
                 if (getInfoMethod != null)
@@ -266,27 +252,11 @@ namespace DInject
                 }
             }
 
-            if (ReflectionBakingCoverageMode == ReflectionBakingCoverageModes.NoCheckAssumeFullCoverage)
-            {
-                // If we are confident that the reflection baking supplies all the injection information,
-                // then we can avoid the costs of doing reflection on types that were not covered
-                // by the baking
-                return null;
-            }
-
-#if UNITY_EDITOR
-            if (ReflectionBakingCoverageMode == ReflectionBakingCoverageModes.FallbackToDirectReflectionWithWarning)
-            {
-                Log.Warn("No reflection baking information found for type '{0}' - using more costly direct reflection instead", type);
-            }
-
-            return CreateTypeInfoFromReflection(type);
-#else
-            // Player builds are codegen-only: the member-reflection path (CreateTypeInfoFromReflection +
-            // ReflectionTypeAnalyzer / ReflectionInfoTypeInfoConverter) is compiled out via #if UNITY_EDITOR.
-            // An uncovered type yields null here, so ensure full generator coverage before shipping a build.
+            // DInject is codegen-only: there is no direct-reflection fallback. A type reaches here only
+            // when it is neither in the generated-getter registry nor carries a generated getter method
+            // (the probe above) - i.e. the source generator did not cover it. GetInfo asserts non-null,
+            // surfacing a clear error; make the type partial (or use [assembly: GenerateInjector(...)]).
             return null;
-#endif
         }
 
         public static bool ShouldSkipTypeAnalysis(Type type)
@@ -305,26 +275,5 @@ namespace DInject
             // Apparently this is unique to static classes
             return type.IsAbstract() && type.IsSealed();
         }
-
-#if UNITY_EDITOR
-        static InjectTypeInfo CreateTypeInfoFromReflection(Type type)
-        {
-            var reflectionInfo = ReflectionTypeAnalyzer.GetReflectionInfo(type);
-
-            var injectConstructor = ReflectionInfoTypeInfoConverter.ConvertConstructor(
-                reflectionInfo.InjectConstructor, type);
-
-            var injectMethods = reflectionInfo.InjectMethods.Select(
-                ReflectionInfoTypeInfoConverter.ConvertMethod).ToArray();
-
-            var memberInfos = reflectionInfo.InjectFields.Select(
-                x => ReflectionInfoTypeInfoConverter.ConvertField(type, x)).Concat(
-                    reflectionInfo.InjectProperties.Select(
-                        x => ReflectionInfoTypeInfoConverter.ConvertProperty(type, x))).ToArray();
-
-            return new InjectTypeInfo(
-                type, injectConstructor, injectMethods, memberInfos);
-        }
-#endif
     }
 }

@@ -74,6 +74,12 @@ namespace DInject
     public class InjectLocalAttribute : InjectAttributeBase { public InjectLocalAttribute() { Source = InjectSources.Local; } }
 
     public class NoReflectionBakingAttribute : System.Attribute { }
+
+    [System.AttributeUsage(System.AttributeTargets.Assembly, AllowMultiple = true)]
+    public sealed class GenerateInjectorAttribute : System.Attribute
+    {
+        public GenerateInjectorAttribute(System.Type type) { }
+    }
 }
 
 namespace DInject.Internal
@@ -110,9 +116,20 @@ namespace DInject.Internal
 ";
 
     private const string Corpus = @"
+[assembly: DInject.GenerateInjector(typeof(Game.ExternalThirdParty))]
+
 namespace Game
 {
     public class SimpleService { }
+
+    // Simulates a type from a referenced assembly that cannot be made partial; covered via the
+    // assembly-level [GenerateInjector] -> an EXTERNAL getter (public ctor + public members only).
+    public class ExternalThirdParty
+    {
+        public readonly SimpleService Dep;
+        [DInject.Inject] public ExternalThirdParty(SimpleService dep) { Dep = dep; }
+        [DInject.Inject] public SimpleService Field;
+    }
 
     public partial class CtorInject
     {
@@ -274,8 +291,8 @@ namespace DiagGame
         void Expect(bool cond, string msg) { if (!cond) failures.Add("expectation failed: " + msg); }
 
         int factories = Count(all, "private static object __zenCreate(");
-        Expect(factories == 13, "expected 13 factories (all but the Component MonoLike), got " + factories);
-        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 14, "expected 14 getters");
+        Expect(factories == 14, "expected 14 factories (13 partial + 1 external; all but the Component MonoLike), got " + factories);
+        Expect(Count(all, "__zenCreateInjectTypeInfo()") == 15, "expected 15 getters (14 partial + 1 external)");
         Expect(all.Contains("new global::Game.CtorInject((global::Game.SimpleService)P_0[0])"), "CtorInject factory arg cast");
 
         var monoSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("partial class MonoLike"));
@@ -349,7 +366,18 @@ namespace DiagGame
             "private nested NestPrivate must emit both a getter and a __zenRegister");
 
         // Every non-generic type self-registers exactly once (in its own __zenRegister); 13 of them here.
-        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 13, "expected 13 self-registrations (all non-generic types)");
+        Expect(Count(all, "RegisterGeneratedGetter(typeof(") == 14, "expected 14 registrations (13 partial self-registrations + 1 external)");
+
+        // External getter ([assembly: GenerateInjector(typeof(ExternalThirdParty))]): emitted in a separate
+        // DInject.Generated class (NOT a member of the type) and registered directly - no cascade, no probe.
+        var extSrc = generated.Select(t => t.ToString()).FirstOrDefault(s => s.Contains("class __DInjectExternal_Game_ExternalThirdParty"));
+        Expect(extSrc != null, "external getter class must be emitted for the [GenerateInjector] type");
+        Expect(extSrc != null && extSrc.Contains("new global::Game.ExternalThirdParty((global::Game.SimpleService)P_0[0])"),
+            "external getter must construct the type via its public ctor");
+        Expect(extSrc != null && extSrc.Contains("((global::Game.ExternalThirdParty)P_0).Field = (global::Game.SimpleService)P_1;"),
+            "external getter must set the public [Inject] field");
+        Expect(all.Contains("RegisterGeneratedGetter(typeof(global::Game.ExternalThirdParty), new global::DInject.ZenTypeInfoGetter(global::DInject.Generated.__DInjectExternal_Game_ExternalThirdParty.__zenCreateInjectTypeInfo))"),
+            "external type must be registered directly (not via cascade/probe)");
         Expect(all.Contains("global::DInject.InjectSources.Any"), "Any source present");
 
         // ---- Coverage diagnostics (DINJ001-005): each bad shape must be flagged, the clean one must not.
