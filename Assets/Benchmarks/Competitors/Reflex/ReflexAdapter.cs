@@ -12,18 +12,24 @@ namespace DInjectBench
 
         public string SelfCheck() => null;
 
-        public object Build()
+        public object Build(BindMode mode)
         {
+            var lt = mode == BindMode.Singleton ? Lifetime.Singleton : Lifetime.Transient;
             var b = new ContainerBuilder();
-            b.RegisterType(typeof(RLeaf), new[] { typeof(ILeaf) }, Lifetime.Transient, Resolution.Lazy);
-            b.RegisterType(typeof(RMid), new[] { typeof(IMid) }, Lifetime.Transient, Resolution.Lazy);
-            b.RegisterType(typeof(RRoot), new[] { typeof(IServiceGraphRoot) }, Lifetime.Transient, Resolution.Lazy);
+            b.RegisterType(typeof(RLeaf), new[] { typeof(ILeaf) }, lt, Resolution.Lazy);
+            b.RegisterType(typeof(RMid), new[] { typeof(IMid) }, lt, Resolution.Lazy);
+            b.RegisterType(typeof(RRoot), new[] { typeof(IServiceGraphRoot) }, lt, Resolution.Lazy);
             return b.Build();
         }
 
         public IServiceGraphRoot ResolveRoot(object container)
         {
             return ((Container)container).Resolve<IServiceGraphRoot>();
+        }
+
+        public ILeaf ResolveLeaf(object container)
+        {
+            return ((Container)container).Resolve<ILeaf>();
         }
     }
 }

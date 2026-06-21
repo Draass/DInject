@@ -1,57 +1,150 @@
+using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using Unity.PerformanceTesting;
 
 namespace DInjectBench
 {
-    // MVP: one scenario (deep + wide transient graph), the warm steady-state resolve phase,
-    // measuring time (microseconds) and GC allocation count.
+    // Matrix: {container} x {scenario x phase} x {time, GC count, alloc bytes}.
     //
-    // Run from Window > General > Test Runner > PlayMode tab. Each container that is present shows
-    // up as a separate test case (discovered by reflection). Results appear per SampleGroup and in
-    // Window > Analysis > Performance Test Report.
+    // Run from Window > General > Test Runner > PlayMode. Each present container shows up as a case
+    // (discovered by reflection). Results: Window > Analysis > Performance Test Report.
     //
-    // NOTE: these are Editor (Mono) numbers - good for relative iteration, NOT publishable. Headline
-    // numbers must come from an IL2CPP development build run on the target device (see README).
+    // READING THE NUMBERS:
+    //  - TIME with IterationsPerMeasurement(N): the sample is the SUM over N ops, so per-op = median/N.
+    //    Build/Cold use N=1 (already per-op). Warm scenarios use N=1000 (divide by 1000).
+    //  - GC() sample = GC.Alloc COUNT per op (framework divides it).
+    //  - *.Bytes sample = approximate bytes/op via managed-heap delta (GC.GetTotalMemory); indicative.
+    //
+    // Editor = Mono/JIT (relative, not publishable). Headline numbers need an IL2CPP player on the
+    // target device (see README). Extenject runs its reflection path unless baking is configured.
     public class ResolveBenchmarks
     {
         // Keeps the resolved instance reachable so the measured call is never optimised away.
         static object _sink;
+
+        const int Warmup = 15;
+        const int Measures = 25;
+        const int Iters = 1000;
 
         static IEnumerable<IContainerAdapter> Adapters()
         {
             return BenchAdapters.All();
         }
 
-        [Test, Performance]
-        public void ResolveWarm([ValueSource(nameof(Adapters))] IContainerAdapter adapter)
+        static void Guard(IContainerAdapter a)
         {
-            var skip = adapter.SelfCheck();
-            if (skip != null)
-            {
-                Assert.Ignore($"{adapter.Name}: {skip}");
-            }
+            var skip = a.SelfCheck();
+            if (skip != null) Assert.Ignore($"{a.Name}: {skip}");
+        }
 
-            var container = adapter.Build();
+        static SampleGroup Us(string n) => new SampleGroup(n, SampleUnit.Microsecond, false);
 
-            // Sanity + cache warm: a broken resolve must fail loudly, not be measured as a 0us "win".
-            _sink = adapter.ResolveRoot(container);
-            Assert.IsNotNull(_sink, $"{adapter.Name}: ResolveRoot returned null - binding/codegen problem.");
+        // ---------------------------------------------------------------- Build phase (per scene)
 
-            // Reporting note: with an explicit MeasurementCount the TIME sample is the SUM over
-            // IterationsPerMeasurement (1000), so per-resolve time = reported median / 1000. The
-            // GC() sample is already per-resolve (the framework divides it). The 1000-fold keeps
-            // sub-microsecond containers (e.g. VContainer warm) above the timer-resolution floor.
-            Measure.Method(() => { _sink = adapter.ResolveRoot(container); })
-                .SampleGroup(new SampleGroup(
-                    $"{adapter.Name}.Transient.DeepWide.ResolveWarm",
-                    SampleUnit.Microsecond,
-                    increaseIsBetter: false))
-                .WarmupCount(20)
-                .MeasurementCount(30)
-                .IterationsPerMeasurement(1000)
-                .GC()
+        [Test, Performance]
+        public void Build_Time([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            Measure.Method(() => { _sink = a.Build(BindMode.Transient); })
+                .SampleGroup(Us($"{a.Name}.Build"))
+                .WarmupCount(Warmup).MeasurementCount(Measures).IterationsPerMeasurement(1)
+                .GC().Run();
+        }
+
+        [Test, Performance]
+        public void Build_AllocBytes([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            MeasureBytes($"{a.Name}.Build.Bytes", warmup: 5, reps: 20, itersPer: 1,
+                () => { _sink = a.Build(BindMode.Transient); });
+        }
+
+        // -------------------------------------------------------- Cold first-resolve (one-time cost)
+
+        [Test, Performance]
+        public void Resolve_Cold([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            object c = null;
+            Measure.Method(() => { _sink = a.ResolveRoot(c); })
+                .SetUp(() => { c = a.Build(BindMode.Transient); }) // untimed; fresh container each iter
+                .SampleGroup(Us($"{a.Name}.Transient.DeepWide.ResolveCold"))
+                .WarmupCount(0).MeasurementCount(40).IterationsPerMeasurement(1)
                 .Run();
+        }
+
+        // ------------------------------------------------------ Warm steady-state: transient deep+wide
+
+        [Test, Performance]
+        public void Resolve_Warm_DeepWide([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            var c = a.Build(BindMode.Transient);
+            _sink = a.ResolveRoot(c);
+            Assert.IsNotNull(_sink, $"{a.Name}: ResolveRoot returned null - binding/codegen problem.");
+
+            Measure.Method(() => { _sink = a.ResolveRoot(c); })
+                .SampleGroup(Us($"{a.Name}.Transient.DeepWide.ResolveWarm"))
+                .WarmupCount(Warmup).MeasurementCount(Measures).IterationsPerMeasurement(Iters)
+                .GC().Run();
+        }
+
+        [Test, Performance]
+        public void Resolve_Warm_DeepWide_AllocBytes([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            var c = a.Build(BindMode.Transient);
+            MeasureBytes($"{a.Name}.Transient.DeepWide.ResolveWarm.Bytes", warmup: 5, reps: 20, itersPer: Iters,
+                () => { _sink = a.ResolveRoot(c); });
+        }
+
+        // ----------------------------------------------- Warm steady-state: transient shallow (1 object)
+
+        [Test, Performance]
+        public void Resolve_Warm_Shallow([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            var c = a.Build(BindMode.Transient);
+            _sink = a.ResolveLeaf(c);
+
+            Measure.Method(() => { _sink = a.ResolveLeaf(c); })
+                .SampleGroup(Us($"{a.Name}.Transient.Shallow.ResolveWarm"))
+                .WarmupCount(Warmup).MeasurementCount(Measures).IterationsPerMeasurement(Iters)
+                .GC().Run();
+        }
+
+        // ------------------------------------------- Warm steady-state: singleton (pure lookup overhead)
+
+        [Test, Performance]
+        public void Resolve_Warm_Singleton([ValueSource(nameof(Adapters))] IContainerAdapter a)
+        {
+            Guard(a);
+            var c = a.Build(BindMode.Singleton);
+            _sink = a.ResolveRoot(c);
+
+            Measure.Method(() => { _sink = a.ResolveRoot(c); })
+                .SampleGroup(Us($"{a.Name}.Singleton.ResolveWarm"))
+                .WarmupCount(Warmup).MeasurementCount(Measures).IterationsPerMeasurement(Iters)
+                .GC().Run();
+        }
+
+        // Approximate bytes/op via managed-heap delta (GC.GetTotalMemory). GC() gives an alloc COUNT;
+        // this adds rough byte size. (GC.GetTotalAllocatedBytes is .NET Core 3.0+ and not exposed by
+        // Unity's runtime.) GC.Collect before each batch gives a clean baseline; an incremental GC
+        // mid-batch can undercount, so treat these as indicative and trust the GC() count as primary.
+        static void MeasureBytes(string name, int warmup, int reps, int itersPer, Action action)
+        {
+            var g = new SampleGroup(name, SampleUnit.Byte, increaseIsBetter: false);
+            for (int w = 0; w < warmup; w++) action();
+            for (int r = 0; r < reps; r++)
+            {
+                GC.Collect();
+                long before = GC.GetTotalMemory(false);
+                for (int i = 0; i < itersPer; i++) action();
+                long after = GC.GetTotalMemory(false);
+                Measure.Custom(g, (double)(after - before) / itersPer);
+            }
         }
     }
 }

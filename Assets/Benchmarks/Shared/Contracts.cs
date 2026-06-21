@@ -18,6 +18,14 @@ namespace DInjectBench
         void Use();
     }
 
+    // How the graph is registered. Transient = a fresh instance per resolve (stresses construction).
+    // Singleton = one cached instance (warm resolve is pure container lookup overhead, ~0 alloc target).
+    public enum BindMode
+    {
+        Transient,
+        Singleton
+    }
+
     // One adapter per container. Implementations live in per-container assemblies and are
     // discovered by reflection at test time (see BenchAdapters), so adding a new container
     // requires zero changes to the runner.
@@ -30,10 +38,13 @@ namespace DInjectBench
         // text  => a human-readable reason to skip (e.g. codegen/baking not active).
         string SelfCheck();
 
-        // Build and fully initialise the container with the standard graph bound transient.
-        object Build();
+        // Build and fully initialise a container with the standard graph bound in the given mode.
+        object Build(BindMode mode);
 
-        // The measured operation: resolve the graph root from a built container.
+        // Resolve the graph root (deep + wide). Works for transient and singleton bindings.
         IServiceGraphRoot ResolveRoot(object container);
+
+        // Resolve a single leaf (shallow). Isolates per-call container overhead from graph depth.
+        ILeaf ResolveLeaf(object container);
     }
 }

@@ -21,18 +21,32 @@ namespace DInjectBench
                 : "DInject codegen not active: import Packages/com.draasgames.dinject/CodeGen/DInject.CodeGen.dll with the 'RoslynAnalyzer' asset label.";
         }
 
-        public object Build()
+        public object Build(BindMode mode)
         {
             var c = new DiContainer();
-            c.Bind<ILeaf>().To<DLeaf>().AsTransient();
-            c.Bind<IMid>().To<DMid>().AsTransient();
-            c.Bind<IServiceGraphRoot>().To<DRoot>().AsTransient();
+            if (mode == BindMode.Singleton)
+            {
+                c.Bind<ILeaf>().To<DLeaf>().AsSingle();
+                c.Bind<IMid>().To<DMid>().AsSingle();
+                c.Bind<IServiceGraphRoot>().To<DRoot>().AsSingle();
+            }
+            else
+            {
+                c.Bind<ILeaf>().To<DLeaf>().AsTransient();
+                c.Bind<IMid>().To<DMid>().AsTransient();
+                c.Bind<IServiceGraphRoot>().To<DRoot>().AsTransient();
+            }
             return c;
         }
 
         public IServiceGraphRoot ResolveRoot(object container)
         {
             return ((DiContainer)container).Resolve<IServiceGraphRoot>();
+        }
+
+        public ILeaf ResolveLeaf(object container)
+        {
+            return ((DiContainer)container).Resolve<ILeaf>();
         }
     }
 }
