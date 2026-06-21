@@ -21,13 +21,8 @@
   "samples": [
     {
       "displayName": "Sample Game 1 (Beginner)",
-      "description": "",
+      "description": "Asteroids mini-game ported from Zenject to DInject codegen. Exercises installers, constructor/method injection, PlaceholderFactory, FromComponentInNewPrefab, ZenjectBinding, execution order and a ScriptableObject settings installer. The optional Signals subsystem is replaced by a plain injected GameEvents hub.",
       "path": "Samples~/SampleGame1 (Beginner)"
-    },
-    {
-      "displayName": "Sample Game 2 (Advanced)",
-      "description": "",
-      "path": "Samples~/SampleGame2 (Advanced)"
     }
   ]
 }

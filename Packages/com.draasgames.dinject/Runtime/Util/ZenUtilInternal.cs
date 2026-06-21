@@ -231,8 +231,18 @@ namespace DInject.Internal
 
         public static bool IsInjectableMonoBehaviourType(Type type)
         {
-            // Do not inject on installers since these are always injected before they are installed
-            return type != null && !type.DerivesFrom<MonoInstaller>() && TypeAnalyzer.HasInfo(type);
+            // Do not inject on installers since these are always injected before they are installed.
+            //
+            // NB: gate on ShouldSkipTypeAnalysis, NOT HasInfo. Under codegen-only, HasInfo is true only
+            // for types the generator covered (those declaring [Inject]). A no-inject MonoBehaviour such
+            // as ZenjectBinding would then be excluded here, dropping it from the injectable list - so its
+            // Context never gets set in InstallSceneBindings and the components it binds are never
+            // registered ("Unable to resolve ..."). Reflection's HasInfo was effectively
+            // !ShouldSkipTypeAnalysis (it produced an InjectTypeInfo for every non-skipped type), so this
+            // restores that exact set. Collecting types with no generated info is safe: InjectExplicit
+            // no-ops when TryGetInfo returns null (it does not assert), so a no-inject MonoBehaviour is
+            // simply not injected while still being available for ZenjectBinding processing.
+            return type != null && !type.DerivesFrom<MonoInstaller>() && !TypeAnalyzer.ShouldSkipTypeAnalysis(type);
         }
 
         public static IEnumerable<GameObject> GetRootGameObjects(Scene scene)
